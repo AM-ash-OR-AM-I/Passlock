@@ -1,0 +1,76 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import Gradient kivy_gradient.Gradient
+#:import Toolbar Toolbar.Toolbar
+#:set bg_color_dark get_color_from_hex('262626')
+<Tab@MDTabsBase>:
+
+<RoundButton>
+<HomeScreen@MDScreen>
+    padding:(0,dp(25),0,0)
+	MDBoxLayout:
+	    adaptive_height:True
+		pos_hint:{'top':1}
+		orientation:'vertical'
+		spacing:'50sp'
+		MDBoxLayout:
+		    orientation:'vertical'
+		    spacing:'0sp'
+		    pos_hint:{'top':1}
+		    padding:(0,0,0,dp(80))
+		    adaptive_height:True
+
+            MDToolbar:
+                md_bg_color:bg_color_dark if app.dark_mode else app.theme_cls.primary_color
+                title:'PassLOCK'
+                elevation:10
+
+#                specific_text_color:[0.0, 0.0, 0.0, 0.87]if app.dark_mode else [1,1,1,1]
+                left_action_items:[['menu']]
+                right_action_items:[['theme-light-dark',lambda x: app.toggle_mode(x)]]
+            MDTabs:
+#                tab_indicator_type:'round'
+                indicator_color:app.theme_cls.primary_color if app.dark_mode else [1,1,1,1]
+                anim_duration:.2
+                background_color:bg_color_dark if app.dark_mode else app.theme_cls.primary_color
+                tab_indicator_anim:True
+				tab_indicator_height:'3dp'
+                tab_hint_x:True
+                show_anim:True
+                text_color_active:app.theme_cls.primary_color if app.dark_mode else [1,1,1,1]
+                text_color_normal:[1,1,1,.6]
+                elevation:10
+                Tab:
+                    title: "[b]MANUAL"
+                Tab:
+                    title: "[b]AUTO"
+
+	    CardTextField:
+ 	       id:email_textfield
+	        pos_hint:{'center_x':.5,'center_y':.6}
+	        icon_font_size:icon_size
+	        thickness:dp(1) if platform == 'android' else dp(1.4)
+	        icon_color:app.theme_cls.primary_color
+			label_name:'Name of Password'
+	        hint_text:'e.g. username@gmail.com'
+	        inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+	        #icon_left_action:['account']
+		CardTextField:
+ 	       id:email_textfield
+	        pos_hint:{'center_x':.5,'center_y':.5}
+	        icon_font_size:icon_size
+	        icon_color:app.theme_cls.primary_color
+	        thickness:dp(1) if platform == 'android' else dp(1.4)
+			label_name:'Password'
+	        hint_text:'Enter the password'
+			inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+	        icon_right_action:['eye-off-outline']
+		RoundButton:
+		    adaptive_height:True
+			text:'CREATE'
+			font_name:'RobotoMedium'
+			size_hint_x:.75
+			font_size:'18sp'
+			pos_hint:{'center_x':.5}
+    BottomNavigation:
+
+HomeScreen:

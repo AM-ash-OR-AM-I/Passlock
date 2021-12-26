@@ -1,0 +1,101 @@
+#:import window kivy.core.window.Window
+#:set height window.height
+#:set width window.width
+#: set rad width/2
+#: set lbl_size '15sp'
+#: set icon_size 60
+#: import platform kivy.platform
+#: import CardTextField CustomCard.CardTextField
+<FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
+
+<LoginScreen@MDScreen>:
+    canvas:
+		Color:
+			rgba:app.theme_cls.primary_color[:-1]+[.8]
+		Ellipse:
+			size:rad,rad
+			pos:0-rad/2,height-rad+20
+			angle_start:0
+			angle_end:180
+		Color:
+			rgba:1,0.8,0.65,0.8
+		Ellipse:
+			pos:0,height-rad/2
+			size:rad,rad
+			angle_start:90
+			angle_end:270
+
+	MDBoxLayout:
+		adaptive_height:True
+		orientation:'vertical'
+		pos_hint:{'top':0.95}
+		spacing:'50dp'
+		MDLabel:
+		    adaptive_height:True
+            text:f"LOGIN\nTO [color=ff7a4f][u]PA[/u]SS"
+            markup:True
+            font_name:'Poppins'
+            halign:'center'
+            font_size:'48dp'
+            pos_hint:{'top':1}
+        MDBoxLayout:
+            adaptive_height:True
+            spacing:'50dp'
+            orientation:'vertical'
+            padding:(0,dp(20),0,0)
+            CardTextField:
+                id: email
+                label_name:'Email Address'
+                hint_text:'username@mail.com'
+                icon_font_size:icon_size
+                icon_color:app.theme_cls.primary_color
+                thickness:dp(1) if platform == 'android' else dp(1.4)
+                inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+				pos_hint:{'center_x':.5}
+                icon_left_action:['account']
+                icon_right_action:['chevron-down']
+			MDBoxLayout:
+				adaptive_height:True
+				orientation:'vertical'
+				spacing:'20dp'
+                CardTextField:
+                    id: password
+                    label_name:'Password'
+                    hint_text:'Enter password'
+                    thickness:dp(1) if platform == 'android' else dp(1.4)
+                    icon_font_size:icon_size
+                    icon_color:app.theme_cls.primary_color
+                    inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+                    pos_hint:{'center_x':.5}
+                    icon_right_action:['eye-off-outline']
+                MDTextButton:
+                    text:'Forgot Password?'
+                    font_name:'RobotoMedium'
+                    pos_hint:{'center_x':.5}
+                    theme_text_color:'Secondary'
+                    font_size:lbl_size
+	
+		FloatingButton:
+			elevation:10
+			icon:'lock'
+			user_font_size:100
+			md_bg_color:[.25,.25,.25,1]
+			theme_text_color:'Custom'
+            text_color:app.theme_cls.primary_color
+            on_release:app.sm.current='Home'
+			pos_hint:{'center_x':.5}
+	MDTextButton:
+		text:'I\'m a new user. [color=ff7a4f]Sign up!'
+		markup:True
+		pos_hint:{'center_y':.07,'center_x':.5}
+		font_name:'RobotoMedium'
+		halign:'center'
+		font_size:lbl_size
+	FloatLayout:
+	    MDIconButton:
+	        icon:'theme-light-dark'
+	        pos_hint:{'center_x':.9,"center_y":.95}
+	        on_release:
+	            app.toggle_mode()
+
+LoginScreen:
