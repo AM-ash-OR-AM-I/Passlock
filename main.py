@@ -101,4 +101,3 @@ class HomeScreen(MDScreen):pass
 
 
 TestCard().run()
-'SNX^@_PZ1xG]'
