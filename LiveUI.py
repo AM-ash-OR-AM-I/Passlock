@@ -2,6 +2,8 @@ from kivy import platform, Logger
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ColorProperty, StringProperty, BooleanProperty, NumericProperty, ListProperty
+from kivymd.uix.boxlayout import MDBoxLayout
+
 from kivymd.app import MDApp
 from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior
@@ -55,6 +57,10 @@ class Example(MDApp):
     def update_kv_file(self, text):
         with open(self.path_to_kv_file, "w") as kv_file:
             kv_file.write(text)
+
+
+class LabelIcon(MDBoxLayout):
+    text_color = ColorProperty([1, 1, 1, 0])
 
 
 Example().run()
