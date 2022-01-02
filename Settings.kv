@@ -1,21 +1,27 @@
 <RightSwitch@IRightBodyTouch+MDSwitch>
 <ListItem@OneLineAvatarIconListItem>
 	_no_ripple_effect: True
+
 <SettingScreen@MDScreen>
+
     MDBoxLayout:
         adaptive_height:True
         pos_hint:{'top':1}
         orientation:'vertical'
         spacing:'15dp'
-        MDBoxLayout:
-            adaptive_height:True
-            padding:icon_left.x,dp(15),0,0
-            MDIconButton:
-                icon:'arrow-left'
-            MDLabel:
-                text:'Settings'
-                font_style:'H5'
+#        MDBoxLayout:
+#            adaptive_height:True
+#            padding:icon_left.x,dp(15),0,0
+#            MDIconButton:
+#                icon:'arrow-left'
+#            MDLabel:
+#                text:'Settings'
+#                font_style:'H5'
 #                adaptive_size:True
+        MDToolbar:
+            title:'Settings'
+            elevation:10
+            left_action_items:[['arrow-left',lambda x: app.back_button()]]
 
 	    MDBoxLayout:
             adaptive_height:True
@@ -30,22 +36,7 @@
                     icon:'circle-half-full'
                     theme_text_color:'Custom'
                     text_color:app.theme_cls.primary_color
-            ListItem:
-                text:"Dark Mode"
-                #text_color: [.9,.9,.9,1] if switch_dark.active else [0.5,0.5,0.5,.85]
-                on_release:
-                    switch_dark.active=True if not switch_dark.active else False
-                RightSwitch:
-                    id: switch_dark
-                    width: dp(44)
-                    pos_hint:{"center_x":.5}
-                    on_active:app.dark_mode=switch_dark.active
 
-                IconLeftWidget:
-                    icon:'weather-night'
-                    text_color: [.9,.9,.9,1] if switch_dark.active else [0.5,0.5,0.5,.85]
-                    on_release:
-                        switch_dark.active=True if not switch_dark.active else False
             OneLineIconListItem:
                 text:"Advanced Security"
                 IconLeftWidget:
@@ -73,4 +64,4 @@
 
 
 
-SettingScreen:
+#SettingScreen:

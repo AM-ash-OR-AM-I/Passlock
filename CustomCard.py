@@ -3,10 +3,11 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ColorProperty, StringProperty, BooleanProperty, NumericProperty, ListProperty
 from kivymd.app import MDApp
-from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.relativelayout import MDRelativeLayout
+if platform == 'android':
+    from JavaAPI import fix_back_button
 
 Builder.load_string('''
 
@@ -161,10 +162,9 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
         print('event:<on_focus> is_called')
         if self.app is None:
             self.app = MDApp.get_running_app()
-        # if platform == "android":
-        #     from Modules.JavaAPI import fix_back_button
-        #     if not focus:
-        #         fix_back_button()
+        if platform == "android":
+            if not focus:
+                fix_back_button()
 
         if focus:
             self.border_color = self.active_color

@@ -117,7 +117,28 @@
             pos: self.pos
             radius:dp(20),dp(20)
             texture: Gradient.horizontal([1,1,1,0], [1,1,1,.2])
+
+<DarkAnimation@Widget>
+    rad : 80
+    set_color: [0,0,0,1]
+    parent_rad: 20
+    opacity:root.opacity
+    canvas:
+        Color:
+            rgba: app.theme_cls.opposite_bg_normal
+        Ellipse:
+            size: 2*self.rad,2*self.rad
+            pos: (self.x - self.rad , self.y - self.rad)
+
 <HomeScreen@MDScreen>
+    FloatLayout:
+        DarkAnimation:
+            id: circle_mode
+            opacity:0
+            rad: 10
+            pos: window.width, window.height-dp(112)
+            set_color: app.theme_cls.bg_normal
+            halign:'left'
     MDBoxLayout:
         orientation:'vertical'
         spacing:'0sp'
@@ -125,20 +146,20 @@
         padding:(0,0,0,0)
 
         MDToolbar:
-
-            md_bg_color:bg_color_dark if app.dark_mode else app.theme_cls.primary_color
+            padding:dp(30),0,dp(30),0
+            md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
             title:'PassLOCK'
             elevation:10
-            right_action_items:[['theme-light-dark',lambda x: app.toggle_mode(x)],["cog",lambda x: exec("app.sm.current='Settings'")]]
+            right_action_items:[['theme-light-dark',lambda x: app.toggle_mode(x)],["cog",lambda x: exec("app.change_screen('SettingScreen')# ;app.fps_monitor_start()if not app.fps else '';app.fps=True")]]
         MDTabs:
-            indicator_color:app.theme_cls.primary_color if app.dark_mode else [1,1,1,1]
+            indicator_color:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
             anim_duration:.2
-            background_color:bg_color_dark if app.dark_mode else app.theme_cls.primary_color
+            background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
             tab_indicator_anim:True
             tab_indicator_height:'3dp'
             tab_hint_x:True
             show_anim:True
-            text_color_active:app.theme_cls.primary_color if app.dark_mode else [1,1,1,1]
+            text_color_active:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
             text_color_normal:[1,1,1,.6]
             Manual:
                 title: "[b]MANUAL"
@@ -149,4 +170,4 @@
         id: bottom_nav
 
 
-HomeScreen:
+#HomeScreen:

@@ -2,8 +2,9 @@ from kivy.lang import Builder
 from kivy.properties import BooleanProperty, ColorProperty, NumericProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.screenmanager import ScreenManager
-from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.dialog import MDDialog
 
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.tab import MDTabsBase
 
 from kivymd.theming import ThemableBehavior
@@ -20,7 +21,7 @@ from kivy import platform
 
 from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
-from kivymd.uix.button import MDFloatingActionButton, MDFillRoundFlatButton
+from kivymd.uix.button import MDFloatingActionButton, MDFillRoundFlatButton, MDRaisedButton, MDFlatButton
 from kivymd.uix.screen import MDScreen
 
 if platform != 'android':
@@ -53,9 +54,11 @@ class TestCard(MDApp):
     dark_mode = BooleanProperty(False)
     screen_history = []
     LIVE_UI = 0
+    fps = False
     path_to_live_ui = 'Settings.kv'
 
     def build(self):
+
         Builder.load_file('LoginScreenDesign.kv')
         Builder.load_file('BottomNavigation.kv')
         if not self.LIVE_UI:
@@ -65,9 +68,13 @@ class TestCard(MDApp):
         self.theme_cls.primary_palette = 'DeepOrange'
         # self.dark_mode = True
         self.sm = ScreenManager()
-        self.sm.add_widget(LoginScreen(name='Login'))
-        self.sm.add_widget(HomeScreen(name='Home'))
-        self.sm.add_widget(SettingScreen(name='Settings'))
+        self.LoginScreen = LoginScreen(name='LoginScreen')
+        self.HomeScreen = HomeScreen(name='HomeScreen')
+        self.SettingScreen = SettingScreen(name='SettingScreen')
+        self.sm.add_widget(self.LoginScreen)
+        self.sm.add_widget(self.HomeScreen)
+        self.sm.add_widget(self.SettingScreen)
+        Window.bind(on_keyboard=self.go_back)
         return Builder.load_string(KV) if self.LIVE_UI else self.sm
 
     def back_button(self, home_screen=False, *args):
@@ -79,6 +86,26 @@ class TestCard(MDApp):
         self.sm.transition.direction = 'right'
         self.sm.current = self.screen_history[-1]
 
+    def go_back(self, instance, key, *args):
+        if key in (27, 1001):
+            if self.screen_history:
+                self.screen_history.pop()
+                if self.screen_history != []:
+                    self.sm.transition.mode = 'pop'
+                    self.sm.transition.direction = 'right'
+                    self.sm.current = self.screen_history[-1]
+
+                else:
+                    self.exit_dialog = MDDialog(title='Exit', text='Do you want to exit?',
+                                                buttons=[MDRaisedButton(text='YES', on_release=lambda x: self.stop()),
+                                                         MDFlatButton(text='NO',
+                                                                      on_release=lambda x: self.exit_dialog.dismiss())])
+                    self.exit_dialog.open()
+                    self.screen_history = ['HomeScreen']
+            else:
+                self.stop()
+        return True
+
     def change_screen(self, screen_name, *args):
         self.sm.transition.mode = 'push'
         self.sm.transition.direction = 'left'
@@ -88,7 +115,18 @@ class TestCard(MDApp):
 
     def on_dark_mode(self, instance, mode):
         print(mode)
-        if mode:
+        # if self.start_call:
+        #     self.set_mode()
+        # else:
+        radius = 1.3 * max(Window.size)
+        self.HomeScreen.ids.circle_mode.opacity = 1
+        self.anim = Animation(rad=radius, duration=.6, t='in_quad')
+        self.anim.start(self.HomeScreen.ids.circle_mode)
+        self.anim.on_complete = self.set_mode
+
+    def set_mode(self,*args):
+        print("mode set")
+        if self.dark_mode:
             self.theme_cls.theme_style = 'Dark'
             self.theme_cls.primary_hue = '300'
             if platform == 'android':
@@ -98,10 +136,11 @@ class TestCard(MDApp):
             self.theme_cls.primary_hue = '500'
             if platform == 'android':
                 statusbar(status_color='ff7a4f')
+        self.HomeScreen.ids.circle_mode.rad = 0.1
 
     def toggle_mode(self, *args):
         self.dark_mode = not self.dark_mode
-        return self.dark_mode
+
 
     def on_start(self):
         if platform == 'android':

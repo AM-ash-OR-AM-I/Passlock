@@ -82,7 +82,7 @@
 			md_bg_color:[.25,.25,.25,1]
 			theme_text_color:'Custom'
             text_color:app.theme_cls.primary_color
-            on_release:app.sm.current='Home'
+            on_release:app.change_screen('HomeScreen')
 			pos_hint:{'center_x':.5}
 	MDTextButton:
 		text:'I\'m a new user. [color=ff7a4f]Sign up!'
@@ -91,11 +91,6 @@
 		font_name:'RobotoMedium'
 		halign:'center'
 		font_size:lbl_size
-	FloatLayout:
-	    MDIconButton:
-	        icon:'theme-light-dark'
-	        pos_hint:{'center_x':.9,"center_y":.95}
-	        on_release:
-	            app.toggle_mode()
 
-LoginScreen:
+
+#LoginScreen:
