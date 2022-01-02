@@ -1,1 +1,76 @@
-<NavDrawer>:
+<RightSwitch@IRightBodyTouch+MDSwitch>
+<ListItem@OneLineAvatarIconListItem>
+	_no_ripple_effect: True
+<SettingScreen@MDScreen>
+    MDBoxLayout:
+        adaptive_height:True
+        pos_hint:{'top':1}
+        orientation:'vertical'
+        spacing:'15dp'
+        MDBoxLayout:
+            adaptive_height:True
+            padding:icon_left.x,dp(15),0,0
+            MDIconButton:
+                icon:'arrow-left'
+            MDLabel:
+                text:'Settings'
+                font_style:'H5'
+#                adaptive_size:True
+
+	    MDBoxLayout:
+            adaptive_height:True
+            orientation:'vertical'
+
+            OneLineIconListItem:
+                text:"Theme"
+                theme_text_color:'Custom'
+                text_color:app.theme_cls.primary_color
+                IconLeftWidget:
+                    id: icon_left
+                    icon:'circle-half-full'
+                    theme_text_color:'Custom'
+                    text_color:app.theme_cls.primary_color
+            ListItem:
+                text:"Dark Mode"
+                #text_color: [.9,.9,.9,1] if switch_dark.active else [0.5,0.5,0.5,.85]
+                on_release:
+                    switch_dark.active=True if not switch_dark.active else False
+                RightSwitch:
+                    id: switch_dark
+                    width: dp(44)
+                    pos_hint:{"center_x":.5}
+                    on_active:app.dark_mode=switch_dark.active
+
+                IconLeftWidget:
+                    icon:'weather-night'
+                    text_color: [.9,.9,.9,1] if switch_dark.active else [0.5,0.5,0.5,.85]
+                    on_release:
+                        switch_dark.active=True if not switch_dark.active else False
+            OneLineIconListItem:
+                text:"Advanced Security"
+                IconLeftWidget:
+                    icon:'shield-star'
+            OneLineIconListItem:
+                text:"Backup & Restore"
+                IconLeftWidget:
+                    icon:"backup-restore"
+            OneLineIconListItem:
+                text:"Change Password"
+                IconLeftWidget:
+                    icon:"lock"
+            OneLineIconListItem:
+                text:"Delete Account"
+                IconLeftWidget:
+                    icon:"trash-can-outline"
+        MDSeparator:
+        MDBoxLayout:
+            adaptive_height:True
+            padding:0,dp(20),0,0
+            orientation:'vertical'
+            MDRectangleFlatButton:
+                text:'[b]EXPLAIN FEATURES'
+                pos_hint:{'center_x':.5}
+
+
+
+SettingScreen:

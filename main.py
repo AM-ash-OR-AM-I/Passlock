@@ -53,7 +53,7 @@ class TestCard(MDApp):
     dark_mode = BooleanProperty(False)
     screen_history = []
     LIVE_UI = 0
-    path_to_live_ui = 'HomeScreenDesign.kv'
+    path_to_live_ui = 'Settings.kv'
 
     def build(self):
         Builder.load_file('LoginScreenDesign.kv')
@@ -61,11 +61,13 @@ class TestCard(MDApp):
         if not self.LIVE_UI:
             # Builder.load_file('LoginScreenDesign.kv')
             Builder.load_file('HomeScreenDesign.kv')
+            Builder.load_file('Settings.kv')
         self.theme_cls.primary_palette = 'DeepOrange'
         # self.dark_mode = True
         self.sm = ScreenManager()
         self.sm.add_widget(LoginScreen(name='Login'))
         self.sm.add_widget(HomeScreen(name='Home'))
+        self.sm.add_widget(SettingScreen(name='Settings'))
         return Builder.load_string(KV) if self.LIVE_UI else self.sm
 
     def back_button(self, home_screen=False, *args):
@@ -130,7 +132,7 @@ class HomeScreen(MDScreen): pass
 class LabelIcon(MDBoxLayout, ThemableBehavior):
     active = BooleanProperty(False)
     text_color = ColorProperty([1, 1, 1, 1])
-    scale= NumericProperty(1)
+    scale = NumericProperty(1)
     opac = BooleanProperty(False)
 
     def __init__(self, **kwargs):
@@ -145,15 +147,16 @@ class LabelIcon(MDBoxLayout, ThemableBehavior):
             if instances != instance:
                 instances.text_color = [.7, .7, .7, 1]
                 instances.scale = 1
-                instances.opac=0
+                instances.opac = 0
             else:
-                instances.text_color=self.theme_cls.primary_color
+                instances.text_color = self.theme_cls.primary_color
                 instances.opac = 1
-                self.animate=Animation(scale=1.4, d=.15, t='linear')
+                self.animate = Animation(scale=1.4, d=.15, t='linear')
                 self.animate.start(instances)
 
 
 # class Tab(MDBoxLayout, MDTabsBase):pass
+class SettingScreen(MDScreen): pass
 
 
 TestCard().run()
