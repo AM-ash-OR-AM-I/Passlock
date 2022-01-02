@@ -113,7 +113,7 @@ Builder.load_string(
     MDIcon:
         id: lbl_txt
         icon: root.icon
-        font_size: dp(.4*root.user_font_size) if root.user_font_size else self.font_size
+        font_size: dp(root.scale*root.user_font_size) if root.user_font_size else self.font_size
         font_name: root.font_name if root.font_name else self.font_name
         theme_text_color: root.theme_text_color
         text_color:
@@ -692,7 +692,7 @@ class BaseRoundButton(CircularRippleBehavior, BaseButton):
     Base class for all round buttons, bringing in the appropriate
     on-touch behavior
     """
-
+    scale = NumericProperty(0.5)
     md_bg_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
 
     def __init__(self, **kwargs):

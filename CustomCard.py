@@ -48,6 +48,7 @@ Builder.load_string('''
     MDBoxLayout:
         id: card_box
         padding:(dp(20),0,0,0)if root.icon_left_action is None else (0,0,0,0)
+        spacing:'-5dp'if root.icon_left_action else '0dp'
         TextInput:
             id: textfield
             size_hint_y:None
@@ -77,7 +78,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
     border_color = ColorProperty([.5, .5, .5, .1])
     active_color = [0.5, 0.7, 1, .8]
     focus = BooleanProperty(False)
-    text_font_size = StringProperty('15sp')
+    text_font_size = StringProperty('20sp')
     hint_text_color = ColorProperty(None)
     text = StringProperty('')
     thickness = NumericProperty(1.5)
@@ -90,12 +91,13 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
     icon_right_action = ListProperty(None)
     icon_font_size = NumericProperty()
     win = True if platform == 'win' else False
+
     app = None
     c = 0
 
-    def on_icon_left_action(self, instance, value: 'List containing icon name and function'):
-        if len(value):
-            if len(value) == 1:
+    def on_icon_left_action(self, instance, icon_list: 'List containing icon name and function'):
+        if len(icon_list) and type(icon_list[0]) != list:
+            if len(icon_list) == 1:
                 self.icon_left = MDIconButton(icon=self.icon_left_action[0], theme_text_color='Custom',
                                               text_color=self.icon_color, user_font_size=self.icon_font_size,
                                               pos_hint={'center_y': .5})
@@ -105,10 +107,22 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
                                               text_color=self.icon_color, user_font_size=self.icon_font_size,
                                               pos_hint={'center_y': .5}, on_release=self.icon_left_action[1])
             self.ids.card_box.add_widget(self.icon_left, index=1)
+        elif type(icon_list[0]) == list:
+            for icons in icon_list:
+                if len(icons) == 1:
+                    self.icon_left = MDIconButton(icon=icons[0], theme_text_color='Custom',
+                                                  text_color=self.icon_color, user_font_size=self.icon_font_size,
+                                                  pos_hint={'center_y': .5})
 
-    def on_icon_right_action(self, instance, value):
-        if len(value):
-            if len(value) == 1:
+                else:
+                    self.icon_left = MDIconButton(icon=icons[0], theme_text_color='Custom',
+                                                  text_color=self.icon_color, user_font_size=self.icon_font_size,
+                                                  pos_hint={'center_y': .5}, on_release=icons[1])
+                self.ids.card_box.add_widget(self.icon_left, index=1)
+
+    def on_icon_right_action(self, instance, icon_list):
+        if len(icon_list) and type(icon_list[0]) != list:
+            if len(icon_list) == 1:
                 self.icon_right = MDIconButton(icon=self.icon_right_action[0], theme_text_color='Custom',
                                                text_color=self.icon_color, user_font_size=self.icon_font_size,
                                                pos_hint={'center_y': .5})
@@ -118,6 +132,18 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
                                                text_color=self.icon_color, user_font_size=self.icon_font_size,
                                                pos_hint={'center_y': .5}, on_release=self.icon_right_action[1])
             self.ids.card_box.add_widget(self.icon_right)
+        elif type(icon_list[0]) == list:
+            for icons in icon_list:
+                if len(icons) == 1:
+                    self.icon_right = MDIconButton(icon=icons[0], theme_text_color='Custom',
+                                                   text_color=self.icon_color, user_font_size=self.icon_font_size,
+                                                   pos_hint={'center_y': .5})
+
+                else:
+                    self.icon_right = MDIconButton(icon=icons[0], theme_text_color='Custom',
+                                                   text_color=self.icon_color, user_font_size=self.icon_font_size,
+                                                   pos_hint={'center_y': .5}, on_release=icons[1])
+                self.ids.card_box.add_widget(self.icon_right)
 
     def on_icon_color(self, instance, color):
         if self.icon_left_action is not None:

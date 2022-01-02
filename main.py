@@ -2,6 +2,10 @@ from kivy.lang import Builder
 from kivy.properties import BooleanProperty, ColorProperty, NumericProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.screenmanager import ScreenManager
+from kivymd.uix.floatlayout import MDFloatLayout
+
+from kivymd.uix.tab import MDTabsBase
+
 from kivymd.theming import ThemableBehavior
 
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -20,7 +24,7 @@ from kivymd.uix.button import MDFloatingActionButton, MDFillRoundFlatButton
 from kivymd.uix.screen import MDScreen
 
 if platform != 'android':
-    Window.size = (450, 800)
+    Window.size = (450, 900)
 else:
     from JavaAPI import statusbar
 
@@ -49,15 +53,16 @@ class TestCard(MDApp):
     dark_mode = BooleanProperty(False)
     screen_history = []
     LIVE_UI = 0
-    path_to_live_ui = 'BottomNavigation.kv'
+    path_to_live_ui = 'HomeScreenDesign.kv'
 
     def build(self):
+        Builder.load_file('LoginScreenDesign.kv')
+        Builder.load_file('BottomNavigation.kv')
         if not self.LIVE_UI:
-            Builder.load_file('LoginScreenDesign.kv')
-            Builder.load_file('BottomNavigation.kv')
+            # Builder.load_file('LoginScreenDesign.kv')
             Builder.load_file('HomeScreenDesign.kv')
         self.theme_cls.primary_palette = 'DeepOrange'
-        self.dark_mode = True
+        # self.dark_mode = True
         self.sm = ScreenManager()
         self.sm.add_widget(LoginScreen(name='Login'))
         self.sm.add_widget(HomeScreen(name='Home'))
@@ -130,23 +135,25 @@ class LabelIcon(MDBoxLayout, ThemableBehavior):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.text_color = self.theme_cls.primary_color if self.active else [1, 1, 1, .7]
+        self.text_color = self.theme_cls.primary_color if self.active else [.7, .7, .7, 1]
 
     def on_active(self, instance, active):
         app = MDApp.get_running_app()
-        print(app.root.children)
+        # print(app.root.children)
         for instances in app.root.children[0].ids.bottom_nav.ids.box.children:
-            print(instances, instance)
+            # print(instances, instance)
             if instances != instance:
-                instances.text_color = [.5, .5, .5, 1]
-                self.animate = Animation(scale=1, d=.15)
+                instances.text_color = [.7, .7, .7, 1]
                 instances.scale = 1
                 instances.opac=0
             else:
                 instances.text_color=self.theme_cls.primary_color
                 instances.opac = 1
-                self.animate=Animation(scale=1.4, d=.15)
+                self.animate=Animation(scale=1.4, d=.15, t='out_quad')
                 self.animate.start(instances)
+
+
+# class Tab(MDBoxLayout, MDTabsBase):pass
 
 
 TestCard().run()

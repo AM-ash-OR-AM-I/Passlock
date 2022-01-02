@@ -616,7 +616,7 @@ Builder.load_string(
         scrollview: scrollview
         layout: layout
         size_hint: 1, None
-        elevation: root.elevation
+        elevation: 10
         height: root.tab_bar_height
         md_bg_color:
             self.theme_cls.primary_color \
@@ -1108,7 +1108,7 @@ class MDTabsBar(
         self.update_indicator(widget.x, widget.width)
 
 
-class MDTabs(ThemableBehavior, FakeRectangularElevationBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
+class MDTabs(ThemableBehavior,  SpecificBackgroundColorBehavior, AnchorLayout):
     """
     You can use this class to create your own tabbed panel.
 

@@ -16,6 +16,7 @@
 
         id:icon
         icon:root.icon
+        scale: 0.4
         user_font_size:70*root.scale
         on_release: root.active= not root.active
         pos_hint:{'center_x':.5}
@@ -33,20 +34,20 @@
         font_name:'RobotoMedium'
 
 <BottomNavigation@RelativeLayout>
-    position:{'center_x':.5,'center_y':.1}
+    position:{'center_x':.5,'center_y':0.08}
     MDCard:
         id:card
         pos_hint:root.position
         size_hint_y: None
-        height:'80dp'
+        height:'70dp'
         size_hint_x:.8
         md_bg_color:get_color_from_hex('303030')
-        radius: '40dp'
+        radius: '35dp'
         elevation: 15
     MDBoxLayout:
         id: box
         adaptive_height:True
-        height:card.height-dp(30)
+        height:card.height-dp(20)
         spacing:(card.width-dp(70)*4-dp(60))/3
         x:card.x+dp(30)
         center_y:card.center_y
@@ -66,7 +67,7 @@
             text:'UPDATE'
         LabelIcon:
             id: delete
-            icon:'trash-can-outline'# if self.scale==1 else 'trash-can'
+            icon:'trash-can-outline' if self.scale==1 else 'trash-can'
             text:'DELETE'
 #<MDScreen@HomeScreen>
 #    id: screen
