@@ -149,7 +149,7 @@ class LabelIcon(MDBoxLayout, ThemableBehavior):
             else:
                 instances.text_color=self.theme_cls.primary_color
                 instances.opac = 1
-                self.animate=Animation(scale=1.4, d=.15, t='out_quad')
+                self.animate=Animation(scale=1.4, d=.15, t='linear')
                 self.animate.start(instances)
 
 

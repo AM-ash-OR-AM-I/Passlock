@@ -783,7 +783,7 @@ class MDToolbar(NotchedBox):
             self.ids.label_title.theme_text_color = ""
 
     def update_action_bar_text_colors(self, *args):
-        print(f'text_color_updated and{self.theme_cls.theme_style = }')
+        # print(f'text_color_updated and{self.theme_cls.theme_style = }')
         for child in self.ids["left_actions"].children:
             child.text_color = [1,1,1,1]
         for child in self.ids["right_actions"].children:
