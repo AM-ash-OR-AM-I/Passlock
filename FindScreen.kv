@@ -1,0 +1,11 @@
+<FindScreen@MDScreen>:
+	CardTextField:
+        id:email_field
+        pos_hint:{'center_x':.5}
+        icon_font_size:icon_size
+        thickness:dp(1) if platform == 'android' else dp(1.4)
+        icon_color:app.theme_cls.primary_color
+        label_name:'Name of Password'
+        hint_text:'e.g. username@gmail.com'
+        inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+FindScreen:

@@ -29,7 +29,7 @@ if platform != 'android':
 else:
     from JavaAPI import statusbar
 
-# print(platform)
+
 KV = '''
 #:import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
 #: import Window kivy.core.window.Window
@@ -53,9 +53,9 @@ class RoundButton(MDFillRoundFlatButton):
 class TestCard(MDApp):
     dark_mode = BooleanProperty(False)
     screen_history = []
-    LIVE_UI = 0
+    LIVE_UI = 1
     fps = False
-    path_to_live_ui = 'Settings.kv'
+    path_to_live_ui = 'FindScreen.kv'
 
     def build(self):
 
