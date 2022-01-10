@@ -131,14 +131,7 @@
             pos: (self.x - self.rad , self.y - self.rad)
 
 <HomeScreen@MDScreen>
-    FloatLayout:
-        DarkAnimation:
-            id: circle_mode
-            opacity:0
-            rad: 10
-            pos: window.width, window.height-dp(112)
-            set_color: app.theme_cls.bg_normal
-            halign:'left'
+    md_bg_color: app.theme_cls.bg_normal
     MDBoxLayout:
         orientation:'vertical'
         spacing:'0sp'
@@ -146,28 +139,78 @@
         padding:(0,0,0,0)
 
         MDToolbar:
+            id:toolbar
             padding:dp(30),0,dp(30),0
             md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
             title:'PassLOCK'
             elevation:10
             right_action_items:[['theme-light-dark',lambda x: app.toggle_mode(x)],["cog",lambda x: exec("app.change_screen('SettingScreen')# ;app.fps_monitor_start()if not app.fps else '';app.fps=True")]]
-        MDTabs:
-            indicator_color:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-            anim_duration:.2
-            background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
-            tab_indicator_anim:True
-            tab_indicator_height:'3dp'
-            tab_hint_x:True
-            show_anim:True
-            text_color_active:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-            text_color_normal:[1,1,1,.6]
-            Manual:
-                title: "[b]MANUAL"
-            Auto:
-                title: "[b]AUTO"
+        MDBottomNavigation:
+            id:bottom_nav
+            text_color_normal: [.7,.7,.7,1]
 
-    BottomNavigation:
-        id: bottom_nav
+            MDBottomNavigationItem:
+                bg_color:root.md_bg_color
+                name: 'create'
+                text: 'create'
+                icon: 'plus'
+                FloatLayout:
+                    DarkAnimation:
+                        id: circle_mode
+                        opacity:0
+                        rad: 10
+                        pos: window.width, window.height-dp(112)
+                        halign:'left'
+                MDTabs:
+                    id:tab
+                    indicator_color:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+                    anim_duration:.2
+                    background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
+                    tab_indicator_anim:True
+                    tab_indicator_height:'3dp'
+                    tab_hint_x:True
+                    show_anim:True
+                    text_color_active:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+                    text_color_normal:[1,1,1,.6]
+                    Manual:
+                        title: "[b]MANUAL"
+                    Auto:
+                        title: "[b]AUTO"
+            MDBottomNavigationItem:
+                name: 'find'
+                text: 'find'
+                icon: 'magnify'
+                bg_color:root.md_bg_color
+
+                MDBoxLayout:
+
+                    orientation:'vertical'
+                    adaptive_height:True
+                    pos_hint:{'top':1}
+                    padding:0,dp(70),0,0
+                    CardTextField:
+                        id:email_field
+                        pos_hint:{'center_x':.5}
+                        icon_font_size:icon_size
+                        thickness:dp(1) if platform == 'android' else dp(1.4)
+                        icon_color:app.theme_cls.primary_color
+                        label_name:""
+                        icon_left_action:["magnify"]
+                        hint_text:'Search passwords'
+                        inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+            MDBottomNavigationItem:
+                name:'update'
+                icon:'update'
+                text:'UPDATE'
+                bg_color:root.md_bg_color
+            MDBottomNavigationItem:
+                name:'delete'
+                icon:'trash-can-outline' if self.header.scale==1 else 'trash-can'
+                text:'DELETE'
+                bg_color:root.md_bg_color
 
 
-#HomeScreen:
+
+
+
+HomeScreen:

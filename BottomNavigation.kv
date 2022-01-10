@@ -25,15 +25,17 @@
 
     MDLabel:
         id: lbl
-        adaptive_size:True
+        adaptive_height:True
+#        width:'70dp'
         text:root.text
-        font_size:sp(12)
+        font_size:sp(12*root.scale)
+        halign:'center'
         pos_hint:{'center_x':.5}
         theme_text_color:'Custom'
         text_color:root.text_color
         font_name:'RobotoMedium'
 
-<BottomNavigation@RelativeLayout>
+<BottomNavigationItem@RelativeLayout>
     position:{'center_x':.5,'center_y':0.08}
     MDCard:
         id:card
@@ -54,10 +56,7 @@
         LabelIcon:
             id: create
             icon:'plus'#if self.scale==1 else 'plus-circle'
-            text_color: app.theme_cls.primary_color
 
-#            on_release:
-#                self.md_bg_color=app.theme_cls.primary_light
         LabelIcon:
             id: find
             icon:'magnify'#if self.scale==1 else 'card-search'
@@ -71,6 +70,22 @@
             id: delete
             icon:'trash-can-outline' if self.scale==1 else 'trash-can'
             text:'DELETE'
+
+
+<MDTab@Screen+ThemableBehavior>
+
+
+<BottomNavigation>
+    orientation: "vertical"
+    height:dp(56)
+
+    ScreenManager:
+#        current: root.current
+        screens: root.screens
+
+
+    BottomNavigationItem:
+        id: item
 #<MDScreen@HomeScreen>
 #    id: screen
 #    BottomNavigation:

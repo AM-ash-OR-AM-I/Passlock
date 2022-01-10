@@ -1,6 +1,7 @@
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, ColorProperty, NumericProperty
+from kivy.properties import BooleanProperty, ColorProperty, NumericProperty, ListProperty, get_color_from_hex
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.uix.dialog import MDDialog
 
@@ -29,7 +30,6 @@ if platform != 'android':
 else:
     from JavaAPI import statusbar
 
-
 KV = '''
 #:import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
 #: import Window kivy.core.window.Window
@@ -53,9 +53,13 @@ class RoundButton(MDFillRoundFlatButton):
 class TestCard(MDApp):
     dark_mode = BooleanProperty(False)
     screen_history = []
-    LIVE_UI = 1
+    LIVE_UI = 0
     fps = False
-    path_to_live_ui = 'FindScreen.kv'
+    path_to_live_ui = 'HomeScreenDesign.kv'
+
+    def __init__(self,**kwargs):
+        super().__init__(**kwargs)
+        self.bg_color_dark=get_color_from_hex('262626')
 
     def build(self):
 
@@ -118,13 +122,19 @@ class TestCard(MDApp):
         # if self.start_call:
         #     self.set_mode()
         # else:
-        radius = 1.3 * max(Window.size)
-        self.HomeScreen.ids.circle_mode.opacity = 1
-        self.anim = Animation(rad=radius, duration=.6, t='in_quad')
-        self.anim.start(self.HomeScreen.ids.circle_mode)
+        self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.35, t='in_quad')
+        Animation(md_bg_color=self.bg_color_dark if self.dark_mode else self.theme_cls.primary_color, duration=.3).start(self.HomeScreen.ids.toolbar)
+        Animation(background_color=self.bg_color_dark if self.dark_mode else self.theme_cls.primary_color,
+                  duration=.3).start(self.HomeScreen.ids.tab)
+
+        self.anim.start(self.HomeScreen)
+        # radius = 1.3 * max(Window.size)
+        # self.HomeScreen.ids.circle_mode.opacity = 1
+        # self.anim = Animation(rad=radius, duration=.6, t='in_quad')
+        # self.anim.start(self.HomeScreen.ids.circle_mode)
         self.anim.on_complete = self.set_mode
 
-    def set_mode(self,*args):
+    def set_mode(self, *args):
         print("mode set")
         if self.dark_mode:
             self.theme_cls.theme_style = 'Dark'
@@ -141,8 +151,8 @@ class TestCard(MDApp):
     def toggle_mode(self, *args):
         self.dark_mode = not self.dark_mode
 
-
     def on_start(self):
+        # self.HomeScreen.ids.bottom_nav.ids.item.ids.create.active=True
         if platform == 'android':
             statusbar(status_color=colors["Dark"]["CardsDialogs"] if self.dark_mode else 'ff7a4f')
 
@@ -179,9 +189,8 @@ class LabelIcon(MDBoxLayout, ThemableBehavior):
         self.text_color = self.theme_cls.primary_color if self.active else [.7, .7, .7, 1]
 
     def on_active(self, instance, active):
-        app = MDApp.get_running_app()
         # print(app.root.children)
-        for instances in app.root.children[0].ids.bottom_nav.ids.box.children:
+        for instances in self.parent.children:
             # print(instances, instance)
             if instances != instance:
                 instances.text_color = [.7, .7, .7, 1]
@@ -190,7 +199,7 @@ class LabelIcon(MDBoxLayout, ThemableBehavior):
             else:
                 instances.text_color = self.theme_cls.primary_color
                 instances.opac = 1
-                self.animate = Animation(scale=1.4, d=.15, t='linear')
+                self.animate = Animation(scale=1.3, d=.15, t='linear')
                 self.animate.start(instances)
 
 

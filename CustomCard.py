@@ -39,6 +39,7 @@ Builder.load_string('''
         size_hint_y: None
         radius: root.radius
         elevation: root.set_elevation
+        md_bg_color:root.md_bg_color
         canvas:
             Color:
                 rgba: root.border_color

@@ -197,13 +197,14 @@ from kivy.properties import (
     ListProperty,
     NumericProperty,
     ObjectProperty,
-    StringProperty,
+    StringProperty, ColorProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen, ScreenManagerException
+from kivymd.uix.card import MDCard
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
@@ -216,29 +217,36 @@ Builder.load_string(
     """
 #:import sm kivy.uix.screenmanager
 #:import Window kivy.core.window.Window
+#:import get_color_from_hex kivy.utils.get_color_from_hex
 
 
 <MDBottomNavigation>
     id: panel
     orientation: "vertical"
-    height: dp(56)  # Spec
+    height: dp(70)  # Spec
+    padding:0,0,0,dp(25)
 
     ScreenManager:
         id: tab_manager
-        transition: sm.FadeTransition(duration=.2)
+        transition: sm.CardTransition(duration=.2,direction='up')
         current: root.current
         screens: root.tabs
 
     MDBottomNavigationBar:
         id: bottom_panel
         size_hint_y: None
-        height: dp(56)
-        md_bg_color: root.theme_cls.bg_dark if not root.panel_color else root.panel_color
+        height: dp(70)
+        size_hint_x:.8
+        pos_hint:{'center_x':.5}
+        md_bg_color:.2,.2,.2,1
+        radius: '35dp'
+        elevation: 20
+        md_bg_color:get_color_from_hex('303030')
 
         BoxLayout:
             id: tab_bar
             pos_hint: {"center_x": .5, "center_y": .5}
-            height: dp(56)
+            height: dp(70)
             size_hint: None, None
 
 
@@ -251,9 +259,10 @@ Builder.load_string(
             pos: self.pos
 
     width:
-        root.panel.width / len(root.panel.ids.tab_manager.screens) \
-        if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width
-    padding: (dp(12), dp(12))
+        ((root.panel.width-dp(45)) / len(root.panel.ids.tab_manager.screens))*.8 \
+        if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width*.8
+    
+    padding: dp(45),dp(15), dp(0),dp(16)
     on_press: self.tab.dispatch("on_tab_press")
     on_release: self.tab.dispatch("on_tab_release")
     on_touch_down: self.tab.dispatch("on_tab_touch_down", *args)
@@ -273,7 +282,7 @@ Builder.load_string(
             text_color: root._text_color_normal
             opposite_colors: root.opposite_colors
             pos: [self.pos[0], self.pos[1]]
-            font_size: dp(24)
+            font_size: dp(24)*root.scale
             pos_hint: {"center_x": .5}
             y: item_container.height - dp(8)
 
@@ -288,7 +297,7 @@ Builder.load_string(
             theme_text_color: "Custom"
             text_color: root._text_color_normal
             opposite_colors: root.opposite_colors
-            font_size: root._label_font_size
+            font_size: root._label_font_size*root.scale
             pos_hint: {"center_x": .5}
             y: -dp(8)
 
@@ -296,7 +305,7 @@ Builder.load_string(
 <MDTab>
     canvas:
         Color:
-            rgba: root.theme_cls.bg_normal
+            rgba: root.bg_color if root.bg_color else root.theme_cls.bg_normal
         Rectangle:
             size: root.size
 """
@@ -351,6 +360,7 @@ class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, AnchorLayout):
 
     _label = ObjectProperty()
     _label_font_size = NumericProperty("12sp")
+    scale = NumericProperty(1)
     _text_color_normal = ListProperty([1, 1, 1, 1])
     _text_color_active = ListProperty([1, 1, 1, 1])
 
@@ -370,7 +380,7 @@ class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, AnchorLayout):
         self.active = False
 
     def on_press(self):
-        Animation(_label_font_size=sp(14), d=0.1).start(self)
+        Animation(scale=1.25, d=0.1).start(self)
         Animation(
             _text_color_normal=self.theme_cls.primary_color
             if self.text_color_active == [1, 1, 1, 1]
@@ -459,12 +469,13 @@ class MDBottomNavigationItem(MDTab):
     :attr:`header` is an :class:`~MDBottomNavigationHeader`
     and defaults to `None`.
     """
+    bg_color = ColorProperty()
 
     def on_tab_press(self, *args):
         par = self.parent_widget
         par.ids.tab_manager.current = self.name
         if par.previous_tab is not self:
-            Animation(_label_font_size=sp(12), d=0.1).start(
+            Animation(scale=1, d=0.1).start(
                 par.previous_tab.header
             )
             Animation(
@@ -641,9 +652,9 @@ class MDBottomNavigation(TabbedPanelBase):
 
 
 class MDBottomNavigationBar(
+    MDCard,
     ThemableBehavior,
     BackgroundColorBehavior,
-    FakeRectangularElevationBehavior,
-    FloatLayout,
+
 ):
     pass
