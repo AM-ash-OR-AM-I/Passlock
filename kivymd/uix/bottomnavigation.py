@@ -228,7 +228,7 @@ Builder.load_string(
 
     ScreenManager:
         id: tab_manager
-        transition: sm.CardTransition(duration=.2,direction='up')
+        transition: sm.NoTransition()
         current: root.current
         screens: root.tabs
 
@@ -321,6 +321,7 @@ class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, AnchorLayout):
     :attr:`panel_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[1, 1, 1, 0]`.
     """
+    # TODO: fix touch behavior of items.
 
     tab = ObjectProperty()
     """

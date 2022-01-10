@@ -151,6 +151,9 @@
 
             MDBottomNavigationItem:
                 bg_color:root.md_bg_color
+                on_tab_press: app.animation_behavior(auto if tab.current else manual)
+#                    app.animation_behavior(auto)
+#                on_leave: manual.pos_hint={"top":.9}
                 name: 'create'
                 text: 'create'
                 icon: 'plus'
@@ -163,6 +166,8 @@
                         halign:'left'
                 MDTabs:
                     id:tab
+                    current:False
+                    on_tab_switch: self.current = not self.current
                     indicator_color:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
                     anim_duration:.2
                     background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
@@ -173,17 +178,21 @@
                     text_color_active:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
                     text_color_normal:[1,1,1,.6]
                     Manual:
+                        id: manual
                         title: "[b]MANUAL"
                     Auto:
+                        id: auto
                         title: "[b]AUTO"
             MDBottomNavigationItem:
                 name: 'find'
                 text: 'find'
                 icon: 'magnify'
                 bg_color:root.md_bg_color
+                on_tab_press: app.animation_behavior(find_screen)
+#                on_leave: find_screen.pos_hint={"top":.9}
 
                 MDBoxLayout:
-
+                    id: find_screen
                     orientation:'vertical'
                     adaptive_height:True
                     pos_hint:{'top':1}

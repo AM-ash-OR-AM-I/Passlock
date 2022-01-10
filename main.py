@@ -57,9 +57,9 @@ class TestCard(MDApp):
     fps = False
     path_to_live_ui = 'HomeScreenDesign.kv'
 
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.bg_color_dark=get_color_from_hex('262626')
+        self.bg_color_dark = get_color_from_hex('262626')
 
     def build(self):
 
@@ -110,6 +110,11 @@ class TestCard(MDApp):
                 self.stop()
         return True
 
+    def animation_behavior(self, instance):
+        instance.opacity = 0
+        instance.pos_hint = {'top': .9}
+        Animation(pos_hint={'top': 1}, opacity=1, d=.25, t='in_out_back').start(instance)
+
     def change_screen(self, screen_name, *args):
         self.sm.transition.mode = 'push'
         self.sm.transition.direction = 'left'
@@ -125,7 +130,8 @@ class TestCard(MDApp):
         # TODO: Add animation to widgets `on_tab_press` instead of using transition.
         self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.3)
         color = get_color_from_hex(colors[self.theme_cls.primary_palette]["500"])
-        Animation(md_bg_color=self.bg_color_dark if self.dark_mode else color, duration=.3).start(self.HomeScreen.ids.toolbar)
+        Animation(md_bg_color=self.bg_color_dark if self.dark_mode else color, duration=.3).start(
+            self.HomeScreen.ids.toolbar)
         Animation(background_color=self.bg_color_dark if self.dark_mode else color,
                   duration=.3).start(self.HomeScreen.ids.tab)
 
