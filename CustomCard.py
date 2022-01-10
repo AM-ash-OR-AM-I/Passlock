@@ -1,11 +1,16 @@
 from kivy import platform, Logger
+from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import ColorProperty, StringProperty, BooleanProperty, NumericProperty, ListProperty
+from kivy.properties import ColorProperty, StringProperty, BooleanProperty, NumericProperty, ListProperty, \
+    get_color_from_hex
+from kivymd.color_definitions import colors
+
 from kivymd.app import MDApp
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.relativelayout import MDRelativeLayout
+
 if platform == 'android':
     from JavaAPI import fix_back_button
 
@@ -23,7 +28,8 @@ Builder.load_string('''
     adaptive_height:True
     spacing:'20dp'
     orientation:'vertical'
-
+    start_anim: app.dark_mode
+    
     MDLabel:
         text:root.label_name
         markup:True
@@ -93,9 +99,14 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
     icon_right_action = ListProperty(None)
     icon_font_size = NumericProperty()
     win = True if platform == 'win' else False
+    start_anim = BooleanProperty(False)
 
     app = None
     c = 0
+
+    def on_start_anim(self, instance, mode):
+        self.anim = Animation(md_bg_color=get_color_from_hex(colors["Dark" if mode else "Light"]["CardsDialogs"]), d=.3)
+        self.anim.start(instance)
 
     def on_icon_left_action(self, instance, icon_list: 'List containing icon name and function'):
         if len(icon_list) and type(icon_list[0]) != list:

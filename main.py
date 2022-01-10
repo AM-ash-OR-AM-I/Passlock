@@ -122,9 +122,11 @@ class TestCard(MDApp):
         # if self.start_call:
         #     self.set_mode()
         # else:
-        self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.35, t='in_quad')
-        Animation(md_bg_color=self.bg_color_dark if self.dark_mode else self.theme_cls.primary_color, duration=.3).start(self.HomeScreen.ids.toolbar)
-        Animation(background_color=self.bg_color_dark if self.dark_mode else self.theme_cls.primary_color,
+        # TODO: Add animation to widgets `on_tab_press` instead of using transition.
+        self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.3)
+        color = get_color_from_hex(colors[self.theme_cls.primary_palette]["500"])
+        Animation(md_bg_color=self.bg_color_dark if self.dark_mode else color, duration=.3).start(self.HomeScreen.ids.toolbar)
+        Animation(background_color=self.bg_color_dark if self.dark_mode else color,
                   duration=.3).start(self.HomeScreen.ids.tab)
 
         self.anim.start(self.HomeScreen)
@@ -187,6 +189,7 @@ class LabelIcon(MDBoxLayout, ThemableBehavior):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.text_color = self.theme_cls.primary_color if self.active else [.7, .7, .7, 1]
+        self.primary_color = MDApp.get_running_app().theme_cls.primary_color
 
     def on_active(self, instance, active):
         # print(app.root.children)
