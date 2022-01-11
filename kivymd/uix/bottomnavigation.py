@@ -242,6 +242,7 @@ Builder.load_string(
         radius: '35dp'
         elevation: 20
         md_bg_color:get_color_from_hex('303030')
+        padding:dp(30),0,0,0
 
         BoxLayout:
             id: tab_bar
@@ -259,10 +260,10 @@ Builder.load_string(
             pos: self.pos
 
     width:
-        ((root.panel.width-dp(45)) / len(root.panel.ids.tab_manager.screens))*.8 \
+        ((root.panel.width*.8-dp(60)) / len(root.panel.ids.tab_manager.screens)) \
         if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width*.8
     
-    padding: dp(45),dp(15), dp(0),dp(16)
+    padding: 0,dp(15), 0,dp(16)
     on_press: self.tab.dispatch("on_tab_press")
     on_release: self.tab.dispatch("on_tab_release")
     on_touch_down: self.tab.dispatch("on_tab_touch_down", *args)
