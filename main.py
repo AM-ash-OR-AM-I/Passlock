@@ -127,7 +127,6 @@ class TestCard(MDApp):
         # if self.start_call:
         #     self.set_mode()
         # else:
-        # TODO: Add animation to widgets `on_tab_press` instead of using transition.
         self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.3)
         color = get_color_from_hex(colors[self.theme_cls.primary_palette]["500"])
         Animation(md_bg_color=self.bg_color_dark if self.dark_mode else color, duration=.3).start(

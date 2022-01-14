@@ -147,7 +147,7 @@ class CommonRipple(object):
     and defaults to `None`.
     """
 
-    ripple_duration_in_fast = NumericProperty(0.3)
+    ripple_duration_in_fast = NumericProperty(0.1)
     """
     Ripple duration when touching to widget.
 
@@ -174,7 +174,7 @@ class CommonRipple(object):
     and defaults to `0.3`.
     """
 
-    ripple_func_in = StringProperty("out_quad")
+    ripple_func_in = StringProperty("in_quad")
     """
     Type of animation for ripple in effect.
 

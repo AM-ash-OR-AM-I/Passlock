@@ -204,6 +204,8 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen, ScreenManagerException
+
+from kivymd.uix.behaviors.ripplebehavior import RectangularRippleBehavior
 from kivymd.uix.card import MDCard
 
 from kivymd.theming import ThemableBehavior
@@ -249,15 +251,18 @@ Builder.load_string(
             pos_hint: {"center_x": .5, "center_y": .5}
             height: dp(70)
             size_hint: None, None
-
-
-<MDBottomNavigationHeader>
+            
+<Touch@Widget>
     canvas:
         Color:
-            rgba: root.panel_color
-        Rectangle:
-            size: self.size
-            pos: self.pos
+            rgba: app.theme_cls.primary_light[:-1]+[.2]
+        Ellipse:
+            size : dp(70),dp(70)
+            pos: root.pos[0],root.pos[1]-dp(15)
+
+<MDBottomNavigationHeader>
+   
+            
 
     width:
         ((root.panel.width*.8-dp(60)) / len(root.panel.ids.tab_manager.screens)) \
@@ -272,7 +277,10 @@ Builder.load_string(
 
     RelativeLayout:
         id: item_container
-
+        Touch:
+            id: touch_behavior
+            opacity: 0
+            pos: self.pos
         MDIcon:
             id: _label_icon
             icon: root.tab.icon
@@ -383,6 +391,9 @@ class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, AnchorLayout):
 
     def on_press(self):
         Animation(scale=1.25, d=0.1).start(self)
+        self.touch = Animation(opacity=1, d=.15, t='in_quad')
+        self.touch+= Animation(opacity=0, d=.1, t='out_quad')
+        self.touch.start(self.ids.touch_behavior)
         Animation(
             _text_color_normal=self.theme_cls.primary_color
             if self.text_color_active == [1, 1, 1, 1]

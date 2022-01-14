@@ -36,7 +36,7 @@ Builder.load_string('''
         adaptive_height:True
         y:card.y+card.height+dp(10)
         x:card.x+dp(30)
-        size_hint_x:0.6
+        size_hint_x:0.75
         font_size:root.label_size
         font_name:'RobotoMedium'
     MDCard:

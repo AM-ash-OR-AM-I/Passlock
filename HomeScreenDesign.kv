@@ -3,86 +3,86 @@
 #:import Toolbar Toolbar.Toolbar
 #:set bg_color_dark get_color_from_hex('262626')
 <CheckboxLabel@MDBoxLayout>
-    adaptive_size:True
-    size_hint_x:.8
-    pos_hint: {'center_x': .5}
-    spacing:'12dp'
-    text:''
-    MDCheckbox:
-        size_hint: None, None
-        size: "36dp", "36dp"
-        selected_color:app.theme_cls.primary_light
-        pos_hint: {'center_x': .5}
-    MDLabel:
-        text: root.text
+	adaptive_size:True
+	size_hint_x:.8
+	pos_hint: {'center_x': .5}
+	spacing:'12dp'
+	text:''
+	MDCheckbox:
+		size_hint: None, None
+		size: "36dp", "36dp"
+		selected_color:app.theme_cls.primary_light
+		pos_hint: {'center_x': .5}
+	MDLabel:
+		text: root.text
 <Manual@MDBoxLayout+MDTabsBase>
-    orientation:'vertical'
-    pos_hint:{'top':1}
-    adaptive_height:True
-    spacing:'50sp'
-    padding:(0,dp(80),0,0)
-    CardTextField:
-        id:email_field
-        pos_hint:{'center_x':.5}
-        icon_font_size:icon_size
-        thickness:dp(1) if platform == 'android' else dp(1.4)
-        icon_color:app.theme_cls.primary_color
-        label_name:'Name of Password'
-        hint_text:'e.g. username@gmail.com'
-        inactive_color:app.theme_cls.primary_light[:-1]+[.8]
-        #icon_left_action:['account']
-    CardTextField:
-        id:password_field
-        pos_hint:{'center_x':.5}
-        icon_font_size:icon_size
-        icon_color:app.theme_cls.primary_color
-        thickness:dp(1) if platform == 'android' else dp(1.4)
-        label_name:'Password'
-        hint_text:'Enter the password'
-        inactive_color:app.theme_cls.primary_light[:-1]+[.8]
-        icon_right_action:['eye-off-outline']
-    RoundButton:
-        adaptive_height:True
-        text:'CREATE'
-        font_name:'RobotoMedium'
-        size_hint_x:.75
-        font_size:'18sp'
-        pos_hint:{'center_x':.5}
+	orientation:'vertical'
+	pos_hint:{'top':1}
+	adaptive_height:True
+	spacing:'50sp'
+	padding:(0,dp(80),0,0)
+	CardTextField:
+		id:email_field
+		pos_hint:{'center_x':.5}
+		icon_font_size:icon_size
+		thickness:dp(1) if platform == 'android' else dp(1.4)
+		icon_color:app.theme_cls.primary_color
+		label_name:'Name of Password'
+		hint_text:'e.g. username@gmail.com'
+		inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+		#icon_left_action:['account']
+	CardTextField:
+		id:password_field
+		pos_hint:{'center_x':.5}
+		icon_font_size:icon_size
+		icon_color:app.theme_cls.primary_color
+		thickness:dp(1) if platform == 'android' else dp(1.4)
+		label_name:'Password'
+		hint_text:'Enter the password'
+		inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+		icon_right_action:['eye-off-outline']
+	RoundButton:
+		adaptive_height:True
+		text:'CREATE'
+		font_name:'RobotoMedium'
+		size_hint_x:.75
+		font_size:'18sp'
+		pos_hint:{'center_x':.5}
 
 <Auto@MDBoxLayout+MDTabsBase>
-    orientation:'vertical'
-    pos_hint:{'top':1}
-    adaptive_height:True
-    spacing:'25sp'
-    padding:(0,dp(75),0,0)
-    MDBoxLayout:
-        orientation:'vertical'
-        adaptive_height:True
-        spacing:'50sp'
-        CardTextField:
-            id:email_field
-            pos_hint:{'center_x':.5}
-            icon_font_size:icon_size
-            thickness:dp(1) if platform == 'android' else dp(1.4)
-            icon_color:app.theme_cls.primary_color
-            label_name:'Name of Password'
-            hint_text:'e.g. username@gmail.com'
-            inactive_color:app.theme_cls.primary_light[:-1]+[.8]
-        CardTextField:
-            id:password_field
-            pos_hint:{'center_x':.5}
-            icon_font_size:icon_size
-            thickness:dp(1) if platform == 'android' else dp(1.4)
-            icon_color:app.theme_cls.primary_color
-            label_name:'Password'
-            hint_text:'adHKf@%123*n'
+	orientation:'vertical'
+	pos_hint:{'top':1}
+	adaptive_height:True
+	spacing:'25sp'
+	padding:(0,dp(75),0,0)
+	MDBoxLayout:
+		orientation:'vertical'
+		adaptive_height:True
+		spacing:'50sp'
+		CardTextField:
+			id:email_field
+			pos_hint:{'center_x':.5}
+			icon_font_size:icon_size
+			thickness:dp(1) if platform == 'android' else dp(1.4)
+			icon_color:app.theme_cls.primary_color
+			label_name:'Name of Password'
+			hint_text:'e.g. username@gmail.com'
+			inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+		CardTextField:
+			id:password_field
+			pos_hint:{'center_x':.5}
+			icon_font_size:icon_size
+			thickness:dp(1) if platform == 'android' else dp(1.4)
+			icon_color:app.theme_cls.primary_color
+			label_name:'Password'
+			hint_text:'adHKf@%123*n'
 #            icon_left_action:[['numeric-1']]
-            icon_right_action:[['content-copy'],['reload']]
+			icon_right_action:[['content-copy'],['reload']]
 
-            inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+			inactive_color:app.theme_cls.primary_light[:-1]+[.8]
 
-    MDBoxLayout:
-        orientation:'vertical'
+	MDBoxLayout:
+		orientation:'vertical'
 #        canvas:
 #            Color:
 #                rgba:app.theme_cls.primary_color
@@ -90,134 +90,146 @@
 #                pos:self.pos
 #                size:self.size
 
-        adaptive_height:True
-        CheckboxLabel:
-            text:"Use uppercase letters (A, B, C,..)"
-        CheckboxLabel:
-            text:"Use lowercase letters (a, b, c,..)"
-        CheckboxLabel:
-            text:"Use numbers (1, 2, 3,..)"
-        CheckboxLabel:
-            text:"Use Special Characters ($, #, % .)"
+		adaptive_height:True
+		CheckboxLabel:
+			text:"Use uppercase letters (A, B, C,..)"
+		CheckboxLabel:
+			text:"Use lowercase letters (a, b, c,..)"
+		CheckboxLabel:
+			text:"Use numbers (1, 2, 3,..)"
+		CheckboxLabel:
+			text:"Use Special Characters ($, #, % .)"
 
 #        center_x:password_field.center_x
-    RoundButton:
+	RoundButton:
 
-        adaptive_height:True
-        text:'GENERATE'
-        font_name:'RobotoMedium'
-        size_hint_x:.75
-        font_size:'18sp'
-        pos_hint:{'center_x':.5}
+		adaptive_height:True
+		text:'GENERATE'
+		font_name:'RobotoMedium'
+		size_hint_x:.75
+		font_size:'18sp'
+		pos_hint:{'center_x':.5}
 
 <RoundButton>
-    canvas:
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
-            radius:dp(20),dp(20)
-            texture: Gradient.horizontal([1,1,1,0], [1,1,1,.2])
+	canvas:
+		RoundedRectangle:
+			size: self.size
+			pos: self.pos
+			radius:dp(20),dp(20)
+			texture: Gradient.horizontal([1,1,1,0], [1,1,1,.2])
 
 <DarkAnimation@Widget>
-    rad : 80
-    set_color: [0,0,0,1]
-    parent_rad: 20
-    opacity:root.opacity
-    canvas:
-        Color:
-            rgba: app.theme_cls.opposite_bg_normal
-        Ellipse:
-            size: 2*self.rad,2*self.rad
-            pos: (self.x - self.rad , self.y - self.rad)
+	rad : 80
+	set_color: [0,0,0,1]
+	parent_rad: 20
+	opacity:root.opacity
+	canvas:
+		Color:
+			rgba: app.theme_cls.opposite_bg_normal
+		Ellipse:
+			size: 2*self.rad,2*self.rad
+			pos: (self.x - self.rad , self.y - self.rad)
 
 <HomeScreen@MDScreen>
-    md_bg_color: app.theme_cls.bg_normal
-    MDBoxLayout:
-        orientation:'vertical'
-        spacing:'0sp'
-        pos_hint:{'top':1}
-        padding:(0,0,0,0)
+	md_bg_color: app.theme_cls.bg_normal
+	MDBoxLayout:
+		orientation:'vertical'
+		spacing:'0sp'
+		pos_hint:{'top':1}
+		padding:(0,0,0,0)
 
-        MDToolbar:
-            id:toolbar
-            padding:dp(30),0,dp(30),0
-            md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
-            title:'PassLOCK'
-            elevation:10
-            right_action_items:[['theme-light-dark',lambda x: app.toggle_mode(x)],["cog",lambda x: exec("app.change_screen('SettingScreen')# ;app.fps_monitor_start()if not app.fps else '';app.fps=True")]]
-        MDBottomNavigation:
-            id:bottom_nav
-            text_color_normal: [.7,.7,.7,1]
+		MDToolbar:
+			id:toolbar
+			padding:dp(30),0,dp(30),0
+			md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
+			title:'PassLOCK'
+			elevation:10
+			right_action_items:[['theme-light-dark',lambda x: app.toggle_mode(x)],["cog",lambda x: exec("app.change_screen('SettingScreen')# ;app.fps_monitor_start()if not app.fps else '';app.fps=True")]]
+		MDBottomNavigation:
+			id:bottom_nav
+			text_color_normal: [.7,.7,.7,1]
 
-            MDBottomNavigationItem:
-                bg_color:root.md_bg_color
-                on_tab_press: app.animation_behavior(auto if tab.current else manual)
+			MDBottomNavigationItem:
+				bg_color:root.md_bg_color
+				on_tab_press: app.animation_behavior(auto if tab.current else manual)
 #                    app.animation_behavior(auto)
 #                on_leave: manual.pos_hint={"top":.9}
-                name: 'create'
-                text: 'create'
-                icon: 'plus'
-                FloatLayout:
-                    DarkAnimation:
-                        id: circle_mode
-                        opacity:0
-                        rad: 10
-                        pos: window.width, window.height-dp(112)
-                        halign:'left'
-                MDTabs:
-                    id:tab
-                    current:False
-                    on_tab_switch: self.current = not self.current
-                    indicator_color:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-                    anim_duration:.2
-                    background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
-                    tab_indicator_anim:True
-                    tab_indicator_height:'3dp'
-                    tab_hint_x:True
-                    show_anim:True
-                    text_color_active:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-                    text_color_normal:[1,1,1,.6]
-                    Manual:
-                        id: manual
-                        title: "[b]MANUAL"
-                    Auto:
-                        id: auto
-                        title: "[b]AUTO"
-            MDBottomNavigationItem:
-                name: 'find'
-                text: 'find'
-                icon: 'magnify'
-                bg_color:root.md_bg_color
-                on_tab_press: app.animation_behavior(find_screen)
+				name: 'create'
+				text: 'create'
+				icon: 'plus'
+				FloatLayout:
+					DarkAnimation:
+						id: circle_mode
+						opacity:0
+						rad: 10
+						pos: window.width, window.height-dp(112)
+						halign:'left'
+				MDTabs:
+					id:tab
+					current:False
+					on_tab_switch: self.current = not self.current
+					indicator_color:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+					anim_duration:.2
+					background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
+					tab_indicator_anim:True
+					tab_indicator_height:'3dp'
+					tab_hint_x:True
+					show_anim:True
+					text_color_active:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+					text_color_normal:[1,1,1,.6]
+					Manual:
+						id: manual
+						title: "[b]MANUAL"
+					Auto:
+						id: auto
+						title: "[b]AUTO"
+			MDBottomNavigationItem:
+				name: 'find'
+				text: 'find'
+				icon: 'magnify'
+				bg_color:root.md_bg_color
+				on_tab_press: app.animation_behavior(find_screen)
 #                on_leave: find_screen.pos_hint={"top":.9}
 
-                MDBoxLayout:
-                    id: find_screen
-                    orientation:'vertical'
-                    adaptive_height:True
-                    pos_hint:{'top':1}
-                    padding:0,dp(70),0,0
-                    CardTextField:
-                        id:email_field
-                        pos_hint:{'center_x':.5}
-                        md_bg_color: root.md_bg_color
-                        icon_font_size:icon_size
-                        thickness:dp(1) if platform == 'android' else dp(1.4)
-                        icon_color:app.theme_cls.primary_color
-                        label_name:""
-                        icon_left_action:["magnify"]
-                        hint_text:'Search passwords'
-                        inactive_color:app.theme_cls.primary_light[:-1]+[.8]
-            MDBottomNavigationItem:
-                name:'update'
-                icon:'update'
-                text:'UPDATE'
-                bg_color:root.md_bg_color
-            MDBottomNavigationItem:
-                name:'delete'
-                icon:'trash-can-outline' if self.header.scale==1 else 'trash-can'
-                text:'DELETE'
-                bg_color:root.md_bg_color
+				MDBoxLayout:
+					id: find_screen
+					orientation:'vertical'
+					pos_hint:{'top':1}
+					padding:0,dp(50),0,0
+					spacing:'10dp'
+					CardTextField:
+						id:email_field
+						pos_hint:{'center_x':.5}
+						md_bg_color: root.md_bg_color
+						icon_font_size:icon_size
+						thickness:dp(1) if platform == 'android' else dp(1.4)
+						icon_color:app.theme_cls.primary_color
+						label_name:""
+						icon_left_action:["magnify"]
+						hint_text:'Search passwords'
+						inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+					ScrollView:
+					    MDBoxLayout:
+					        pos_hint:{'center_y':.5}
+					        adaptive_height:True
+					        orientation:'vertical'
+					        padding:email_field.x,0
+                            OneLineListItem:
+                                text:'List1'
+                            OneLineListItem:
+                                text:'List2'
+                            OneLineListItem:
+                                text:'List3'
+			MDBottomNavigationItem:
+				name:'update'
+				icon:'update'
+				text:'UPDATE'
+				bg_color:root.md_bg_color
+			MDBottomNavigationItem:
+				name:'delete'
+				icon:'trash-can-outline' if self.header.scale==1 else 'trash-can'
+				text:'DELETE'
+				bg_color:root.md_bg_color
 
 
 
