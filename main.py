@@ -3,6 +3,8 @@ from kivy.properties import BooleanProperty, ColorProperty, NumericProperty, Lis
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.screenmanager import ScreenManager
+from kivymd.uix.list import TwoLineListItem
+
 from kivymd.uix.dialog import MDDialog
 
 from kivymd.uix.floatlayout import MDFloatLayout
@@ -113,7 +115,7 @@ class TestCard(MDApp):
     def animation_behavior(self, instance):
         instance.opacity = 0
         instance.pos_hint = {'top': .9}
-        Animation(pos_hint={'top': 1}, opacity=1, d=.25, t='in_out_back').start(instance)
+        Animation(pos_hint={'top': 1}, opacity=1, d=.25, t='out_back').start(instance)
 
     def change_screen(self, screen_name, *args):
         self.sm.transition.mode = 'push'
@@ -212,6 +214,21 @@ class LabelIcon(MDBoxLayout, ThemableBehavior):
 
 
 # class Tab(MDBoxLayout, MDTabsBase):pass
+class RoundedList(TwoLineListItem):
+    active = BooleanProperty(False)
+
+    def on_release(self):
+        self.active = not self.active
+
+    def on_active(self, instance, active):
+        if self.active:
+            self.secondary_text = 'Password'
+            Animation(height=dp(80), d=.1).start(self)
+        else:
+            self.secondary_text = ''
+            Animation(height=dp(50), d=.1).start(self)
+
+
 class SettingScreen(MDScreen): pass
 
 

@@ -2,6 +2,7 @@
 #:import Gradient kivy_gradient.Gradient
 #:import Toolbar Toolbar.Toolbar
 #:set bg_color_dark get_color_from_hex('262626')
+#:import List List.List
 <CheckboxLabel@MDBoxLayout>
 	adaptive_size:True
 	size_hint_x:.8
@@ -91,6 +92,7 @@
 #                size:self.size
 
 		adaptive_height:True
+		center_x:password_field.center_x
 		CheckboxLabel:
 			text:"Use uppercase letters (A, B, C,..)"
 		CheckboxLabel:
@@ -100,7 +102,7 @@
 		CheckboxLabel:
 			text:"Use Special Characters ($, #, % .)"
 
-#        center_x:password_field.center_x
+
 	RoundButton:
 
 		adaptive_height:True
@@ -129,6 +131,11 @@
 		Ellipse:
 			size: 2*self.rad,2*self.rad
 			pos: (self.x - self.rad , self.y - self.rad)
+
+<RoundedList>
+    height:'60dp'
+    ripple_alpha:.3
+    radius:dp(15),dp(15),dp(15),dp(15)
 
 <HomeScreen@MDScreen>
 	md_bg_color: app.theme_cls.bg_normal
@@ -202,6 +209,7 @@
 						pos_hint:{'center_x':.5}
 						md_bg_color: root.md_bg_color
 						icon_font_size:icon_size
+						set_elevation:15
 						thickness:dp(1) if platform == 'android' else dp(1.4)
 						icon_color:app.theme_cls.primary_color
 						label_name:""
@@ -209,17 +217,49 @@
 						hint_text:'Search passwords'
 						inactive_color:app.theme_cls.primary_light[:-1]+[.8]
 					ScrollView:
-					    MDBoxLayout:
-					        pos_hint:{'center_y':.5}
-					        adaptive_height:True
-					        orientation:'vertical'
-					        padding:email_field.x,0
-                            OneLineListItem:
-                                text:'List1'
-                            OneLineListItem:
-                                text:'List2'
-                            OneLineListItem:
-                                text:'List3'
+					    id: scroll
+						MDBoxLayout:
+							pos_hint:{'center_y':.5}
+							adaptive_height:True
+							orientation:'vertical'
+							padding:email_field.x,0
+							List:
+								primary_text:'List1'
+							List:
+								primary_text:'List2'
+							List:
+								primary_text:'List3'
+							List:
+								primary_text:'List1'
+							List:
+								primary_text:'List2'
+							List:
+								primary_text:'List3'
+							List:
+								primary_text:'List1'
+							List:
+								primary_text:'List2'
+							List:
+								primary_text:'List3'
+							List:
+								primary_text:'List1'
+							List:
+								primary_text:'List2'
+							List:
+								primary_text:'List3'
+							List:
+								primary_text:'List1'
+							List:
+								primary_text:'List2'
+							List:
+								primary_text:'List3'
+							List:
+								primary_text:'List1'
+							List:
+								primary_text:'List2'
+							List:
+								primary_text:'List3'
+
 			MDBottomNavigationItem:
 				name:'update'
 				icon:'update'

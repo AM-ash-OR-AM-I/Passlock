@@ -252,13 +252,13 @@ Builder.load_string(
             height: dp(70)
             size_hint: None, None
             
-<Touch@Widget>
-    canvas:
-        Color:
-            rgba: app.theme_cls.primary_light[:-1]+[.2]
-        Ellipse:
-            size : dp(70),dp(70)
-            pos: root.pos[0],root.pos[1]-dp(15)
+# <Touch@Widget>
+#     canvas:
+#         Color:
+#             rgba: app.theme_cls.primary_light[:-1]+[.2]
+#         Ellipse:
+#             size : dp(70),dp(70)
+#             pos: root.pos[0],root.pos[1]-dp(18)
 
 <MDBottomNavigationHeader>
    
@@ -277,10 +277,10 @@ Builder.load_string(
 
     RelativeLayout:
         id: item_container
-        Touch:
-            id: touch_behavior
-            opacity: 0
-            pos: self.pos
+        # Touch:
+        #     id: touch_behavior
+        #     opacity: 0
+        #     pos: self.pos
         MDIcon:
             id: _label_icon
             icon: root.tab.icon
@@ -391,9 +391,9 @@ class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, AnchorLayout):
 
     def on_press(self):
         Animation(scale=1.25, d=0.1).start(self)
-        self.touch = Animation(opacity=1, d=.15, t='in_quad')
-        self.touch+= Animation(opacity=0, d=.1, t='out_quad')
-        self.touch.start(self.ids.touch_behavior)
+        # self.ids.touch_behavior.opacity=1
+        # self.touch= Animation(opacity=0, d=.25, t='out_quad')
+        # self.touch.start(self.ids.touch_behavior)
         Animation(
             _text_color_normal=self.theme_cls.primary_color
             if self.text_color_active == [1, 1, 1, 1]
