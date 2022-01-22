@@ -17,7 +17,7 @@ if platform == 'android':
 Builder.load_string('''
 
 <CardTextField>
-    height: '70dp'
+    height: '60dp'
     size_hint_y:None
     size_hint_x:.75
     radius: dp(30)
@@ -63,7 +63,7 @@ Builder.load_string('''
             hint_text:root.hint_text
             height: card.height
             background_color:[0,0,0,0]
-            font_size:'15sp'
+            font_size:root.text_font_size
             padding:[0,(self.height-self.font_size)/2,0,dp(0)] if not root.icon_left_action\
              else [0,(self.height-self.font_size)/2,0,dp(6)]
             foreground_color: app.theme_cls.primary_dark if app.theme_cls.theme_style=='Light'\
@@ -86,7 +86,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
     border_color = ColorProperty([.5, .5, .5, .1])
     active_color = [0.5, 0.7, 1, .8]
     focus = BooleanProperty(False)
-    text_font_size = StringProperty('20sp')
+    text_font_size = StringProperty('17sp')
     hint_text_color = ColorProperty(None)
     text = StringProperty('')
     thickness = NumericProperty(1.5)

@@ -2,30 +2,23 @@ from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.properties import BooleanProperty, StringProperty, get_color_from_hex
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.floatlayout import FloatLayout
-from kivymd.theming import ThemableBehavior
-
-from kivymd.uix.behaviors import RectangularRippleBehavior
-
-from kivymd.uix.boxlayout import MDBoxLayout
-
-from kivymd.uix.list import OneLineListItem, TwoLineListItem
-
-from kivymd.material_resources import dp
-
-from kivymd.uix.card import MDCard
 
 from kivymd.app import MDApp
+from kivymd.material_resources import dp
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import RectangularRippleBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
 
 KV = '''
 <List>
     orientation:'vertical'
     size_hint_y:None
-    padding: dp(20),dp(15),0,dp(15)
+    padding: dp(28),dp(0),dp(20),dp(15)
     size_hint_x:1
-    height:'50dp'
+    spacing:'6dp'
+    height:'56dp'
     elevation:0
-    radius:'25dp'
+    radius:'28dp'
     disable: True
     MDLabel:
         adaptive_height: True
@@ -52,21 +45,30 @@ KV = '''
             icon:'pencil'
             pos_hint:{'center_y':.5}
             # text_color:[.3,.3,.3,1]
+        MDIconButton:
+            id: button
+            disabled: root.disable
+            md_bg_color_disabled:[0,0,0,0]
+            icon:'trash-can-outline'
+            pos_hint:{'center_y':.5}
+
 '''
 
 
-class List(ThemableBehavior, ButtonBehavior, MDBoxLayout):  # ThemableBehavior, ButtonBehavior, MDBoxLayout or MDCard
+class List(ThemableBehavior,ButtonBehavior, MDBoxLayout):  # ThemableBehavior, ButtonBehavior, MDBoxLayout or MDCard
     Builder.load_string(KV)
     active = BooleanProperty(False)
     primary_text = StringProperty('Google')
     ripple_behavior = False
     ripple_alpha = .15
-    secondary_text = StringProperty()
-
+    secondary_text = StringProperty("12345678910111213")
 
     def on_release(self):
-        if self.right - self.last_touch.x >= dp(100):
-            self.active = not self.active
+        if self.active:
+            if self.right - self.last_touch.x >= dp(170):
+                self.active = False
+        else:
+            self.active = True
         for instance in self.parent.children:
             if not instance == self:
                 instance.active = False
@@ -77,8 +79,7 @@ class List(ThemableBehavior, ButtonBehavior, MDBoxLayout):  # ThemableBehavior, 
         app = MDApp.get_running_app()
         if active:
             self.disable = False
-            self.height = dp(80)
-            self.secondary_text = 'Tiojudv'
+            self.height = dp(90)
             self.ids.sec_box.height = '30dp'
             self.ids.sec_box.opacity = 1
             # Animation(height=dp(30), d=.1, opacity=1).start(self.ids.sec_box)
@@ -87,8 +88,7 @@ class List(ThemableBehavior, ButtonBehavior, MDBoxLayout):  # ThemableBehavior, 
 
         else:
             self.md_bg_color = app.theme_cls.primary_light[:-1] + [0]
-            self.height = dp(50)
-            self.secondary_text = ''
+            self.height = dp(56)
             self.disable = True
             self.ids.sec_box.height = '0dp'
             self.ids.sec_box.opacity = 0

@@ -202,18 +202,14 @@ from kivy.properties import (
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen, ScreenManagerException
 
-from kivymd.uix.behaviors.ripplebehavior import RectangularRippleBehavior
-from kivymd.uix.card import MDCard
-
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.behaviors.backgroundcolor_behavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )
+from kivymd.uix.card import MDCard
 
 Builder.load_string(
     """
@@ -238,11 +234,11 @@ Builder.load_string(
         id: bottom_panel
         size_hint_y: None
         height: dp(70)
-        size_hint_x:.8
+        size_hint_x:.75
         pos_hint:{'center_x':.5}
         md_bg_color:.2,.2,.2,1
         radius: '35dp'
-        elevation: 20
+        elevation: 15
         md_bg_color:get_color_from_hex('303030')
         padding:dp(30),0,0,0
 
@@ -265,8 +261,8 @@ Builder.load_string(
             
 
     width:
-        ((root.panel.width*.8-dp(60)) / len(root.panel.ids.tab_manager.screens)) \
-        if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width*.8
+        ((root.panel.width*.75-dp(60)) / len(root.panel.ids.tab_manager.screens)) \
+        if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width*.75
     
     padding: 0,dp(15), 0,dp(16)
     on_press: self.tab.dispatch("on_tab_press")

@@ -1,30 +1,18 @@
+from kivy import platform
+from kivy.animation import Animation
+from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, ColorProperty, NumericProperty, ListProperty, get_color_from_hex
-from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.screenmanager import ScreenManager
-from kivymd.uix.list import TwoLineListItem
-
-from kivymd.uix.dialog import MDDialog
-
-from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.tab import MDTabsBase
-
-from kivymd.theming import ThemableBehavior
-
-from kivymd.uix.boxlayout import MDBoxLayout
-
-from kivymd.uix.behaviors.ripplebehavior import CircularRippleBehavior
-from kivymd.uix.label import MDIcon
+from kivy.properties import BooleanProperty, ColorProperty, NumericProperty, get_color_from_hex
+from kivy.uix.screenmanager import ScreenManager, CardTransition, NoTransition
 
 from kivymd.app import MDApp
-from kivy.core.window import Window
-from kivy.animation import Animation
-from kivy import platform
-
 from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
-from kivymd.uix.button import MDFloatingActionButton, MDFillRoundFlatButton, MDRaisedButton, MDFlatButton
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.button import MDFillRoundFlatButton, MDRaisedButton, MDFlatButton
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.list import TwoLineListItem
 from kivymd.uix.screen import MDScreen
 
 if platform != 'android':
@@ -64,7 +52,6 @@ class TestCard(MDApp):
         self.bg_color_dark = get_color_from_hex('262626')
 
     def build(self):
-
         Builder.load_file('LoginScreenDesign.kv')
         Builder.load_file('BottomNavigation.kv')
         if not self.LIVE_UI:
@@ -73,13 +60,15 @@ class TestCard(MDApp):
             Builder.load_file('Settings.kv')
         self.theme_cls.primary_palette = 'DeepOrange'
         # self.dark_mode = True
-        self.sm = ScreenManager()
+        self.sm = ScreenManager(transition=CardTransition())
         self.LoginScreen = LoginScreen(name='LoginScreen')
         self.HomeScreen = HomeScreen(name='HomeScreen')
         self.SettingScreen = SettingScreen(name='SettingScreen')
+        self.FindScreen = FindScreen(name='FindScreen')
         self.sm.add_widget(self.LoginScreen)
         self.sm.add_widget(self.HomeScreen)
         self.sm.add_widget(self.SettingScreen)
+        self.sm.add_widget(self.FindScreen)
         Window.bind(on_keyboard=self.go_back)
         return Builder.load_string(KV) if self.LIVE_UI else self.sm
 
@@ -114,8 +103,9 @@ class TestCard(MDApp):
 
     def animation_behavior(self, instance):
         instance.opacity = 0
-        instance.pos_hint = {'top': .9}
-        Animation(pos_hint={'top': 1}, opacity=1, d=.25, t='out_back').start(instance)
+        instance.pos_hint = {'top': 1}
+        # Animation(opacity=1, t='linear', d=.2).start(instance)
+        Animation(opacity=1, d=.25, t='in_quad').start(instance)
 
     def change_screen(self, screen_name, *args):
         self.sm.transition.mode = 'push'
@@ -160,6 +150,10 @@ class TestCard(MDApp):
     def toggle_mode(self, *args):
         self.dark_mode = not self.dark_mode
 
+    def activate_find(self, *args):
+        self.sm.transition=NoTransition()
+        self.sm.current='FindScreen'
+
     def on_start(self):
         # self.HomeScreen.ids.bottom_nav.ids.item.ids.create.active=True
         if platform == 'android':
@@ -185,6 +179,9 @@ class LoginScreen(MDScreen): pass
 
 
 class HomeScreen(MDScreen): pass
+
+
+class FindScreen(MDScreen): pass
 
 
 class LabelIcon(MDBoxLayout, ThemableBehavior):

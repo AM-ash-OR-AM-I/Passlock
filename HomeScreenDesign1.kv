@@ -140,122 +140,106 @@
 <HomeScreen@MDScreen>
     on_enter: exec("app.fps_monitor_start();app.fps=True") if not app.fps else ''
 	md_bg_color: app.theme_cls.bg_normal
+	FloatLayout:
+        DarkAnimation:
+            id: circle_mode
+            opacity:0
+            rad: 10
+            pos: window.width, window.height-dp(112)
+            halign:'left'
 	MDBoxLayout:
 		orientation:'vertical'
 		spacing:'0sp'
 		pos_hint:{'top':1}
 		padding:(0,0,0,0)
-
 		MDToolbar:
 			id:toolbar
 			padding:dp(30),0,dp(30),0
 			md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
 			title:'PassLOCK'
 			elevation:10
-			right_action_items:[['theme-light-dark',lambda x: app.toggle_mode(x)],["cog",lambda x: exec("app.change_screen('SettingScreen')")]]
-		MDBottomNavigation:
-			id:bottom_nav
-			text_color_normal: [.7,.7,.7,1]
+			right_action_items:[['magnify', lambda x: exec("app.activate_find(x)")],['theme-light-dark',lambda x: app.toggle_mode()],["cog",lambda x: exec("app.change_screen('SettingScreen')")]]
 
-			MDBottomNavigationItem:
-				bg_color:root.md_bg_color
-				on_tab_press: app.animation_behavior(auto if tab.current else manual)
-#                    app.animation_behavior(auto)
-#                on_leave: manual.pos_hint={"top":.9}
-				name: 'create'
-				text: 'create'
-				icon: 'plus'
-				FloatLayout:
-					DarkAnimation:
-						id: circle_mode
-						opacity:0
-						rad: 10
-						pos: window.width, window.height-dp(112)
-						halign:'left'
-				MDTabs:
-					id:tab
-					current:False
-					on_tab_switch: self.current = not self.current
-					indicator_color:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-					anim_duration:.2
-					background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
-					tab_indicator_anim:True
-					tab_indicator_height:'3dp'
-					tab_hint_x:True
-					show_anim:True
-					text_color_active:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-					text_color_normal:[1,1,1,.6]
-					Manual:
-						id: manual
-						title: "[b]MANUAL"
-					Auto:
-						id: auto
-						title: "[b]AUTO"
-			MDBottomNavigationItem:
-				name: 'find'
-				text: 'find'
-				icon: 'magnify'
-				bg_color:root.md_bg_color
-				on_tab_press: app.animation_behavior(find_screen)
+        MDTabs:
+            id:tab
+            current:False
+            on_tab_switch: self.current = not self.current
+            indicator_color:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+            anim_duration:.2
+            background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
+            tab_indicator_anim:True
+            tab_indicator_height:'3dp'
+            tab_hint_x:True
+            show_anim:True
+            text_color_active:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+            text_color_normal:[1,1,1,.6]
+            Manual:
+                id: manual
+                title: "[b]MANUAL"
+            Auto:
+                id: auto
+                title: "[b]AUTO"
 #                on_leave: find_screen.pos_hint={"top":.9}
-
-				MDBoxLayout:
-					id: find_screen
-					orientation:'vertical'
-					pos_hint:{'top':1}
-					padding:dp(-5),dp(50),0,0
-					spacing:'15dp'
-					CardTextField:
-						id:email_field
-						pos_hint:{'center_x':.5}
-						md_bg_color: root.md_bg_color
-						icon_font_size:icon_size
-						set_elevation:15
-						thickness:dp(1) if platform == 'android' else dp(1.4)
-						icon_color:app.theme_cls.primary_color
-						label_name:""
-						icon_left_action:["magnify"]
-						hint_text:'Search'
-						height:'60dp'
-						radius: '30dp'
-						inactive_color:app.theme_cls.primary_light[:-1]+[.4]
-					RecycleView:
-					    id: scroll
-						MDBoxLayout:
-							pos_hint:{'center_y':.5}
-							adaptive_height:True
-							orientation:'vertical'
-							padding:email_field.x-dp(20),0
-							List:
-								primary_text:'Pass1'
-							List:
-								primary_text:'Pass2'
-							List:
-								primary_text:'Pass3'
-							List:
-								primary_text:'Pass1'
-							List:
-								primary_text:'Pass2'
-							List:
-								primary_text:'Pass3'
-							List:
-								primary_text:'Pass1'
-							List:
-								primary_text:'Pass2'
-							List:
-								primary_text:'Pass3'
-							List:
-								primary_text:'Pass1'
-							List:
-								primary_text:'Pass2'
-							List:
-								primary_text:'Pass3'
-							List:
-								primary_text:'Pass1'
-							List:
-								primary_text:'Pass2'
-							List:
-								primary_text:'Pass3'
+<FindScreen>
+    on_enter: app.animation_behavior(self)
+    md_bg_color: app.theme_cls.bg_normal
+    MDBoxLayout:
+        id: find_screen
+        orientation:'vertical'
+        pos_hint:{'top':1}
+        padding:dp(-5),dp(50),0,0
+        spacing:'15dp'
+        CardTextField:
+            id:email_field
+            pos_hint:{'center_x':.5}
+            md_bg_color: root.md_bg_color
+            icon_font_size:icon_size
+            set_elevation:15
+            thickness:dp(1) if platform == 'android' else dp(1.4)
+            icon_color:app.theme_cls.primary_color
+            label_name:""
+            icon_left_action:["magnify"]
+            hint_text:'Search'
+            height:'60dp'
+            radius: '30dp'
+            inactive_color:app.theme_cls.primary_light[:-1]+[.4]
+        RecycleView:
+            id: scroll
+            MDBoxLayout:
+                pos_hint:{'center_y':.5}
+                adaptive_height:True
+                orientation:'vertical'
+                padding:email_field.x-dp(20),0
+                List:
+                    primary_text:'Pass1'
+                List:
+                    primary_text:'Pass2'
+                List:
+                    primary_text:'Pass3'
+                List:
+                    primary_text:'Pass1'
+                List:
+                    primary_text:'Pass2'
+                List:
+                    primary_text:'Pass3'
+                List:
+                    primary_text:'Pass1'
+                List:
+                    primary_text:'Pass2'
+                List:
+                    primary_text:'Pass3'
+                List:
+                    primary_text:'Pass1'
+                List:
+                    primary_text:'Pass2'
+                List:
+                    primary_text:'Pass3'
+                List:
+                    primary_text:'Pass1'
+                List:
+                    primary_text:'Pass2'
+                List:
+                    primary_text:'Pass3'
 
 
 

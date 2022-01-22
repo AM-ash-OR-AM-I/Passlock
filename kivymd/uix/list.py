@@ -863,11 +863,12 @@ class ContainerSupport:
 
 class OneLineListItem(BaseListItem):
     """A one line list item."""
-
+    ripple_alpha = .2
     _txt_top_pad = NumericProperty("16dp")
     _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
     _height = NumericProperty()
     _num_lines = 1
+    radius = (dp(20), dp(20))
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
