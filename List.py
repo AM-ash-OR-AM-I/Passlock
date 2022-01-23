@@ -42,7 +42,7 @@ KV = '''
             id: button
             disabled: root.disable
             md_bg_color_disabled:[0,0,0,0]
-            icon:'pencil'
+            icon:'pencil-outline'
             pos_hint:{'center_y':.5}
             # text_color:[.3,.3,.3,1]
         MDIconButton:

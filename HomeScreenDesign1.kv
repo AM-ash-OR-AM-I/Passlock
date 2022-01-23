@@ -2,6 +2,7 @@
 #:import Gradient kivy_gradient.Gradient
 #:import Toolbar Toolbar.Toolbar
 #:set bg_color_dark get_color_from_hex('262626')
+#:set light_color get_color_from_hex("fff1ed")
 #:import List List.List
 <CheckboxLabel@MDBoxLayout>
 	adaptive_size:True
@@ -133,20 +134,20 @@
 			pos: (self.x - self.rad , self.y - self.rad)
 
 <RoundedList>
-    height:'60dp'
-    ripple_alpha:.3
-    radius:dp(15),dp(15),dp(15),dp(15)
+	height:'60dp'
+	ripple_alpha:.3
+	radius:dp(15),dp(15),dp(15),dp(15)
 
 <HomeScreen@MDScreen>
-    on_enter: exec("app.fps_monitor_start();app.fps=True") if not app.fps else ''
+	on_enter: exec("app.fps_monitor_start();app.fps=True") if not app.fps else ''
 	md_bg_color: app.theme_cls.bg_normal
 	FloatLayout:
-        DarkAnimation:
-            id: circle_mode
-            opacity:0
-            rad: 10
-            pos: window.width, window.height-dp(112)
-            halign:'left'
+		DarkAnimation:
+			id: circle_mode
+			opacity:0
+			rad: 10
+			pos: window.width, window.height-dp(112)
+			halign:'left'
 	MDBoxLayout:
 		orientation:'vertical'
 		spacing:'0sp'
@@ -160,86 +161,111 @@
 			elevation:10
 			right_action_items:[['magnify', lambda x: exec("app.activate_find(x)")],['theme-light-dark',lambda x: app.toggle_mode()],["cog",lambda x: exec("app.change_screen('SettingScreen')")]]
 
-        MDTabs:
-            id:tab
-            current:False
-            on_tab_switch: self.current = not self.current
-            indicator_color:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-            anim_duration:.2
-            background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
-            tab_indicator_anim:True
-            tab_indicator_height:'3dp'
-            tab_hint_x:True
-            show_anim:True
-            text_color_active:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-            text_color_normal:[1,1,1,.6]
-            Manual:
-                id: manual
-                title: "[b]MANUAL"
-            Auto:
-                id: auto
-                title: "[b]AUTO"
+		MDTabs:
+			id:tab
+			current:False
+			on_tab_switch: self.current = not self.current
+			indicator_color:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+			anim_duration:.2
+			background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
+			tab_indicator_anim:True
+			tab_indicator_height:'3dp'
+			tab_hint_x:True
+			show_anim:True
+			text_color_active:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+			text_color_normal:[1,1,1,.6]
+			Manual:
+				id: manual
+				title: "[b]MANUAL"
+			Auto:
+				id: auto
+				title: "[b]AUTO"
 #                on_leave: find_screen.pos_hint={"top":.9}
 <FindScreen>
-    on_enter: app.animation_behavior(self)
-    md_bg_color: app.theme_cls.bg_normal
-    MDBoxLayout:
-        id: find_screen
-        orientation:'vertical'
-        pos_hint:{'top':1}
-        padding:dp(-5),dp(50),0,0
-        spacing:'15dp'
-        CardTextField:
-            id:email_field
-            pos_hint:{'center_x':.5}
-            md_bg_color: root.md_bg_color
-            icon_font_size:icon_size
-            set_elevation:15
-            thickness:dp(1) if platform == 'android' else dp(1.4)
-            icon_color:app.theme_cls.primary_color
-            label_name:""
-            icon_left_action:["magnify"]
-            hint_text:'Search'
-            height:'60dp'
-            radius: '30dp'
-            inactive_color:app.theme_cls.primary_light[:-1]+[.4]
-        RecycleView:
-            id: scroll
-            MDBoxLayout:
-                pos_hint:{'center_y':.5}
-                adaptive_height:True
-                orientation:'vertical'
-                padding:email_field.x-dp(20),0
-                List:
-                    primary_text:'Pass1'
-                List:
-                    primary_text:'Pass2'
-                List:
-                    primary_text:'Pass3'
-                List:
-                    primary_text:'Pass1'
-                List:
-                    primary_text:'Pass2'
-                List:
-                    primary_text:'Pass3'
-                List:
-                    primary_text:'Pass1'
-                List:
-                    primary_text:'Pass2'
-                List:
-                    primary_text:'Pass3'
-                List:
-                    primary_text:'Pass1'
-                List:
-                    primary_text:'Pass2'
-                List:
-                    primary_text:'Pass3'
-                List:
-                    primary_text:'Pass1'
-                List:
-                    primary_text:'Pass2'
-                List:
-                    primary_text:'Pass3'
+    canvas:
+		Color:
+			rgba:app.theme_cls.primary_color[:-1]+[.8]
+		Ellipse:
+			size:rad,rad
+			pos:0-rad/2,height-rad+20
+			angle_start:0
+			angle_end:180
+		Color:
+			rgba:1,0.8,0.65,0.8
+		Ellipse:
+			pos:0,height-rad/2
+			size:rad,rad
+			angle_start:90
+			angle_end:270
+	md_bg_color: app.theme_cls.bg_normal
+	MDBoxLayout:
+		id: find_screen
+		orientation:'vertical'
+		pos_hint:{'top':1}
+		padding:dp(0),dp(30),0,0
+		spacing:'20dp'
+		CardTextField:
+			id:email_field
+			pos_hint:{'center_x':.5}
+			md_bg_color: root.md_bg_color
+			icon_font_size:icon_size
+			set_elevation:15
+			thickness:dp(1) if platform == 'android' else dp(1.4)
+			icon_color:app.theme_cls.primary_color
+			label_name:""
+			size_hint_x:.9
+			icon_left_action:["magnify"]
+			hint_text:'Search'
+			height:'60dp'
+			radius: '30dp'
+			inactive_color:app.theme_cls.primary_light[:-1]+[.4]
+		MDBoxLayout:
+		    md_bg_color:light_color
+		    radius: dp(30),dp(30),0,0
+		    size_hint_x:.9
+		    pos_hint:{'center_x':.5}
+            RecycleView:
+                id: scroll
+                pos_hint:{'center_x':.5}
+                MDBoxLayout:
+                    pos_hint:{'center_y':.5,'center_x':.5}
+                    adaptive_height:True
+                    orientation:'vertical'
+                    radius:dp(30),dp(30),0,0
+                    List:
+                        primary_text:'Pass1'
+                    List:
+                        primary_text:'Pass2'
+                    List:
+                        primary_text:'Pass3'
+                    List:
+                        primary_text:'Pass1'
+                    List:
+                        primary_text:'Pass2'
+                    List:
+                        primary_text:'Pass3'
+                    List:
+                        primary_text:'Pass1'
+                    List:
+                        primary_text:'Pass2'
+                    List:
+                        primary_text:'Pass3'
+                    List:
+                        primary_text:'Pass1'
+                    List:
+                        primary_text:'Pass2'
+                    List:
+                        primary_text:'Pass3'
+                    List:
+                        primary_text:'Pass1'
+                    List:
+                        primary_text:'Pass2'
+                    List:
+                        primary_text:'Pass3'
+	FloatingButton:
+	    icon:'plus'
+	    pos_hint:{"center_y":.1,'center_x':.5}
+	    user_font_size:70
 
 
 

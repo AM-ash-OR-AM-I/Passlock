@@ -92,7 +92,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
     thickness = NumericProperty(1.5)
     hint_text = StringProperty('')
     label_size = StringProperty('20dp')
-    label_name = StringProperty('Hi there')
+    label_name = StringProperty('')
     icon_left_action = ListProperty(None)
     multiline = BooleanProperty(False)
     icon_color = ColorProperty([.5, .5, .5, 1])
