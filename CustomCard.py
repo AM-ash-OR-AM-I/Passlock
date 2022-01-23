@@ -1,12 +1,14 @@
-from kivy import platform, Logger
+from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ColorProperty, StringProperty, BooleanProperty, NumericProperty, ListProperty, \
     get_color_from_hex
-from kivymd.color_definitions import colors
+from kivy.uix.textinput import TextInput
 
 from kivymd.app import MDApp
+from kivymd.color_definitions import colors
+from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.relativelayout import MDRelativeLayout
@@ -19,10 +21,11 @@ Builder.load_string('''
 <CardTextField>
     height: '60dp'
     size_hint_y:None
-    size_hint_x:.75
+    size_hint_x:.8
     radius: dp(30)
     set_elevation: 0
     label_name:'Hi there'
+    md_bg_color: [1,1,1,1] if app.theme_cls.theme_style=='Light' else app.bg_color_dark
     label_size:'15sp'
     hint_text:''
     adaptive_height:True
@@ -36,7 +39,7 @@ Builder.load_string('''
         adaptive_height:True
         y:card.y+card.height+dp(10)
         x:card.x+dp(30)
-        size_hint_x:0.75
+        size_hint_x:0.8
         font_size:root.label_size
         font_name:'RobotoMedium'
     MDCard:
@@ -56,7 +59,7 @@ Builder.load_string('''
     MDBoxLayout:
         id: card_box
         padding:(dp(20),0,0,0)if root.icon_left_action is None else (0,0,0,0)
-        spacing:'-5dp'if root.icon_left_action else '0dp'
+        spacing:'5dp'
         TextInput:
             id: textfield
             size_hint_y:None
@@ -89,7 +92,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
     text_font_size = StringProperty('17sp')
     hint_text_color = ColorProperty(None)
     text = StringProperty('')
-    thickness = NumericProperty(1.5)
+    thickness = NumericProperty(dp(1) if platform == 'android' else dp(1.4))
     hint_text = StringProperty('')
     label_size = StringProperty('20dp')
     label_name = StringProperty('')
@@ -109,6 +112,19 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
         self.anim.start(instance)
 
     def on_icon_left_action(self, instance, icon_list: 'List containing icon name and function'):
+        box = self.ids.card_box
+        # print(box.children)
+        rm = 0
+        print(box.ids)
+        for inst in box.children:
+            if isinstance(inst, TextInput):
+                rm = 1
+            else:
+                if rm:
+                    print(inst)
+                    box.remove_widget(inst)
+        # self.ids.card_box.remove_widget()
+        self.hint_text = ''
         if len(icon_list) and type(icon_list[0]) != list:
             if len(icon_list) == 1:
                 self.icon_left = MDIconButton(icon=self.icon_left_action[0], theme_text_color='Custom',

@@ -1,6 +1,5 @@
 from kivy.lang import Builder
 from kivy.properties import StringProperty, NumericProperty, ListProperty, ColorProperty
-from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.app import MDApp
 from kivymd.theming import ThemableBehavior
@@ -33,7 +32,7 @@ Builder.load_string('''
             id:setting_label
             text: root.title
             theme_text_color:'Custom'
-            font_size: root.text_height  if root.text_height else 0
+            # font_size: root.text_height  if root.text_height else 0
             font_style: "H6"
             font_name:'Poppins' 
             text_color:app.theme_cls.text_color if root.icon_color is None else root.icon_color
@@ -58,7 +57,7 @@ class Toolbar(MDBoxLayout, ThemableBehavior, FakeRectangularElevationBehavior, S
     adaptive_height = True
     md_bg_color = ColorProperty()
     title = StringProperty('')
-    increase_height= NumericProperty(0)
+    increase_height = NumericProperty(0)
     left_action_items = ListProperty()
     right_action_items = ListProperty()
     icon_color = ColorProperty(None)

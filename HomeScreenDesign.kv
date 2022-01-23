@@ -2,7 +2,9 @@
 #:import Gradient kivy_gradient.Gradient
 #:import Toolbar Toolbar.Toolbar
 #:set bg_color_dark get_color_from_hex('262626')
+#:set light_color get_color_from_hex("fff1ed")
 #:import List List.List
+#:import sm kivy.uix.screenmanager
 <CheckboxLabel@MDBoxLayout>
 	adaptive_size:True
 	size_hint_x:.8
@@ -46,7 +48,7 @@
 		adaptive_height:True
 		text:'CREATE'
 		font_name:'RobotoMedium'
-		size_hint_x:.75
+		size_hint_x:.8
 		font_size:'18sp'
 		pos_hint:{'center_x':.5}
 
@@ -76,7 +78,7 @@
 			thickness:dp(1) if platform == 'android' else dp(1.4)
 			icon_color:app.theme_cls.primary_color
 			label_name:'Password'
-			hint_text:'adHKf@%123*n'
+			text:'adHKf@%123*n'
 #            icon_left_action:[['numeric-1']]
 			icon_right_action:[['content-copy'],['reload']]
 
@@ -108,7 +110,7 @@
 		adaptive_height:True
 		text:'GENERATE'
 		font_name:'RobotoMedium'
-		size_hint_x:.75
+		size_hint_x:.8
 		font_size:'18sp'
 		pos_hint:{'center_x':.5}
 
@@ -137,129 +139,160 @@
     ripple_alpha:.3
     radius:dp(15),dp(15),dp(15),dp(15)
 
-<HomeScreen@MDScreen>
-    on_enter: exec("app.fps_monitor_start();app.fps=True") if not app.fps else ''
+<HomeScreen>
+#    on_enter: exec("app.fps_monitor_start();app.fps=True") if not app.fps else ''
 	md_bg_color: app.theme_cls.bg_normal
 	MDBoxLayout:
 		orientation:'vertical'
-		spacing:'0sp'
 		pos_hint:{'top':1}
-		padding:(0,0,0,0)
+		padding:(0,dp(0),0,0)
+        Toolbar:
+            id: toolbar
+            title:'Passlock'
+            height:'50dp'
+            padding:searchbar.x,dp(20),window.width-(searchbar.x+searchbar.width),dp(5)
+            md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else light_color
+            elevation:0
+            icon_color:app.theme_cls.primary_color
+            right_action_items:
+                [['theme-light-dark',lambda x: app.toggle_mode(x)],
+                ["cog",lambda x: exec("app.change_screen('SettingScreen')")]]
+#            right_action_items:
+#                [['theme-light-dark',lambda x: app.toggle_mode(x)],
+#                ["cog",lambda x: exec("app.change_screen('SettingScreen')")]]
+        MDBoxLayout:
+            adaptive_height:True
+            orientation:'vertical'
+            md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else light_color
+            pos_hint:{'center_x':.5}
+            padding:0,dp(8),0,dp(8)
+            CardTextField:
+                id: searchbar
+                height:'56dp'
+                set_elevation:10
+                size_hint_x:.85
+                pos_hint:{'center_x':.5}
+                radius: '20dp'
+                on_focus:
+                    tab_manager.current = 'FindScreen'
+#                    self.icon_left_action = ['arrow-left' if self.focus else "magnify"]
+                icon_left_action:["magnify" if tab_manager.current == 'CreateScreen' else 'arrow-left',lambda x: exec("tab_manager.current='CreateScreen'")]
+                hint_text:'Search'
+                icon_color:app.theme_cls.primary_color
+                label_name:""
+                inactive_color:app.theme_cls.primary_light[:-1]+[.6]
+        ScreenManager:
+            id: tab_manager
+            transition: sm.NoTransition()
+            CreateScreen:
+                name:'CreateScreen'
+            FindScreen:
+                name:'FindScreen'
+                x_pad: searchbar.x
 
-		MDToolbar:
-			id:toolbar
-			padding:dp(30),0,dp(30),0
-			md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
-			title:'PassLOCK'
-			elevation:10
-			right_action_items:[['theme-light-dark',lambda x: app.toggle_mode(x)],["cog",lambda x: exec("app.change_screen('SettingScreen')")]]
-		MDBottomNavigation:
-			id:bottom_nav
-			text_color_normal: [.7,.7,.7,1]
+#		MDBottomNavigation:
+#			id:bottom_nav
+#			text_color_normal: [.7,.7,.7,1]
+#
+#			MDBottomNavigationItem:
+#				bg_color:root.md_bg_color
+#				on_tab_press: app.animation_behavior(auto if tab.current else manual)
+##                    app.animation_behavior(auto)
+##                on_leave: manual.pos_hint={"top":.9}
+#				name: 'create'
+#				text: 'create'
+#				icon: 'plus'
+<CreateScreen>
+    id: create
+    on_enter:app.animation_behavior(auto if tab.current else manual)
+    FloatLayout:
+        DarkAnimation:
+            id: circle_mode
+            opacity:0
+            rad: 10
+            pos: window.width, window.height-dp(112)
+            halign:'left'
+    MDTabs:
+        id:tab
+        current:False
+        on_tab_switch: self.current = not self.current
+        indicator_color:app.theme_cls.primary_color #if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+        anim_duration:.2
+#					background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
+        background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else light_color
+#                    background_color: app.theme_cls.bg_normal
+        tab_indicator_anim:True
+        tab_indicator_height:'3dp'
+        tab_hint_x:True
+        show_anim:True
+        text_color_active:app.theme_cls.primary_color #if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+        text_color_normal:[.75,.75,.75,1]
+        Manual:
+            id: manual
+            title: "[b]MANUAL"
+        Auto:
+            id: auto
+            title: "[b]AUTO"
 
-			MDBottomNavigationItem:
-				bg_color:root.md_bg_color
-				on_tab_press: app.animation_behavior(auto if tab.current else manual)
-#                    app.animation_behavior(auto)
-#                on_leave: manual.pos_hint={"top":.9}
-				name: 'create'
-				text: 'create'
-				icon: 'plus'
-				FloatLayout:
-					DarkAnimation:
-						id: circle_mode
-						opacity:0
-						rad: 10
-						pos: window.width, window.height-dp(112)
-						halign:'left'
-				MDTabs:
-					id:tab
-					current:False
-					on_tab_switch: self.current = not self.current
-					indicator_color:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-					anim_duration:.2
-					background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
-					tab_indicator_anim:True
-					tab_indicator_height:'3dp'
-					tab_hint_x:True
-					show_anim:True
-					text_color_active:app.theme_cls.primary_color if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-					text_color_normal:[1,1,1,.6]
-					Manual:
-						id: manual
-						title: "[b]MANUAL"
-					Auto:
-						id: auto
-						title: "[b]AUTO"
-			MDBottomNavigationItem:
-				name: 'find'
-				text: 'find'
-				icon: 'magnify'
-				bg_color:root.md_bg_color
-				on_tab_press: app.animation_behavior(find_screen)
+<FindScreen>
 #                on_leave: find_screen.pos_hint={"top":.9}
+    id: find
+    x_pad: 0
 
-				MDBoxLayout:
-					id: find_screen
-					orientation:'vertical'
-					pos_hint:{'top':1}
-					padding:dp(-5),dp(50),0,0
-					spacing:'15dp'
-					CardTextField:
-						id:email_field
-						pos_hint:{'center_x':.5}
-						md_bg_color: root.md_bg_color
-						icon_font_size:icon_size
-						set_elevation:15
-						thickness:dp(1) if platform == 'android' else dp(1.4)
-						icon_color:app.theme_cls.primary_color
-						label_name:""
-						icon_left_action:["magnify"]
-						hint_text:'Search'
-						height:'60dp'
-						radius: '30dp'
-						inactive_color:app.theme_cls.primary_light[:-1]+[.4]
-					RecycleView:
-					    id: scroll
-						MDBoxLayout:
-							pos_hint:{'center_y':.5}
-							adaptive_height:True
-							orientation:'vertical'
-							padding:email_field.x-dp(20),0
-							List:
-							List:
-								primary_text:'Pass1'
-							List:
-								primary_text:'Pass2'
-							List:
-								primary_text:'Pass3'
-							List:
-								primary_text:'Pass1'
-							List:
-								primary_text:'Pass2'
-							List:
-								primary_text:'Pass3'
-							List:
-								primary_text:'Pass1'
-							List:
-								primary_text:'Pass2'
-							List:
-								primary_text:'Pass3'
-							List:
-								primary_text:'Pass1'
-							List:
-								primary_text:'Pass2'
-							List:
-								primary_text:'Pass3'
-							List:
-								primary_text:'Pass1'
-							List:
-								primary_text:'Pass2'
-							List:
-								primary_text:'Pass3'
+    on_enter:
+        app.animation_behavior(find_screen)
+    MDBoxLayout:
+        id: find_screen
+        orientation:'vertical'
+        pos_hint:{'top':1}
+        padding:root.x_pad,dp(15),0,0
+        spacing:'15dp'
+#
+#					MDBoxLayout:
+#                        md_bg_color:app.theme_cls.primary_light[:-1]+[.15] if not app.dark_mode else bg_color_dark
+#                        radius:dp(30),dp(30),dp(30),dp(30)
+#                        size_hint_x:.85
+#                        pos_hint:{'center_x':.5}
+        RecycleView:
+            id: scroll
+            pos_hint:{'center_x':.5}
+            MDBoxLayout:
+                pos_hint:{'center_y':.5,'center_x':.5}
+                adaptive_height:True
+                orientation:'vertical'
+                radius:0,dp(30),0,dp(30)
+                List:
+                    primary_text:'Pass1'
+                List:
+                    primary_text:'Pass2'
+                List:
+                    primary_text:'Pass3'
+                List:
+                    primary_text:'Pass1'
+                List:
+                    primary_text:'Pass2'
+                List:
+                    primary_text:'Pass3'
+                List:
+                    primary_text:'Pass1'
+                List:
+                    primary_text:'Pass2'
+                List:
+                    primary_text:'Pass3'
+                List:
+                    primary_text:'Pass1'
+                List:
+                    primary_text:'Pass2'
+                List:
+                    primary_text:'Pass3'
+                List:
+                    primary_text:'Pass1'
+                List:
+                    primary_text:'Pass2'
+                List:
+                    primary_text:'Pass3'
 
 
 
 
-
-HomeScreen:
+#HomeScreen:
