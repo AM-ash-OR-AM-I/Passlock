@@ -14,7 +14,7 @@ KV = '''
     orientation:'vertical'
     size_hint_y:None
     padding: dp(28),dp(0),dp(20),dp(15)
-    size_hint_x:.9
+    size_hint_x:1
     spacing:'6dp'
     height:'56dp'
     elevation:0

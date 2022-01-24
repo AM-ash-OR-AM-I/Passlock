@@ -103,11 +103,10 @@ class TestCard(MDApp):
         return True
 
     def animation_behavior(self, instance):
-        instance.opacity = 0
+        # print(f'Anim called{instance}')
         # instance.pos_hint = {'top': 1}
         # Animation(opacity=1, t='linear', d=.2).start(instance)
-        Animation(opacity=1, d=.25, t='in_quad').start(instance)
-        # TODO: Fix animation
+        Animation(opacity=1, d=.2, t='in_quad').start(instance)
 
     def change_screen(self, screen_name, *args):
         self.sm.transition.mode = 'push'
@@ -122,11 +121,11 @@ class TestCard(MDApp):
         #     self.set_mode()
         # else:
         self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.3)
-        color = get_color_from_hex(colors[self.theme_cls.primary_palette]["500"])
+        color = get_color_from_hex("fff1ed")
         Animation(md_bg_color=self.bg_color_dark if self.dark_mode else color, duration=.3).start(
             self.HomeScreen.ids.toolbar)
         Animation(background_color=self.bg_color_dark if self.dark_mode else color,
-                  duration=.3).start(self.HomeScreen.ids.tab)
+                  duration=.3).start(self.HomeScreen.ids.create.ids.tab)
         # TODO: Fix dark mode
 
         self.anim.start(self.HomeScreen)
@@ -148,7 +147,7 @@ class TestCard(MDApp):
             self.theme_cls.primary_hue = '500'
             if platform == 'android':
                 statusbar(status_color='ff7a4f')
-        self.HomeScreen.ids.circle_mode.rad = 0.1
+        self.HomeScreen.ids.create.ids.circle_mode.rad = 0.1
 
     def toggle_mode(self, *args):
         self.dark_mode = not self.dark_mode

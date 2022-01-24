@@ -149,8 +149,8 @@
         Toolbar:
             id: toolbar
             title:'Passlock'
-            height:'50dp'
-            padding:searchbar.x,dp(20),window.width-(searchbar.x+searchbar.width),dp(5)
+            height:'60dp'
+            padding:searchbar.x,dp(10),window.width-(searchbar.x+searchbar.width),dp(5)
             md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else light_color
             elevation:0
             icon_color:app.theme_cls.primary_color
@@ -163,12 +163,12 @@
         MDBoxLayout:
             adaptive_height:True
             orientation:'vertical'
-            md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else light_color
+            md_bg_color:toolbar.md_bg_color
             pos_hint:{'center_x':.5}
-            padding:0,dp(8),0,dp(8)
+            padding:0,dp(0),0,dp(5)
             CardTextField:
                 id: searchbar
-                height:'56dp'
+                height:'50dp'
                 set_elevation:10
                 size_hint_x:.85
                 pos_hint:{'center_x':.5}
@@ -177,7 +177,7 @@
                     tab_manager.current = 'FindScreen'
 #                    self.icon_left_action = ['arrow-left' if self.focus else "magnify"]
                 icon_left_action:["magnify" if tab_manager.current == 'CreateScreen' else 'arrow-left',lambda x: exec("tab_manager.current='CreateScreen'")]
-                hint_text:'Search'
+                hint_text:'Search passwords'
                 icon_color:app.theme_cls.primary_color
                 label_name:""
                 inactive_color:app.theme_cls.primary_light[:-1]+[.6]
@@ -185,9 +185,9 @@
             id: tab_manager
             transition: sm.NoTransition()
             CreateScreen:
-                name:'CreateScreen'
+                id: create
             FindScreen:
-                name:'FindScreen'
+                id: find
                 x_pad: searchbar.x
 
 #		MDBottomNavigation:
@@ -203,8 +203,9 @@
 #				text: 'create'
 #				icon: 'plus'
 <CreateScreen>
-    id: create
+    name:'CreateScreen'
     on_enter:app.animation_behavior(auto if tab.current else manual)
+    on_leave:exec("auto.opacity=0") if tab.current else exec("manual.opacity=0")
     FloatLayout:
         DarkAnimation:
             id: circle_mode
@@ -236,16 +237,18 @@
 
 <FindScreen>
 #                on_leave: find_screen.pos_hint={"top":.9}
-    id: find
+    name:'FindScreen'
     x_pad: 0
-
     on_enter:
         app.animation_behavior(find_screen)
+    on_leave:
+        find_screen.opacity=0
     MDBoxLayout:
         id: find_screen
+        opacity:0
         orientation:'vertical'
         pos_hint:{'top':1}
-        padding:root.x_pad,dp(15),0,0
+        padding:0,dp(15),0,0
         spacing:'15dp'
 #
 #					MDBoxLayout:
@@ -260,6 +263,7 @@
                 pos_hint:{'center_y':.5,'center_x':.5}
                 adaptive_height:True
                 orientation:'vertical'
+                padding:root.x_pad,0,root.x_pad,0
                 radius:0,dp(30),0,dp(30)
                 List:
                     primary_text:'Pass1'

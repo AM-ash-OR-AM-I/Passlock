@@ -113,18 +113,14 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
 
     def on_icon_left_action(self, instance, icon_list: 'List containing icon name and function'):
         box = self.ids.card_box
-        # print(box.children)
         rm = 0
-        print(box.ids)
         for inst in box.children:
             if isinstance(inst, TextInput):
                 rm = 1
             else:
                 if rm:
-                    print(inst)
                     box.remove_widget(inst)
         # self.ids.card_box.remove_widget()
-        self.hint_text = ''
         if len(icon_list) and type(icon_list[0]) != list:
             if len(icon_list) == 1:
                 self.icon_left = MDIconButton(icon=self.icon_left_action[0], theme_text_color='Custom',
