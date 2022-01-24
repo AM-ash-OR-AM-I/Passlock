@@ -38,17 +38,20 @@ if platform == 'android':
         print('Setting StatusBar Color')  # Updates everytime color is changed
         window.clearFlags(WindowManager.FLAG_TRANSLUCENT_STATUS)
         try:
+            """
+            Below code (Comment Line) is kinda useless still I've it incase I need it future.
+            """
             # if full:
             #     windowInsetsController = ViewCompat.getWindowInsetsController(
             #         window.getDecorView())
             #     windowInsetsController.setSystemBarsBehavior(
             #         WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE)
             #     windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-
-                # window.clearFlags(WindowManager.FLAG_TRANSLUCENT_STATUS)
-                # window.addFlags(WindowManager.FLAG_TRANSLUCENT_STATUS, true)
-                # window.setStatusBarColor(Color.TRANSPARENT)
-                # window.setNavigationBarColor(Color.TRANSPARENT)
+            #
+            #     window.clearFlags(WindowManager.FLAG_TRANSLUCENT_STATUS)
+            #     window.addFlags(WindowManager.FLAG_TRANSLUCENT_STATUS, true)
+            #     window.setStatusBarColor(Color.TRANSPARENT)
+            #     window.setNavigationBarColor(Color.TRANSPARENT)
             # else:
             window.addFlags(WindowManager.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             if theme == 'black':

@@ -8,7 +8,7 @@
 #: import CardTextField CustomCard.CardTextField
 <FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
 
-<LoginScreen@MDScreen>:
+<LoginScreen>:
     canvas:
 		Color:
 			rgba:app.theme_cls.primary_color[:-1]+[.8]
@@ -79,7 +79,7 @@
 			elevation:10
 			icon:'lock'
 			user_font_size:100
-			md_bg_color:[.25,.25,.25,1]
+			md_bg_color:get_color_from_hex("ffe5de") if not app.dark_mode else [.25,.25,.25,1]
 			theme_text_color:'Custom'
             text_color:app.theme_cls.primary_color
             on_release:app.change_screen('HomeScreen')

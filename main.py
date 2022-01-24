@@ -46,10 +46,15 @@ class TestCard(MDApp):
     LIVE_UI = 0
     fps = False
     path_to_live_ui = 'HomeScreenDesign.kv'
+    primary_accent = ColorProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.bg_color_dark = get_color_from_hex('262626')
+        self.light_color = get_color_from_hex("fff1ed")
+        self.card_color = self.bg_color_dark if self.dark_mode else [1, 1, 1, 1]
+        self.primary_accent = self.bg_color_dark if self.dark_mode else self.light_color
+        self.light_hex = "fff1ed"  # ffe5de
 
     def build(self):
         Builder.load_file('LoginScreenDesign.kv')
@@ -64,12 +69,9 @@ class TestCard(MDApp):
         self.LoginScreen = LoginScreen(name='LoginScreen')
         self.HomeScreen = HomeScreen(name='HomeScreen')
         self.SettingScreen = SettingScreen(name='SettingScreen')
-        self.FindScreen = FindScreen(name='FindScreen')
-        # self.sm2 = ScreenManager(transition=NoTransition())
         self.sm.add_widget(self.LoginScreen)
         self.sm.add_widget(self.HomeScreen)
         self.sm.add_widget(self.SettingScreen)
-        self.sm.add_widget(self.FindScreen)
         Window.bind(on_keyboard=self.go_back)
         return Builder.load_string(KV) if self.LIVE_UI else self.sm
 
@@ -120,46 +122,54 @@ class TestCard(MDApp):
         # if self.start_call:
         #     self.set_mode()
         # else:
-        self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.3)
-        color = get_color_from_hex("fff1ed")
-        Animation(md_bg_color=self.bg_color_dark if self.dark_mode else color, duration=.3).start(
-            self.HomeScreen.ids.toolbar)
-        Animation(background_color=self.bg_color_dark if self.dark_mode else color,
-                  duration=.3).start(self.HomeScreen.ids.create.ids.tab)
-        # TODO: Fix dark mode
 
-        self.anim.start(self.HomeScreen)
+        current_screen = self.sm.current
+        if current_screen == 'HomeScreen':
+            tab_manager = self.sm.current_screen.ids.tab_manager
+            primary_color = Animation(md_bg_color=self.bg_color_dark if self.dark_mode else self.light_color,
+                                      duration=.3)
+            primary_color.start(
+                self.HomeScreen.ids.toolbar)
+            if tab_manager.current == 'CreateScreen':
+                self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.3)
+                Animation(background_color=self.bg_color_dark if self.dark_mode else self.light_color, duration=.3) \
+                    .start(self.HomeScreen.ids.create.ids.tab)
+                self.anim.start(self.HomeScreen)
+            else:
+                self.anim = primary_color
+                self.anim.start(self.HomeScreen.ids.find.ids.box)
+            self.anim.on_complete = self.set_mode
+
+
+
         # radius = 1.3 * max(Window.size)
         # self.HomeScreen.ids.circle_mode.opacity = 1
         # self.anim = Animation(rad=radius, duration=.6, t='in_quad')
         # self.anim.start(self.HomeScreen.ids.circle_mode)
-        self.anim.on_complete = self.set_mode
 
     def set_mode(self, *args):
         print("mode set")
+        self.primary_accent = self.bg_color_dark if self.dark_mode else self.light_color
         if self.dark_mode:
             self.theme_cls.theme_style = 'Dark'
             self.theme_cls.primary_hue = '300'
             if platform == 'android':
-                statusbar(status_color=colors["Dark"]["CardsDialogs"])
+                statusbar(status_color=colors["Dark"]["CardsDialogs"], theme='black')
         else:
             self.theme_cls.theme_style = 'Light'
             self.theme_cls.primary_hue = '500'
             if platform == 'android':
-                statusbar(status_color='ff7a4f')
+                statusbar(status_color=self.light_hex, theme='white')
         self.HomeScreen.ids.create.ids.circle_mode.rad = 0.1
 
     def toggle_mode(self, *args):
         self.dark_mode = not self.dark_mode
 
-    def activate_find(self, *args):
-        self.sm.transition = NoTransition()
-        self.sm.current = 'FindScreen'
-
     def on_start(self):
         # self.HomeScreen.ids.bottom_nav.ids.item.ids.create.active=True
         if platform == 'android':
-            statusbar(status_color=colors["Dark"]["CardsDialogs"] if self.dark_mode else 'ff7a4f')
+            statusbar(status_color=colors["Dark"]["CardsDialogs"] if self.dark_mode else self.light_hex)
+
 
 # def on_stop(self):
 #     self.root.ids.box.export_to_png("gradient.png")
@@ -181,13 +191,6 @@ class LoginScreen(MDScreen): pass
 
 
 class HomeScreen(MDScreen): pass
-
-
-class FindScreen(MDScreen): pass
-
-
-class CreateScreen(MDScreen): pass
-
 
 
 class LabelIcon(MDBoxLayout, ThemableBehavior):

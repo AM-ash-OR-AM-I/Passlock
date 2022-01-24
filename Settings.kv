@@ -2,7 +2,7 @@
 <ListItem@OneLineAvatarIconListItem>
 	_no_ripple_effect: True
 
-<SettingScreen@MDScreen>
+<SettingScreen>
     md_bg_color: app.theme_cls.bg_normal
     MDBoxLayout:
         adaptive_height:True
@@ -18,9 +18,13 @@
 #                text:'Settings'
 #                font_style:'H5'
 #                adaptive_size:True
-        MDToolbar:
+        Toolbar:
             title:'Settings'
+            height:'60dp'
+            md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.light_color
+            padding:dp(15),0
             elevation:10
+            icon_color:app.theme_cls.primary_color
             left_action_items:[['arrow-left',lambda x: app.back_button()]]
 
 	    MDBoxLayout:

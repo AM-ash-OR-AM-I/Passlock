@@ -2,7 +2,6 @@
 #:import Gradient kivy_gradient.Gradient
 #:import Toolbar Toolbar.Toolbar
 #:set bg_color_dark get_color_from_hex('262626')
-#:set light_color get_color_from_hex("fff1ed")
 #:import List List.List
 #:import sm kivy.uix.screenmanager
 <CheckboxLabel@MDBoxLayout>
@@ -149,17 +148,15 @@
         Toolbar:
             id: toolbar
             title:'Passlock'
-            height:'60dp'
-            padding:searchbar.x,dp(10),window.width-(searchbar.x+searchbar.width),dp(5)
-            md_bg_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else light_color
+            height:'56dp'
+            padding:searchbar.x,dp(8),window.width-(searchbar.x+searchbar.width),dp(5)
+            md_bg_color:app.primary_accent
             elevation:0
             icon_color:app.theme_cls.primary_color
             right_action_items:
                 [['theme-light-dark',lambda x: app.toggle_mode(x)],
                 ["cog",lambda x: exec("app.change_screen('SettingScreen')")]]
-#            right_action_items:
-#                [['theme-light-dark',lambda x: app.toggle_mode(x)],
-#                ["cog",lambda x: exec("app.change_screen('SettingScreen')")]]
+
         MDBoxLayout:
             adaptive_height:True
             orientation:'vertical'
@@ -202,7 +199,7 @@
 #				name: 'create'
 #				text: 'create'
 #				icon: 'plus'
-<CreateScreen>
+<CreateScreen@MDScreen>
     name:'CreateScreen'
     on_enter:app.animation_behavior(auto if tab.current else manual)
     on_leave:exec("auto.opacity=0") if tab.current else exec("manual.opacity=0")
@@ -219,9 +216,7 @@
         on_tab_switch: self.current = not self.current
         indicator_color:app.theme_cls.primary_color #if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
         anim_duration:.2
-#					background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else app.theme_cls.primary_color
-        background_color:bg_color_dark if app.theme_cls.theme_style=='Dark' else light_color
-#                    background_color: app.theme_cls.bg_normal
+        background_color:app.primary_accent
         tab_indicator_anim:True
         tab_indicator_height:'3dp'
         tab_hint_x:True
@@ -235,12 +230,14 @@
             id: auto
             title: "[b]AUTO"
 
-<FindScreen>
+<FindScreen@MDScreen>
 #                on_leave: find_screen.pos_hint={"top":.9}
     name:'FindScreen'
     x_pad: 0
+    enter:0
     on_enter:
-        app.animation_behavior(find_screen)
+        app.animation_behavior(find_screen);self.enter=1
+#        print(root.parent.parent.parent.ids.toolbar.md_bg_color)
     on_leave:
         find_screen.opacity=0
     MDBoxLayout:
@@ -248,23 +245,18 @@
         opacity:0
         orientation:'vertical'
         pos_hint:{'top':1}
-        padding:0,dp(15),0,0
         spacing:'15dp'
-#
-#					MDBoxLayout:
-#                        md_bg_color:app.theme_cls.primary_light[:-1]+[.15] if not app.dark_mode else bg_color_dark
-#                        radius:dp(30),dp(30),dp(30),dp(30)
-#                        size_hint_x:.85
-#                        pos_hint:{'center_x':.5}
+
         RecycleView:
             id: scroll
             pos_hint:{'center_x':.5}
             MDBoxLayout:
+                id: box
                 pos_hint:{'center_y':.5,'center_x':.5}
                 adaptive_height:True
                 orientation:'vertical'
-                padding:root.x_pad,0,root.x_pad,0
-                radius:0,dp(30),0,dp(30)
+                padding:root.x_pad,dp(10),root.x_pad,0
+                md_bg_color:app.primary_accent
                 List:
                     primary_text:'Pass1'
                 List:
