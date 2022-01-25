@@ -867,9 +867,9 @@ class MDTabsBase(Widget):
             self.tab_label_text = f"[size=24sp][font={fonts[-1]['fn_regular']}]{md_icons[self.icon]}[/size][/font]"
             if self.title:
                 self.tab_label_text = (
-                    self.text
-                    + (" " if self.title_icon_mode == "Lead" else "\n")
-                    + self.title
+                        self.text
+                        + (" " if self.title_icon_mode == "Lead" else "\n")
+                        + self.title
                 )
         # Add the title.
         else:
@@ -915,16 +915,16 @@ class MDTabsCarousel(MDCarousel):
             return
         if not self.touch_mode_change:
             if self.ignore_perpendicular_swipes and self.direction in (
-                "top",
-                "bottom",
+                    "top",
+                    "bottom",
             ):
                 if abs(touch.oy - touch.y) < self.scroll_distance:
                     if abs(touch.ox - touch.x) > self.scroll_distance:
                         self._change_touch_mode()
                         self.touch_mode_change = True
             elif self.ignore_perpendicular_swipes and self.direction in (
-                "right",
-                "left",
+                    "right",
+                    "left",
             ):
                 if abs(touch.ox - touch.x) < self.scroll_distance:
                     if abs(touch.oy - touch.y) > self.scroll_distance:
@@ -1040,8 +1040,8 @@ class MDTabsBar(
             self.parent._line_width = w
             self.parent._line_height = self.parent.tab_indicator_height
         else:
-            self.indicator.pos = (x, 0)
-            self.indicator.size = (w, self.parent.tab_indicator_height)
+            self.indicator.pos = (x + dp(35), 0)  # I added dp(30) for getting smaller indicator modify it.
+            self.indicator.size = (w - dp(70), self.parent.tab_indicator_height)
             if radius:
                 self.indicator.radius = radius
 
@@ -1108,7 +1108,7 @@ class MDTabsBar(
         self.update_indicator(widget.x, widget.width)
 
 
-class MDTabs(ThemableBehavior,  SpecificBackgroundColorBehavior, AnchorLayout):
+class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     You can use this class to create your own tabbed panel.
 
@@ -1130,7 +1130,7 @@ class MDTabs(ThemableBehavior,  SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `0`.
     """
 
-    tab_bar_height = NumericProperty("48dp")
+    tab_bar_height = NumericProperty("40dp")
     """
     Height of the tab bar.
 
@@ -1182,7 +1182,7 @@ class MDTabs(ThemableBehavior,  SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `False`.
     """
 
-    anim_duration = NumericProperty(0.2)
+    anim_duration = NumericProperty(0.15)
     """
     Duration of the slide animation.
 
@@ -1290,7 +1290,7 @@ class MDTabs(ThemableBehavior,  SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `'Roboto'`.
     """
 
-    ripple_duration = NumericProperty(2)
+    ripple_duration = NumericProperty(.5)
     """
     Ripple duration when long touching to tab.
 
@@ -1298,7 +1298,7 @@ class MDTabs(ThemableBehavior,  SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `2`.
     """
 
-    no_ripple_effect = BooleanProperty(True)
+    no_ripple_effect = BooleanProperty(False)
     """
     Whether to use the ripple effect when tapping on a tab.
 
@@ -1308,7 +1308,7 @@ class MDTabs(ThemableBehavior,  SpecificBackgroundColorBehavior, AnchorLayout):
 
     title_icon_mode = OptionProperty("Lead", options=["Lead", "Top"])
     """
-    This property sets the mode in wich the tab's title and icon are shown.
+    This property sets the mode in which the tab's title and icon are shown.
 
     :attr:`title_icon_mode` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'Lead'`.
@@ -1556,9 +1556,9 @@ class MDTabs(ThemableBehavior,  SpecificBackgroundColorBehavior, AnchorLayout):
                         current_tab_label.x, current_tab_label.width, radius
                     )
             elif (
-                self.tab_indicator_type == "fill"
-                or self.tab_indicator_type == "line-round"
-                or self.tab_indicator_type == "line-rect"
+                    self.tab_indicator_type == "fill"
+                    or self.tab_indicator_type == "line-round"
+                    or self.tab_indicator_type == "line-rect"
             ):
                 self.tab_indicator_height = self.tab_bar_height
                 self.tab_bar.update_indicator(

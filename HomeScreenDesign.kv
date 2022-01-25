@@ -162,7 +162,7 @@
             orientation:'vertical'
             md_bg_color:toolbar.md_bg_color
             pos_hint:{'center_x':.5}
-            padding:0,dp(0),0,dp(5)
+            padding:0,dp(0),0,dp(11)
             CardTextField:
                 id: searchbar
                 height:'50dp'
@@ -214,11 +214,13 @@
         id:tab
         current:False
         on_tab_switch: self.current = not self.current
+        default_tab:0
         indicator_color:app.theme_cls.primary_color #if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
         anim_duration:.2
         background_color:app.primary_accent
         tab_indicator_anim:True
         tab_indicator_height:'3dp'
+#        allow_stretch:False
         tab_hint_x:True
         show_anim:True
         text_color_active:app.theme_cls.primary_color #if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
@@ -245,7 +247,6 @@
         opacity:0
         orientation:'vertical'
         pos_hint:{'top':1}
-        spacing:'15dp'
 
         RecycleView:
             id: scroll

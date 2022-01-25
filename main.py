@@ -3,7 +3,7 @@ from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import BooleanProperty, ColorProperty, NumericProperty, get_color_from_hex
-from kivy.uix.screenmanager import ScreenManager, CardTransition, NoTransition
+from kivy.uix.screenmanager import ScreenManager, CardTransition
 
 from kivymd.app import MDApp
 from kivymd.color_definitions import colors
@@ -88,18 +88,24 @@ class TestCard(MDApp):
         if key in (27, 1001):
             if self.screen_history:
                 self.screen_history.pop()
-                if self.screen_history != []:
+                if self.screen_history:
                     self.sm.transition.mode = 'pop'
                     self.sm.transition.direction = 'right'
                     self.sm.current = self.screen_history[-1]
 
                 else:
-                    self.exit_dialog = MDDialog(title='Exit', text='Do you want to exit?',
-                                                buttons=[MDRaisedButton(text='YES', on_release=lambda x: self.stop()),
-                                                         MDFlatButton(text='NO',
-                                                                      on_release=lambda x: self.exit_dialog.dismiss())])
-                    self.exit_dialog.open()
-                    self.screen_history = ['HomeScreen']
+                    sm = self.HomeScreen.ids.tab_manager
+                    if sm.current == 'FindScreen':
+                        sm.current = 'CreateScreen'
+                        self.screen_history = ['HomeScreen']
+                    else:
+                        self.exit_dialog = MDDialog(title='Exit', text='Do you want to exit?',
+                                                    buttons=[
+                                                        MDRaisedButton(text='YES', on_release=lambda x: self.stop()),
+                                                        MDFlatButton(text='NO',
+                                                                     on_release=lambda x: self.exit_dialog.dismiss())])
+                        self.exit_dialog.open()
+                        self.screen_history = ['HomeScreen']
             else:
                 self.stop()
         return True
@@ -140,8 +146,6 @@ class TestCard(MDApp):
                 self.anim.start(self.HomeScreen.ids.find.ids.box)
             self.anim.on_complete = self.set_mode
 
-
-
         # radius = 1.3 * max(Window.size)
         # self.HomeScreen.ids.circle_mode.opacity = 1
         # self.anim = Animation(rad=radius, duration=.6, t='in_quad')
@@ -154,21 +158,23 @@ class TestCard(MDApp):
             self.theme_cls.theme_style = 'Dark'
             self.theme_cls.primary_hue = '300'
             if platform == 'android':
-                statusbar(status_color=colors["Dark"]["CardsDialogs"], theme='black')
+                statusbar(status_color=colors["Dark"]["CardsDialogs"], white_text=False)
         else:
             self.theme_cls.theme_style = 'Light'
             self.theme_cls.primary_hue = '500'
             if platform == 'android':
-                statusbar(status_color=self.light_hex, theme='white')
+                statusbar(status_color=self.light_hex, white_text=True)
         self.HomeScreen.ids.create.ids.circle_mode.rad = 0.1
 
     def toggle_mode(self, *args):
         self.dark_mode = not self.dark_mode
 
     def on_start(self):
-        # self.HomeScreen.ids.bottom_nav.ids.item.ids.create.active=True
+        # self.HomeScreen.ids.create.ids.tab.=''
+        # TODO: fix active color of tab on_start
         if platform == 'android':
-            statusbar(status_color=colors["Dark"]["CardsDialogs"] if self.dark_mode else self.light_hex)
+            statusbar(status_color=colors["Dark"]["CardsDialogs"] if self.dark_mode else self.light_hex,
+                      white_text=not self.dark_mode)
 
 
 # def on_stop(self):

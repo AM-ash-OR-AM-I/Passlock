@@ -33,7 +33,7 @@ if platform == 'android':
 
 
     @run_on_ui_thread
-    def statusbar(theme='Custom', status_color='121212', nav_color="FAFAFA", full=False):
+    def statusbar(theme='Custom', status_color='121212', nav_color="FAFAFA", white_text=' ', full=False):
         window = activity.getWindow()
         print('Setting StatusBar Color')  # Updates everytime color is changed
         window.clearFlags(WindowManager.FLAG_TRANSLUCENT_STATUS)
@@ -66,6 +66,11 @@ if platform == 'android':
             elif theme == 'Custom':
                 window.setNavigationBarColor(Color.parseColor('#' + nav_color))
                 window.setStatusBarColor(Color.parseColor('#' + status_color))
+                if white_text is True:
+                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR |
+                                                                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+                elif white_text is False:
+                    window.getDecorView().setSystemUiVisibility(0)
 
         except Exception:
             pass
