@@ -50,11 +50,39 @@ class TestCard(MDApp):
 
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
+		self.theme_cls.primary_palette = 'DeepOrange'
 		self.bg_color_dark = get_color_from_hex('262626')
-		self.light_color = get_color_from_hex("fff1ed")
-		self.card_color = self.bg_color_dark if self.dark_mode else [1, 1, 1, 1]
+		self.light_color = self.generate_light()
+		self.light_color_1 = self.generate_light(lightness=80)
 		self.primary_accent = self.bg_color_dark if self.dark_mode else self.light_color
-		self.light_hex = "fff1ed"  # ffe5de
+		self.card_color = self.bg_color_dark if self.dark_mode else [1, 1, 1, 1]
+		self.light_hex = self.generate_light(return_hex=True)
+
+	def generate_light(self, hex_color=False, color=None, return_hex=False, lightness=90):
+		if hex_color:
+			color = get_color_from_hex(hex_color)
+		elif not color:
+			color = self.theme_cls.primary_color[:-1]
+
+		mx = max(color)
+		mn = min(color)
+		color1 = list(color)
+		color1.remove(mx)
+		mid = max(color1)
+		range_mn = mx - mn
+		range_md = mx - mid
+
+		for i in range(3):
+			if color[i] == mid:
+				color[i] += range_md * lightness / 100
+			elif color[i] == mn:
+				color[i] += range_mn * lightness / 100
+		if not return_hex:
+			return color + [1]
+		else:
+			r, g, b = color
+			_hex = hex(round(r * 255))[2:] + hex(round(g * 255))[2:] + hex(round(b * 255))[2:]
+			return _hex
 
 	def build(self):
 		Builder.load_file('LoginScreenDesign.kv')
@@ -63,7 +91,6 @@ class TestCard(MDApp):
 			# Builder.load_file('LoginScreenDesign.kv')
 			Builder.load_file('HomeScreenDesign.kv')
 			Builder.load_file('Settings.kv')
-		self.theme_cls.primary_palette = 'DeepOrange'
 		# self.dark_mode = True
 		self.sm = ScreenManager(transition=CardTransition())
 		self.LoginScreen = LoginScreen(name='LoginScreen')
@@ -146,10 +173,10 @@ class TestCard(MDApp):
 				self.anim.start(self.HomeScreen.ids.find.ids.box)
 			self.anim.on_complete = self.set_mode
 
-		# radius = 1.3 * max(Window.size)
-		# self.HomeScreen.ids.circle_mode.opacity = 1
-		# self.anim = Animation(rad=radius, duration=.6, t='in_quad')
-		# self.anim.start(self.HomeScreen.ids.circle_mode)
+	# radius = 1.3 * max(Window.size)
+	# self.HomeScreen.ids.circle_mode.opacity = 1
+	# self.anim = Animation(rad=radius, duration=.6, t='in_quad')
+	# self.anim.start(self.HomeScreen.ids.circle_mode)
 
 	def set_mode(self, *args):
 		print("mode set")
@@ -172,16 +199,10 @@ class TestCard(MDApp):
 	def on_start(self):
 		# self.HomeScreen.ids.create.ids.tab.=''
 		# TODO: fix active color of tab on_start
+
 		if platform == 'android':
 			statusbar(status_color=colors["Dark"]["CardsDialogs"] if self.dark_mode else self.light_hex,
 					  white_text=not self.dark_mode)
-
-
-# def on_stop(self):
-#     self.root.ids.box.export_to_png("gradient.png")
-
-
-# class IconButton(MDIcon, ButtonBehavior, CircularRippleBehavior): pass
 
 
 class RoundButton(MDFillRoundFlatButton):

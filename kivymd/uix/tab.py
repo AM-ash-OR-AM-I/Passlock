@@ -1290,7 +1290,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `'Roboto'`.
     """
 
-    ripple_duration = NumericProperty(.5)
+    ripple_duration = NumericProperty(1)
     """
     Ripple duration when long touching to tab.
 
