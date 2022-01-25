@@ -53,21 +53,20 @@ class TestCard(MDApp):
 		self.theme_cls.primary_palette = 'DeepOrange'
 		# print(self.bg_color_dark)
 		self.light_color = self.generate_light()
-		self.bg_color_dark = self.generate_dark_color()
+		self.bg_color_dark = self.generate_dark_color()  # 262626
 		self.light_color_1 = self.generate_light(lightness=80)
 		self.primary_accent = self.bg_color_dark if self.dark_mode else self.light_color
 		self.card_color = self.bg_color_dark if self.dark_mode else [1, 1, 1, 1]
 		self.light_hex = self.generate_light(return_hex=True)
 
-	def generate_dark_color(self, color=None, hex_color= False, darkness=None):
+	def generate_dark_color(self, color=None, hex_color=False, darkness=None):
 		if not color:
 			color = self.generate_light(lightness=70)
-		mx= max(color)
+		mx = max(color)
 		if not darkness:
-			darkness = mx/0.35
-		color = [i/darkness for i in color]
+			darkness = mx / 0.35
+		color = [i / darkness for i in color]
 		return color
-
 
 	def generate_light(self, hex_color=False, color=None, return_hex=False, lightness=90):
 		if hex_color:
