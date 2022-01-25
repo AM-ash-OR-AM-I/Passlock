@@ -2,17 +2,18 @@ from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, ColorProperty, NumericProperty, get_color_from_hex
+from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.screenmanager import ScreenManager, CardTransition
 
+from PassLOCK.kivymd.theming import ThemableBehavior
 from kivymd.app import MDApp
 from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
-from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.list import TwoLineListItem
 from kivymd.uix.screen import MDScreen
 
 if platform != 'android':
@@ -57,15 +58,21 @@ class TestCard(MDApp):
 		self.primary_accent = self.bg_color_dark if self.dark_mode else self.light_color
 		self.card_color = self.bg_color_dark if self.dark_mode else [1, 1, 1, 1]
 		self.light_hex = self.generate_light_color(return_hex=True)
+		self.dark_hex = self.generate_dark_color(return_hex=True)
 
-	def generate_dark_color(self, color=None, hex_color=False, darkness=None):
+	def generate_dark_color(self, color=None, hex_color=False, darkness=None, return_hex=False):
 		if not color:
 			color = self.generate_light_color(lightness=70)[:-1]
 		mx = max(color)
 		if not darkness:
 			darkness = mx / 0.17
 		color = [i / darkness for i in color]
-		return color + [1]
+		if not return_hex:
+			return color + [1]
+		else:
+			r, g, b = color
+			_hex = hex(round(r * 255))[2:] + hex(round(g * 255))[2:] + hex(round(b * 255))[2:]
+			return _hex
 
 	def generate_light_color(self, hex_color=False, color=None, return_hex=False, lightness=90):
 		if hex_color:
@@ -195,7 +202,7 @@ class TestCard(MDApp):
 			self.theme_cls.theme_style = 'Dark'
 			self.theme_cls.primary_hue = '300'
 			if platform == 'android':
-				statusbar(status_color=colors["Dark"]["CardsDialogs"], white_text=False)
+				statusbar(status_color=self.dark_hex, white_text=False)
 		else:
 			self.theme_cls.theme_style = 'Light'
 			self.theme_cls.primary_hue = '500'
@@ -230,48 +237,6 @@ class LoginScreen(MDScreen): pass
 class HomeScreen(MDScreen): pass
 
 
-class LabelIcon(MDBoxLayout, ThemableBehavior):
-	active = BooleanProperty(False)
-	text_color = ColorProperty([1, 1, 1, 1])
-	scale = NumericProperty(1)
-	opac = BooleanProperty(False)
-
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
-		self.text_color = self.theme_cls.primary_color if self.active else [.7, .7, .7, 1]
-		self.primary_color = MDApp.get_running_app().theme_cls.primary_color
-
-	def on_active(self, instance, active):
-		# print(app.root.children)
-		for instances in self.parent.children:
-			# print(instances, instance)
-			if instances != instance:
-				instances.text_color = [.7, .7, .7, 1]
-				instances.scale = 1
-				instances.opac = 0
-			else:
-				instances.text_color = self.theme_cls.primary_color
-				instances.opac = 1
-				self.animate = Animation(scale=1.3, d=.15, t='linear')
-				self.animate.start(instances)
-
-
-# class Tab(MDBoxLayout, MDTabsBase):pass
-class RoundedList(TwoLineListItem):
-	active = BooleanProperty(False)
-
-	def on_release(self):
-		self.active = not self.active
-
-	def on_active(self, instance, active):
-		if self.active:
-			self.secondary_text = 'Password'
-			Animation(height=dp(80), d=.1).start(self)
-		else:
-			self.secondary_text = ''
-			Animation(height=dp(50), d=.1).start(self)
-
-
 class SettingScreen(MDScreen): pass
 
 
@@ -281,6 +246,13 @@ class Dialog(MDDialog):
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.md_bg_color = MDApp.get_running_app().primary_accent
+
+
+class CheckboxLabel(ThemableBehavior, ButtonBehavior, RectangularRippleBehavior, MDBoxLayout):
+	def __init__(self,**kwargs):
+		super().__init__(**kwargs)
+		self.ripple_color = self.theme_cls.primary_light
+		self.ripple_alpha =.2
 
 
 TestCard().run()

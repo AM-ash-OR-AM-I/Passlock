@@ -2,7 +2,7 @@
 #:set height window.height
 #:set width window.width
 #: set rad width/2
-#: set lbl_size '15sp'
+#: set lbl_size '18sp'
 #: set icon_size 60
 #: import platform kivy.platform
 #: import CardTextField CustomCard.CardTextField
@@ -73,7 +73,7 @@
                     font_name:'RobotoMedium'
                     pos_hint:{'center_x':.5}
                     theme_text_color:'Secondary'
-                    font_size:lbl_size
+                    font_size:"15sp"
 	
 		FloatingButton:
 			elevation:10
@@ -87,7 +87,7 @@
 	MDTextButton:
 		text:'I\'m a new user. [color=ff7a4f]Sign up!'
 		markup:True
-		pos_hint:{'center_y':.07,'center_x':.5}
+		pos_hint:{'center_y':.1,'center_x':.5}
 		font_name:'RobotoMedium'
 		halign:'center'
 		font_size:lbl_size

@@ -87,7 +87,7 @@ Builder.load_string('''
 class CardTextField(MDRelativeLayout, ThemableBehavior):
     inactive_color = ColorProperty([.5, .5, .5, .1])
     border_color = ColorProperty([.5, .5, .5, .1])
-    active_color = [0.5, 0.7, 1, .8]
+    active_color = [0, .7, 1, .7]
     focus = BooleanProperty(False)
     text_font_size = StringProperty('17sp')
     hint_text_color = ColorProperty(None)

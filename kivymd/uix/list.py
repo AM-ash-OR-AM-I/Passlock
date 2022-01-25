@@ -868,7 +868,6 @@ class OneLineListItem(BaseListItem):
     _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
     _height = NumericProperty()
     _num_lines = 1
-    radius = (dp(20), dp(20))
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -4,11 +4,13 @@
 #:set bg_color_dark get_color_from_hex('262626')
 #:import List List.List
 #:import sm kivy.uix.screenmanager
-<CheckboxLabel@MDBoxLayout>
+
+<CheckboxLabel>
 	adaptive_size:True
 	size_hint_x:.8
 	pos_hint: {'center_x': .5}
 	spacing:'12dp'
+	radius:dp(5),dp(5)
 	text:''
 	MDCheckbox:
 		size_hint: None, None

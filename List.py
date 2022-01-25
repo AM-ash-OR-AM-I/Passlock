@@ -6,7 +6,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivymd.app import MDApp
 from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import RectangularRippleBehavior
+
 from kivymd.uix.boxlayout import MDBoxLayout
 
 KV = '''
