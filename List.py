@@ -13,7 +13,7 @@ KV = '''
 <List>
     orientation:'vertical'
     size_hint_y:None
-    padding: dp(28),dp(0),dp(20),dp(15)
+    padding: dp(28),dp(0),dp(10),dp(15)
     size_hint_x:1
     spacing:'6dp'
     height:'56dp'

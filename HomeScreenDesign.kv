@@ -32,7 +32,7 @@
 		label_name:'Name of Password'
 		hint_text:'e.g. username@gmail.com'
 		inactive_color:app.theme_cls.primary_light[:-1]+[.6]
-		#icon_left_action:['account']
+
 	CardTextField:
 		id:password_field
 		pos_hint:{'center_x':.5}
@@ -78,20 +78,12 @@
 			icon_color:app.theme_cls.primary_color
 			label_name:'Password'
 			text:'adHKf@%123*n'
-#            icon_left_action:[['numeric-1']]
 			icon_right_action:[['content-copy'],['reload']]
 
 			inactive_color:app.theme_cls.primary_light[:-1]+[.6]
 
 	MDBoxLayout:
 		orientation:'vertical'
-#        canvas:
-#            Color:
-#                rgba:app.theme_cls.primary_color
-#            Rectangle:
-#                pos:self.pos
-#                size:self.size
-
 		adaptive_height:True
 		center_x:password_field.center_x
 		CheckboxLabel:
@@ -139,7 +131,6 @@
 	radius:dp(15),dp(15),dp(15),dp(15)
 
 <HomeScreen>
-#    on_enter: exec("app.fps_monitor_start();app.fps=True") if not app.fps else ''
 	md_bg_color: app.theme_cls.bg_normal
 	MDBoxLayout:
 		orientation:'vertical'
@@ -172,7 +163,6 @@
 				radius: '20dp'
 				on_focus:
 					tab_manager.current = 'FindScreen'
-#                    self.icon_left_action = ['arrow-left' if self.focus else "magnify"]
 				icon_left_action:["magnify" if tab_manager.current == 'CreateScreen' else 'arrow-left',lambda x: exec("tab_manager.current='CreateScreen'")]
 				hint_text:'Search passwords'
 				icon_color:app.theme_cls.primary_color
@@ -187,18 +177,7 @@
 				id: find
 				x_pad: searchbar.x
 
-#		MDBottomNavigation:
-#			id:bottom_nav
-#			text_color_normal: [.7,.7,.7,1]
-#
-#			MDBottomNavigationItem:
-#				bg_color:root.md_bg_color
-#				on_tab_press: app.animation_behavior(auto if tab.current else manual)
-##                    app.animation_behavior(auto)
-##                on_leave: manual.pos_hint={"top":.9}
-#				name: 'create'
-#				text: 'create'
-#				icon: 'plus'
+
 <CreateScreen@MDScreen>
 	name:'CreateScreen'
 	on_enter:app.animation_behavior(auto if tab.current else manual)
