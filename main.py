@@ -10,7 +10,7 @@ from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDFillRoundFlatButton, MDRaisedButton, MDFlatButton
+from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import TwoLineListItem
 from kivymd.uix.screen import MDScreen
@@ -51,24 +51,23 @@ class TestCard(MDApp):
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.theme_cls.primary_palette = 'DeepOrange'
-		# print(self.bg_color_dark)
-		self.light_color = self.generate_light()
+		self.light_color = self.generate_light_color()
 		self.bg_color_dark = self.generate_dark_color()  # 262626
-		self.light_color_1 = self.generate_light(lightness=80)
+		self.light_color_1 = self.generate_light_color(lightness=80)
 		self.primary_accent = self.bg_color_dark if self.dark_mode else self.light_color
 		self.card_color = self.bg_color_dark if self.dark_mode else [1, 1, 1, 1]
-		self.light_hex = self.generate_light(return_hex=True)
+		self.light_hex = self.generate_light_color(return_hex=True)
 
 	def generate_dark_color(self, color=None, hex_color=False, darkness=None):
 		if not color:
-			color = self.generate_light(lightness=70)
+			color = self.generate_light_color(lightness=70)[:-1]
 		mx = max(color)
 		if not darkness:
-			darkness = mx / 0.35
+			darkness = mx / 0.17
 		color = [i / darkness for i in color]
-		return color
+		return color + [1]
 
-	def generate_light(self, hex_color=False, color=None, return_hex=False, lightness=90):
+	def generate_light_color(self, hex_color=False, color=None, return_hex=False, lightness=90):
 		if hex_color:
 			color = get_color_from_hex(hex_color)
 		elif not color:
@@ -136,11 +135,12 @@ class TestCard(MDApp):
 						sm.current = 'CreateScreen'
 						self.screen_history = ['HomeScreen']
 					else:
-						self.exit_dialog = MDDialog(title='Exit', text='Do you want to exit?',
-													buttons=[
-														MDRaisedButton(text='YES', on_release=lambda x: self.stop()),
-														MDFlatButton(text='NO',
-																	 on_release=lambda x: self.exit_dialog.dismiss())])
+						self.exit_dialog = Dialog(title='Exit', text='Do you want to exit?',
+												  buttons=[
+													  MDFillRoundFlatButton(text='YES', on_release=lambda x: self.stop()
+																			, _radius=dp(15), width='50dp'),
+													  MDFlatButton(text='NO', _radius=dp(15),
+																   on_release=lambda x: self.exit_dialog.dismiss())])
 						self.exit_dialog.open()
 						self.screen_history = ['HomeScreen']
 			else:
@@ -273,6 +273,14 @@ class RoundedList(TwoLineListItem):
 
 
 class SettingScreen(MDScreen): pass
+
+
+class Dialog(MDDialog):
+	radius = dp(30), dp(30), dp(30), dp(30)
+
+	def __init__(self, **kwargs):
+		super().__init__(**kwargs)
+		self.md_bg_color = MDApp.get_running_app().primary_accent
 
 
 TestCard().run()

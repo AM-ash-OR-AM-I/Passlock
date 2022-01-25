@@ -50,7 +50,7 @@ Builder.load_string(
         size_hint_y: None
         height: self.minimum_height
         elevation: 20
-        padding: "24dp", "24dp", "8dp", "8dp"
+        padding: "24dp", "24dp", "20dp", "8dp"
         radius: root.radius
         md_bg_color:
             root.theme_cls.bg_dark \
