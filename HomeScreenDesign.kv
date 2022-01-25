@@ -134,9 +134,9 @@
 			pos: (self.x - self.rad , self.y - self.rad)
 
 <RoundedList>
-    height:'60dp'
-    ripple_alpha:.3
-    radius:dp(15),dp(15),dp(15),dp(15)
+	height:'60dp'
+	ripple_alpha:.3
+	radius:dp(15),dp(15),dp(15),dp(15)
 
 <HomeScreen>
 #    on_enter: exec("app.fps_monitor_start();app.fps=True") if not app.fps else ''
@@ -145,47 +145,47 @@
 		orientation:'vertical'
 		pos_hint:{'top':1}
 		padding:(0,dp(0),0,0)
-        Toolbar:
-            id: toolbar
-            title:'Passlock'
-            height:'56dp'
-            padding:searchbar.x,dp(8),window.width-(searchbar.x+searchbar.width),dp(5)
-            md_bg_color:app.primary_accent
-            elevation:0
-            icon_color:app.theme_cls.primary_color
-            right_action_items:
-                [['theme-light-dark',lambda x: app.toggle_mode(x)],
-                ["cog",lambda x: exec("app.change_screen('SettingScreen')")]]
+		Toolbar:
+			id: toolbar
+			title:'Passlock'
+			height:'56dp'
+			padding:searchbar.x,dp(8),window.width-(searchbar.x+searchbar.width),dp(5)
+			md_bg_color:app.primary_accent
+			elevation:0
+			icon_color:app.theme_cls.primary_color
+			right_action_items:
+				[['theme-light-dark',lambda x: app.toggle_mode(x)],
+				["cog",lambda x: exec("app.change_screen('SettingScreen')")]]
 
-        MDBoxLayout:
-            adaptive_height:True
-            orientation:'vertical'
-            md_bg_color:toolbar.md_bg_color
-            pos_hint:{'center_x':.5}
-            padding:0,dp(0),0,dp(11)
-            CardTextField:
-                id: searchbar
-                height:'50dp'
-                set_elevation:10
-                size_hint_x:.85
-                pos_hint:{'center_x':.5}
-                radius: '20dp'
-                on_focus:
-                    tab_manager.current = 'FindScreen'
+		MDBoxLayout:
+			adaptive_height:True
+			orientation:'vertical'
+			md_bg_color:toolbar.md_bg_color
+			pos_hint:{'center_x':.5}
+			padding:0,dp(0),0,dp(11)
+			CardTextField:
+				id: searchbar
+				height:'50dp'
+				set_elevation:10
+				size_hint_x:.85
+				pos_hint:{'center_x':.5}
+				radius: '20dp'
+				on_focus:
+					tab_manager.current = 'FindScreen'
 #                    self.icon_left_action = ['arrow-left' if self.focus else "magnify"]
-                icon_left_action:["magnify" if tab_manager.current == 'CreateScreen' else 'arrow-left',lambda x: exec("tab_manager.current='CreateScreen'")]
-                hint_text:'Search passwords'
-                icon_color:app.theme_cls.primary_color
-                label_name:""
-                inactive_color:app.theme_cls.primary_light[:-1]+[.6]
-        ScreenManager:
-            id: tab_manager
-            transition: sm.NoTransition()
-            CreateScreen:
-                id: create
-            FindScreen:
-                id: find
-                x_pad: searchbar.x
+				icon_left_action:["magnify" if tab_manager.current == 'CreateScreen' else 'arrow-left',lambda x: exec("tab_manager.current='CreateScreen'")]
+				hint_text:'Search passwords'
+				icon_color:app.theme_cls.primary_color
+				label_name:""
+				inactive_color:app.theme_cls.primary_light[:-1]+[.6]
+		ScreenManager:
+			id: tab_manager
+			transition: sm.NoTransition()
+			CreateScreen:
+				id: create
+			FindScreen:
+				id: find
+				x_pad: searchbar.x
 
 #		MDBottomNavigation:
 #			id:bottom_nav
@@ -200,94 +200,92 @@
 #				text: 'create'
 #				icon: 'plus'
 <CreateScreen@MDScreen>
-    name:'CreateScreen'
-    on_enter:app.animation_behavior(auto if tab.current else manual)
-    on_leave:exec("auto.opacity=0") if tab.current else exec("manual.opacity=0")
-    FloatLayout:
-        DarkAnimation:
-            id: circle_mode
-            opacity:0
-            rad: 10
-            pos: window.width, window.height-dp(112)
-            halign:'left'
-    MDTabs:
-        id:tab
-        current:False
-        on_tab_switch: self.current = not self.current
-        default_tab:0
-        indicator_color:app.theme_cls.primary_color #if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-        anim_duration:.2
-        background_color:app.primary_accent
-        tab_indicator_anim:True
-        tab_indicator_height:'3dp'
+	name:'CreateScreen'
+	on_enter:app.animation_behavior(auto if tab.current else manual)
+	on_leave:exec("auto.opacity=0") if tab.current else exec("manual.opacity=0")
+	FloatLayout:
+		DarkAnimation:
+			id: circle_mode
+			opacity:0
+			rad: 10
+			pos: window.width, window.height-dp(112)
+			halign:'left'
+	MDTabs:
+		id:tab
+		current:False
+		on_tab_switch: self.current = not self.current
+		default_tab:0
+		indicator_color:app.theme_cls.primary_color #if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+		anim_duration:.2
+		background_color:app.primary_accent
+		tab_indicator_anim:True
+		tab_indicator_height:'3dp'
 #        allow_stretch:False
-        tab_hint_x:True
-        show_anim:True
-        text_color_active:app.theme_cls.primary_color #if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
-        text_color_normal:[.75,.75,.75,1]
-        Manual:
-            id: manual
-            title: "[b]MANUAL"
-        Auto:
-            id: auto
-            title: "[b]AUTO"
+		tab_hint_x:True
+		show_anim:True
+		text_color_active:app.theme_cls.primary_color #if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+		text_color_normal:[.75,.75,.75,1]
+		Manual:
+			id: manual
+			title: "[b]MANUAL"
+		Auto:
+			id: auto
+			title: "[b]AUTO"
 
 <FindScreen@MDScreen>
-#                on_leave: find_screen.pos_hint={"top":.9}
-    name:'FindScreen'
-    x_pad: 0
-    enter:0
-    on_enter:
-        app.animation_behavior(find_screen);self.enter=1
-#        print(root.parent.parent.parent.ids.toolbar.md_bg_color)
-    on_leave:
-        find_screen.opacity=0
-    MDBoxLayout:
-        id: find_screen
-        opacity:0
-        orientation:'vertical'
-        pos_hint:{'top':1}
+	name:'FindScreen'
+	x_pad: 0
+	enter:0
+	on_enter:
+		app.animation_behavior(find_screen);self.enter=1
+	on_leave:
+		find_screen.opacity=0
+	MDBoxLayout:
+		id: find_screen
+		opacity:0
+		orientation:'vertical'
+		pos_hint:{'top':1}
 
-        RecycleView:
-            id: scroll
-            pos_hint:{'center_x':.5}
-            MDBoxLayout:
-                id: box
-                pos_hint:{'center_y':.5,'center_x':.5}
-                adaptive_height:True
-                orientation:'vertical'
-                padding:root.x_pad,dp(10),root.x_pad,0
-                md_bg_color:app.primary_accent
-                List:
-                    primary_text:'Pass1'
-                List:
-                    primary_text:'Pass2'
-                List:
-                    primary_text:'Pass3'
-                List:
-                    primary_text:'Pass1'
-                List:
-                    primary_text:'Pass2'
-                List:
-                    primary_text:'Pass3'
-                List:
-                    primary_text:'Pass1'
-                List:
-                    primary_text:'Pass2'
-                List:
-                    primary_text:'Pass3'
-                List:
-                    primary_text:'Pass1'
-                List:
-                    primary_text:'Pass2'
-                List:
-                    primary_text:'Pass3'
-                List:
-                    primary_text:'Pass1'
-                List:
-                    primary_text:'Pass2'
-                List:
-                    primary_text:'Pass3'
+		RecycleView:
+			id: scroll
+			pos_hint:{'center_x':.5}
+			MDBoxLayout:
+				id: box
+				pos_hint:{'center_y':.5,'center_x':.5}
+				adaptive_height:True
+				orientation:'vertical'
+				padding:root.x_pad,dp(10),root.x_pad,0
+				md_bg_color:app.primary_accent
+				List:
+					primary_text:'Pass1'
+				List:
+					primary_text:'Pass2'
+				List:
+					primary_text:'Pass3'
+				List:
+					primary_text:'Pass1'
+				List:
+					primary_text:'Pass2'
+				List:
+					primary_text:'Pass3'
+				List:
+					primary_text:'Pass1'
+				List:
+					primary_text:'Pass2'
+				List:
+					primary_text:'Pass3'
+				List:
+					primary_text:'Pass1'
+				List:
+					primary_text:'Pass2'
+				List:
+					primary_text:'Pass3'
+				List:
+					primary_text:'Pass1'
+				List:
+					primary_text:'Pass2'
+				List:
+					primary_text:'Pass3'
 
 
 
