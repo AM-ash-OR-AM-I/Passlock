@@ -6,10 +6,10 @@ from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.screenmanager import ScreenManager, CardTransition
 
-from PassLOCK.kivymd.theming import ThemableBehavior
 from kivymd.app import MDApp
 from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
@@ -48,6 +48,7 @@ class TestCard(MDApp):
 	fps = False
 	path_to_live_ui = 'HomeScreenDesign.kv'
 	primary_accent = ColorProperty()
+	signup = BooleanProperty(True)
 
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
@@ -59,6 +60,18 @@ class TestCard(MDApp):
 		self.card_color = self.bg_color_dark if self.dark_mode else [1, 1, 1, 1]
 		self.light_hex = self.generate_light_color(return_hex=True)
 		self.dark_hex = self.generate_dark_color(return_hex=True)
+
+	def on_signup(self, *args):
+		box = self.LoginScreen.ids.box
+		box.pos_hint = {"top": .8}
+		box.opacity = 0
+		self.animate_login(box)
+
+	def animate_login(self, instance, ):
+		# self.LoginScreen.center_y=1
+		# self.LoginScreen.pos_hint={"top": .7}
+		if instance:
+			Animation(pos_hint={"top": .95}, opacity=1, d=.4, t='out_back').start(instance)
 
 	def generate_dark_color(self, color=None, hex_color=False, darkness=None, return_hex=False):
 		if not color:
@@ -145,7 +158,7 @@ class TestCard(MDApp):
 						self.exit_dialog = Dialog(title='Exit', text='Do you want to exit?',
 												  buttons=[
 													  MDFillRoundFlatButton(text='YES', on_release=lambda x: self.stop()
-																			, _radius=dp(15), width='50dp'),
+																			, _radius=dp(15)),
 													  MDFlatButton(text='NO', _radius=dp(15),
 																   on_release=lambda x: self.exit_dialog.dismiss())])
 						self.exit_dialog.open()
@@ -168,32 +181,17 @@ class TestCard(MDApp):
 		print(f'{self.screen_history = }')
 
 	def on_dark_mode(self, instance, mode):
-		print(mode)
-		# if self.start_call:
-		#     self.set_mode()
-		# else:
-
 		current_screen = self.sm.current
 		if current_screen == 'HomeScreen':
 			tab_manager = self.sm.current_screen.ids.tab_manager
-			primary_color = Animation(md_bg_color=self.bg_color_dark if self.dark_mode else self.light_color,
+			primary_color = Animation(primary_accent=self.bg_color_dark if self.dark_mode else self.light_color,
 									  duration=.3)
-			primary_color.start(
-				self.HomeScreen.ids.toolbar)
+			primary_color.start(self)
 			if tab_manager.current == 'CreateScreen':
 				self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.3)
-				Animation(background_color=self.bg_color_dark if self.dark_mode else self.light_color, duration=.3) \
-					.start(self.HomeScreen.ids.create.ids.tab)
 				self.anim.start(self.HomeScreen)
-			else:
-				self.anim = primary_color
-				self.anim.start(self.HomeScreen.ids.find.ids.box)
-			self.anim.on_complete = self.set_mode
+			primary_color.on_complete = self.set_mode
 
-	# radius = 1.3 * max(Window.size)
-	# self.HomeScreen.ids.circle_mode.opacity = 1
-	# self.anim = Animation(rad=radius, duration=.6, t='in_quad')
-	# self.anim.start(self.HomeScreen.ids.circle_mode)
 
 	def set_mode(self, *args):
 		print("mode set")
@@ -249,10 +247,25 @@ class Dialog(MDDialog):
 
 
 class CheckboxLabel(ThemableBehavior, ButtonBehavior, RectangularRippleBehavior, MDBoxLayout):
-	def __init__(self,**kwargs):
+	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.ripple_color = self.theme_cls.primary_light
-		self.ripple_alpha =.2
+		self.ripple_alpha = .2
+
+
+class FindScreen(MDScreen):
+
+	def set_list(self):
+		def add_list(n):
+			self.ids.scroll.data.append(
+				{
+					"viewclass": "List",
+					"primary_text": f"List{n}",
+					"key_selection":"True"
+				}
+			)
+		for i in range(30):
+			add_list(i)
 
 
 TestCard().run()
