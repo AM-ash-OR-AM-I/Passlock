@@ -92,7 +92,9 @@
 			md_bg_color:app.light_color_1 if not app.dark_mode else [.25,.25,.25,1]
 			theme_text_color:'Custom'
             text_color:app.theme_cls.primary_color
-            on_release:app.change_screen('HomeScreen')
+            on_release:
+                if app.fps: app.fps_monitor_start()
+                app.change_screen('HomeScreen')
 			pos_hint:{'center_x':.5}
 	MDTextButton:
 		text:'I\'m a new user. [color=ff7a4f]Sign up!'if not app.signup else "Existing user? [color=ff7a4f]Login"

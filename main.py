@@ -45,7 +45,7 @@ class TestCard(MDApp):
 	dark_mode = BooleanProperty(False)
 	screen_history = []
 	LIVE_UI = 0
-	fps = False
+	fps = True
 	path_to_live_ui = 'HomeScreenDesign.kv'
 	primary_accent = ColorProperty()
 	signup = BooleanProperty(True)
