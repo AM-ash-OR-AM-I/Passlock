@@ -4,7 +4,9 @@
 #:set bg_color_dark get_color_from_hex('262626')
 #:import List List.List
 #:import sm kivy.uix.screenmanager
-
+<MyLabel@MDLabel>
+	theme_text_color:"Custom"
+	text_color: app.text_color
 <CheckboxLabel>
 	adaptive_size:True
 	size_hint_x:.8
@@ -18,6 +20,8 @@
 		selected_color:app.theme_cls.primary_light
 		pos_hint: {'center_x': .5}
 	MDLabel:
+		theme_text_color:"Custom"
+		text_color: app.text_color
 		text: root.text
 <Manual@MDBoxLayout+MDTabsBase>
 	orientation:'vertical'
@@ -66,6 +70,7 @@
 		CardTextField:
 			id:email_field
 			pos_hint:{'center_x':.5}
+			text_col:True
 			icon_font_size:icon_size
 			thickness:dp(1) if platform == 'android' else dp(1.4)
 			icon_color:app.theme_cls.primary_color
@@ -76,6 +81,7 @@
 			id:password_field
 			pos_hint:{'center_x':.5}
 			icon_font_size:icon_size
+			text_col:True
 			thickness:dp(1) if platform == 'android' else dp(1.4)
 			icon_color:app.theme_cls.primary_color
 			label_name:'Password'
@@ -226,7 +232,8 @@
     RecycleView:
         id: scroll
         key_viewclass: "viewclass"
-        key_size: "height"
+        scroll_y:0
+        data: root.rv_data
         RecycleList:
             id: box
             canvas.before:

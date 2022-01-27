@@ -2,7 +2,7 @@ from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex
+from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex, ListProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.screenmanager import ScreenManager, CardTransition
 
@@ -49,10 +49,12 @@ class TestCard(MDApp):
 	path_to_live_ui = 'HomeScreenDesign.kv'
 	primary_accent = ColorProperty()
 	signup = BooleanProperty(True)
+	text_color = ColorProperty()
 
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.theme_cls.primary_palette = 'DeepOrange'
+		self.text_color = self.theme_cls.text_color
 		self.light_color = self.generate_light_color()
 		self.bg_color_dark = self.generate_dark_color()  # 262626
 		self.light_color_1 = self.generate_light_color(lightness=80)
@@ -168,10 +170,9 @@ class TestCard(MDApp):
 		return True
 
 	def animation_behavior(self, instance):
-		# print(f'Anim called{instance}')
-		# instance.pos_hint = {'top': 1}
-		# Animation(opacity=1, t='linear', d=.2).start(instance)
 		Animation(opacity=1, d=.2, t='in_quad').start(instance)
+		if instance == self.HomeScreen.ids.find.ids.scroll:
+			Animation(scroll_y=1, d=.1, t='in_quad').start(instance)
 
 	def change_screen(self, screen_name, *args):
 		self.sm.transition.mode = 'push'
@@ -190,12 +191,15 @@ class TestCard(MDApp):
 			if tab_manager.current == 'CreateScreen':
 				self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.3)
 				self.anim.start(self.HomeScreen)
-			primary_color.on_complete = self.set_mode
+				if self.HomeScreen.ids.create.ids.tab.current:
+					Animation(text_color=self.theme_cls.opposite_text_color, duration=.3).start(self)
 
+			primary_color.on_complete = self.set_mode
 
 	def set_mode(self, *args):
 		print("mode set")
 		self.primary_accent = self.bg_color_dark if self.dark_mode else self.light_color
+		self.text_color = self.theme_cls.opposite_text_color
 		if self.dark_mode:
 			self.theme_cls.theme_style = 'Dark'
 			self.theme_cls.primary_hue = '300'
@@ -254,16 +258,18 @@ class CheckboxLabel(ThemableBehavior, ButtonBehavior, RectangularRippleBehavior,
 
 
 class FindScreen(MDScreen):
+	rv_data = ListProperty()
 
 	def set_list(self):
 		def add_list(n):
-			self.ids.scroll.data.append(
+			self.rv_data.append(
 				{
 					"viewclass": "List",
 					"primary_text": f"List{n}",
-					"key_selection":"True"
+
 				}
 			)
+
 		for i in range(30):
 			add_list(i)
 

@@ -1,14 +1,14 @@
+from kivy import Logger
 from kivy.animation import Animation
-from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, StringProperty, get_color_from_hex
+from kivy.properties import BooleanProperty, StringProperty, get_color_from_hex, ColorProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivymd.uix.behaviors import RectangularRippleBehavior
 
 from kivymd.app import MDApp
 from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 
 KV = '''
@@ -22,7 +22,7 @@ KV = '''
     elevation:0
     radius:'28dp'
     disable: True
-    md_bg_color:app.theme_cls.primary_light[:-1] + [.3] if self.selected else app.theme_cls.primary_light[:-1] + [0]
+    md_bg_color:self.list_color_active if self.selected else app.theme_cls.primary_light[:-1] + [0]
     MDLabel:
         adaptive_height: True
         text:root.primary_text
@@ -63,9 +63,10 @@ class List(RectangularRippleBehavior, RecycleDataViewBehavior, ThemableBehavior,
 	Builder.load_string(KV)
 	selected = BooleanProperty(False)
 	primary_text = StringProperty('Google')
-	ripple_behavior = True
+	_no_ripple_effect = True
 	ripple_alpha = .1
 	secondary_text = StringProperty("12345678910111213")
+	list_color_active = ColorProperty()
 
 	def on_release(self):
 		if self.selected:
@@ -77,24 +78,18 @@ class List(RectangularRippleBehavior, RecycleDataViewBehavior, ThemableBehavior,
 
 	def refresh_view_attrs(self, rv, index, data):
 		self.index = index
+		# Logger.info(msg="Info: Refreshed")
 		return super().refresh_view_attrs(rv, index, data)
 
 	def apply_selection(self, rv, index, is_selected):
 		self.selected = is_selected
 		rv.data[index]["selected"] = is_selected
 
-	# def on_selected(self, instance, selected):
-	# 	def anim(*args):
-	# 		if selected:
-	# 			Animation(md_bg_color=app.theme_cls.primary_light[:-1] + [.3], d=.1).start(instance)
-	# 		else:
-	# 			instance.md_bg_color = app.theme_cls.primary_light[:-1] + [0]
-	# 			Animation(height=dp(0), d=.1, opacity=0).start(self.ids.sec_box)
-	#
-	# 	app = MDApp.get_running_app()
-	# 	print(f"{instance} is selected")
-	#
-	# 	Clock.schedule_once(anim, 1)
+	def on_selected(self, instance, selected):
+		if selected:
+			self.list_color_active = self.theme_cls.primary_light[:-1] + [0]
+			Animation(list_color_active=self.theme_cls.primary_light[:-1] + [.3], d=.1).start(self)
+			# self.Li
 
 
 if __name__ == '__main__':
