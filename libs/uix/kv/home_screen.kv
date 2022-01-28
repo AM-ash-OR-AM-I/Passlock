@@ -1,8 +1,8 @@
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import Gradient kivy_gradient.Gradient
-#:import Toolbar Toolbar.Toolbar
+#:import Toolbar libs.Toolbar.Toolbar
 #:set bg_color_dark get_color_from_hex('262626')
-#:import List List.List
+#:import List libs.List.List
 #:import sm kivy.uix.screenmanager
 <MyLabel@MDLabel>
 	theme_text_color:"Custom"
@@ -147,7 +147,7 @@
 			icon_color:app.theme_cls.primary_color
 			right_action_items:
 				[['theme-light-dark',lambda x: app.toggle_mode(x)],
-				["cog",lambda x: exec("app.change_screen('SettingScreen')")]]
+				["cog",lambda x: exec("app.root.set_current('SettingsScreen')")]]
 
 		MDBoxLayout:
 			adaptive_height:True

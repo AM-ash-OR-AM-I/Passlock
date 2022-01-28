@@ -5,7 +5,7 @@
 #: set lbl_size '18sp'
 #: set icon_size 60
 #: import platform kivy.platform
-#: import CardTextField CustomCard.CardTextField
+#: import CardTextField libs.CustomCard.CardTextField
 #: import Clock kivy.clock.Clock
 <FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
 
@@ -27,7 +27,7 @@
 			angle_end:270
 
     on_enter:
-        Clock.schedule_once(lambda x:app.animate_login(box),1)
+        Clock.schedule_once(lambda x:app.animate_login(box),.5)
     on_leave:
         box.pos_hint:{"top":.8}
 	MDBoxLayout:
@@ -84,7 +84,7 @@
                     theme_text_color:'Custom' if self.disabled else "Secondary"
                     text_color:[0,0,0,0] if self.disabled else [0,0,0,0]
                     font_size:"15sp"
-	
+
 				FloatingButton:
 					elevation:10
 					icon:'login'if app.signup else "lock"
@@ -94,7 +94,7 @@
 					text_color:app.theme_cls.primary_color
 					on_release:
 						if app.fps: app.fps_monitor_start()
-						app.change_screen('HomeScreen')
+						app.root.set_current('HomeScreen')
 					pos_hint:{'center_x':.5}
 	MDTextButton:
 		text:'I\'m a new user. [color=ff7a4f]Sign up!'if not app.signup else "Existing user? [color=ff7a4f]Login"

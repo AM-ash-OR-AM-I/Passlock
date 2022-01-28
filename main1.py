@@ -1,8 +1,10 @@
 from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
+from kivy.lang import Builder
 from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex, ListProperty
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.screenmanager import ScreenManager, CardTransition
 
 from kivymd.app import MDApp
 from kivymd.color_definitions import colors
@@ -12,12 +14,12 @@ from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
 from kivymd.uix.dialog import MDDialog
-from libs.uix.root import Root
+from kivymd.uix.screen import MDScreen
 
 if platform != 'android':
 	Window.size = (450, 900)
 else:
-	from libs.JavaAPI import statusbar
+	from JavaAPI import statusbar
 
 KV = '''
 #:import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
@@ -39,7 +41,7 @@ class RoundButton(MDFillRoundFlatButton):
 		self.theme_cls.bind(primary_hue=self.update_md_bg_color)
 
 
-class MainApp(MDApp):
+class TestCard(MDApp):
 	dark_mode = BooleanProperty(False)
 	screen_history = []
 	LIVE_UI = 0
@@ -49,9 +51,6 @@ class MainApp(MDApp):
 	signup = BooleanProperty(True)
 	text_color = ColorProperty()
 	rv_data = ListProperty()
-	HomeScreen = None
-	LoginScreen = None
-	SettingScreen = None
 
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
@@ -67,18 +66,13 @@ class MainApp(MDApp):
 		Window.keyboard_anim_args = {"d": 0.2, "t": "linear"}
 		Window.softinput_mode = "below_target"
 
-	def build(self):
-		self.root = Root()
-		self.root.set_current("LoginScreen")
-		self.set_list()
-
 	def on_signup(self, *args):
-		if not self.LoginScreen:
-			self.LoginScreen = self.root.get_screen("LoginScreen")
 		box = self.LoginScreen.ids.box
 		box.pos_hint = {"top": .8}
 		box.opacity = 0
 		self.animate_login(box)
+
+
 
 	def set_list(self):
 		def add_list(n):
@@ -139,23 +133,40 @@ class MainApp(MDApp):
 			_hex = hex(round(r * 255))[2:] + hex(round(g * 255))[2:] + hex(round(b * 255))[2:]
 			return _hex
 
+	def build(self):
+		Builder.load_file('LoginScreenDesign.kv')
+		if not self.LIVE_UI:
+			Builder.load_file('HomeScreenDesign.kv')
+			Builder.load_file('Settings.kv')
+
+		self.sm = ScreenManager(transition=CardTransition())
+		self.LoginScreen = LoginScreen(name='LoginScreen')
+		self.HomeScreen = HomeScreen(name='HomeScreen')
+		self.SettingScreen = SettingScreen(name='SettingScreen')
+		self.sm.add_widget(self.LoginScreen)
+		self.sm.add_widget(self.HomeScreen)
+		self.sm.add_widget(self.SettingScreen)
+		self.set_list()
+		Window.bind(on_keyboard=self.go_back)
+		return Builder.load_string(KV) if self.LIVE_UI else self.sm
+
 	def back_button(self, home_screen=False, *args):
 		if not home_screen:
 			self.screen_history.pop()
 		else:
 			self.screen_history = ['HomeScreen']
-		self.root.transition.mode = 'pop'
-		self.root.transition.direction = 'right'
-		self.root.current = self.screen_history[-1]
+		self.sm.transition.mode = 'pop'
+		self.sm.transition.direction = 'right'
+		self.sm.current = self.screen_history[-1]
 
 	def go_back(self, instance, key, *args):
 		if key in (27, 1001):
 			if self.screen_history:
 				self.screen_history.pop()
 				if self.screen_history:
-					self.root.transition.mode = 'pop'
-					self.root.transition.direction = 'right'
-					self.root.current = self.screen_history[-1]
+					self.sm.transition.mode = 'pop'
+					self.sm.transition.direction = 'right'
+					self.sm.current = self.screen_history[-1]
 
 				else:
 					sm = self.HomeScreen.ids.tab_manager
@@ -180,18 +191,16 @@ class MainApp(MDApp):
 			Animation(opacity=1, d=.2, t='in_quad').start(instance)
 
 	def change_screen(self, screen_name, *args):
-		self.root.transition.mode = 'push'
-		self.root.transition.direction = 'left'
-		self.root.current = screen_name
+		self.sm.transition.mode = 'push'
+		self.sm.transition.direction = 'left'
+		self.sm.current = screen_name
 		self.screen_history.append(screen_name)
 		print(f'{self.screen_history = }')
 
 	def on_dark_mode(self, instance, mode):
-		current_screen = self.root.current
-		if not self.HomeScreen:
-			self.HomeScreen = self.root.get_screen("HomeScreen")
+		current_screen = self.sm.current
 		if current_screen == 'HomeScreen':
-			tab_manager = self.root.current_screen.ids.tab_manager
+			tab_manager = self.sm.current_screen.ids.tab_manager
 			primary_color = Animation(primary_accent=self.bg_color_dark if self.dark_mode else self.light_color,
 									  duration=.3)
 			primary_color.start(self)
@@ -217,7 +226,6 @@ class MainApp(MDApp):
 			self.theme_cls.primary_hue = '500'
 			if platform == 'android':
 				statusbar(status_color=self.light_hex, white_text=True)
-
 		self.HomeScreen.ids.create.ids.circle_mode.rad = 0.1
 
 	def toggle_mode(self, *args):
@@ -230,6 +238,16 @@ class MainApp(MDApp):
 		if platform == 'android':
 			statusbar(status_color=colors["Dark"]["CardsDialogs"] if self.dark_mode else self.light_hex,
 					  white_text=not self.dark_mode)
+
+
+
+class LoginScreen(MDScreen): pass
+
+
+class HomeScreen(MDScreen): pass
+
+
+class SettingScreen(MDScreen): pass
 
 
 class Dialog(MDDialog):
@@ -247,5 +265,4 @@ class CheckboxLabel(ThemableBehavior, ButtonBehavior, RectangularRippleBehavior,
 		self.ripple_alpha = .2
 
 
-if __name__ == "__main__":
-	MainApp().run()
+TestCard().run()

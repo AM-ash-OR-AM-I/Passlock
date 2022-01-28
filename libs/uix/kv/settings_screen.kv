@@ -1,7 +1,7 @@
 <ListItem@OneLineAvatarIconListItem>
 	_no_ripple_effect: True
 
-<SettingScreen>
+<SettingsScreen>
     md_bg_color: app.theme_cls.bg_normal
     MDBoxLayout:
         adaptive_height:True
@@ -24,7 +24,7 @@
             padding:dp(15),0
             elevation:10
             icon_color:app.theme_cls.primary_color
-            left_action_items:[['arrow-left',lambda x: app.back_button()]]
+            left_action_items:[['arrow-left',lambda x: app.root.goback()]]
 
 	    MDBoxLayout:
             adaptive_height:True
@@ -61,10 +61,8 @@
             adaptive_height:True
             padding:0,dp(20),0,0
             orientation:'vertical'
-            MDRectangleFlatButton:
+            MDRoundFlatButton:
                 text:'[b]EXPLAIN FEATURES'
+                theme_text_color:"Custom"
+                text_color:app.theme_cls.primary_color
                 pos_hint:{'center_x':.5}
-
-
-
-#SettingScreen:
