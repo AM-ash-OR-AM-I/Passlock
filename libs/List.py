@@ -1,4 +1,3 @@
-from kivy import Logger
 from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.properties import BooleanProperty, StringProperty, get_color_from_hex, ColorProperty

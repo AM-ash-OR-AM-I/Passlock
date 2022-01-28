@@ -2,7 +2,7 @@
 #:set height window.height
 #:set width window.width
 #: set rad width/2
-#: set lbl_size '18sp'
+#: set lbl_size '17sp'
 #: set icon_size 60
 #: import platform kivy.platform
 #: import CardTextField libs.CustomCard.CardTextField
@@ -12,14 +12,14 @@
 <LoginScreen>:
     canvas:
 		Color:
-			rgba:app.theme_cls.primary_color[:-1]+[.8]
+			rgba:app.theme_cls.primary_color[:-1]+[.9]
 		Ellipse:
 			size:rad,rad
 			pos:0-rad/2,height-rad+20
 			angle_start:0
 			angle_end:180
 		Color:
-			rgba:1,0.8,0.65,0.8
+			rgba:app.light_color2[:-1]+[.7]
 		Ellipse:
 			pos:0,height-rad/2
 			size:rad,rad
@@ -27,84 +27,86 @@
 			angle_end:270
 
     on_enter:
-        Clock.schedule_once(lambda x:app.animate_login(box),.5)
-    on_leave:
-        box.pos_hint:{"top":.8}
+        Clock.schedule_once(lambda x:app.animate_login(box),1.25)
+
 	MDBoxLayout:
-	    id: box
 		adaptive_height:True
-		orientation:'vertical'
+		id: box
 		opacity:0
-        pos_hint:{"top":.8}
-#		pos_hint:{'top':0.95}
+		pos_hint:{"top":.7}
+		orientation:'vertical'
 		spacing:'50dp'
 		MDLabel:
-		    adaptive_height:True
-            text:"WELCOME\nTO [color=ff7a4f][u]PA[/u]SS" if app.signup else "LOGIN\nTO [color=ff7a4f][u]PA[/u]SS"+""
-            markup:True
-            font_name:'Poppins'
-            halign:'center'
-            font_size:'48dp'
-            pos_hint:{'top':1}
-        MDBoxLayout:
-            adaptive_height:True
-            spacing:'50dp'
-            orientation:'vertical'
-            padding:(0,dp(20),0,0)
-            CardTextField:
-                id: email
-                label_name:'Email Address'
-                hint_text:'username@mail.com' if app.signup else "Your mail name"
-                icon_font_size:icon_size
-                icon_color:app.theme_cls.primary_color
-                thickness:dp(1) if platform == 'android' else dp(1.4)
-                inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+			adaptive_height:True
+			text:"WELCOME\nTO [color=ff7a4f][u]PA[/u]SS" if app.signup else "LOGIN\nTO [color=ff7a4f][u]PA[/u]SS"+""
+			markup:True
+			font_name:'Poppins'
+			halign:'center'
+			font_size:'44dp'
+			pos_hint:{'top':1}
+		MDBoxLayout:
+			adaptive_height:True
+			spacing:'50dp'
+			orientation:'vertical'
+			padding:(0,dp(15),0,0)
+			CardTextField:
+				id: email
+				label_name:'Email Address'
+				hint_text:'username@mail.com' if app.signup else "Your mail name"
+				icon_font_size:icon_size
+				icon_color:app.theme_cls.primary_color
+				thickness:dp(1) if platform == 'android' else dp(1.4)
+				inactive_color:app.theme_cls.primary_light[:-1]+[.8]
 				pos_hint:{'center_x':.5}
-                icon_left_action:['account']
-                icon_right_action:['chevron-down']
+				icon_left_action:['account']
+				icon_right_action:['chevron-down']
 			MDBoxLayout:
 				adaptive_height:True
 				orientation:'vertical'
-				spacing:'25dp'
-                CardTextField:
-                    id: password
-                    label_name:'Password'
-                    hint_text:('Create' if app.signup else "Enter")+" Password"
-                    thickness:dp(1) if platform == 'android' else dp(1.4)
-                    icon_font_size:icon_size
-                    icon_color:app.theme_cls.primary_color
-                    inactive_color:app.theme_cls.primary_light[:-1]+[.8]
-                    pos_hint:{'center_x':.5}
-                    icon_right_action:['eye-off-outline']
-                MDTextButton:
-                    text:'Forgot Password?'
-                    font_name:'RobotoMedium'
-                    pos_hint:{'center_x':.5}
-                    disabled: app.signup
-                    theme_text_color:'Custom' if self.disabled else "Secondary"
-                    text_color:[0,0,0,0] if self.disabled else [0,0,0,0]
-                    font_size:"15sp"
+				spacing:'35dp'
+				CardTextField:
+					id: password
+					label_name:'Password'
+					hint_text:('Create' if app.signup else "Enter")+" Password"
+					thickness:dp(1) if platform == 'android' else dp(1.4)
+					icon_font_size:icon_size
+					icon_color:app.theme_cls.primary_color
+					inactive_color:app.theme_cls.primary_light[:-1]+[.8]
+					pos_hint:{'center_x':.5}
+					icon_right_action:['eye-off-outline']
 
 				FloatingButton:
+					id: lock
 					elevation:10
 					icon:'login'if app.signup else "lock"
-					user_font_size:100
-					md_bg_color:app.light_color_1 if not app.dark_mode else [.25,.25,.25,1]
+					user_font_size:80
+					md_bg_color:app.light_color1 if not app.dark_mode else app.bg_color_dark2
 					theme_text_color:'Custom'
 					text_color:app.theme_cls.primary_color
 					on_release:
 						if app.fps: app.fps_monitor_start()
 						app.root.set_current('HomeScreen')
 					pos_hint:{'center_x':.5}
+
+
 	MDTextButton:
-		text:'I\'m a new user. [color=ff7a4f]Sign up!'if not app.signup else "Existing user? [color=ff7a4f]Login"
+		id:forgot
+		x: password.x+dp(25)
+		y: password.y-dp(25)
+		text:'Forgot Password?'
+		font_name:'RobotoMedium'
+		disabled: app.signup
+		theme_text_color:'Custom' if self.disabled else "Secondary"
+		text_color:[0,0,0,0] if self.disabled else [0,0,0,0]
+		font_size:"12sp"
+
+	MDTextButton:
+		text:'New user? [color=ff7a4f]Signup!'if not app.signup else "Existing user? [color=ff7a4f]Login."
 		markup:True
 		pos_hint:{'center_y':.1,'center_x':.5}
 		font_name:'RobotoMedium'
 		halign:'center'
 		size_hint_x:1
+		pos_hint:{"top":.06}
 		on_release: app.signup = not app.signup
 		font_size:lbl_size
-
-
-#LoginScreen:

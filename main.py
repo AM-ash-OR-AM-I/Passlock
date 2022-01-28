@@ -1,7 +1,7 @@
 from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
-from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex, ListProperty
+from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex, ListProperty, NumericProperty
 from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd.app import MDApp
@@ -14,10 +14,15 @@ from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from libs.uix.root import Root
 
+Window.keyboard_anim_args = {"d": 0.2, "t": "linear"}
+Window.softinput_mode = "below_target"
+
 if platform != 'android':
 	Window.size = (450, 900)
 else:
-	from libs.JavaAPI import statusbar
+	from libs.JavaAPI import statusbar, keyboard_height
+
+	print(keyboard_height())
 
 KV = '''
 #:import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
@@ -42,6 +47,7 @@ class RoundButton(MDFillRoundFlatButton):
 class MainApp(MDApp):
 	dark_mode = BooleanProperty(False)
 	screen_history = []
+	key_height = NumericProperty(0)
 	LIVE_UI = 0
 	fps = True
 	path_to_live_ui = 'HomeScreenDesign.kv'
@@ -59,18 +65,42 @@ class MainApp(MDApp):
 		self.text_color = self.theme_cls.text_color
 		self.light_color = self.generate_light_color()
 		self.bg_color_dark = self.generate_dark_color()  # 262626
-		self.light_color_1 = self.generate_light_color(lightness=80)
+		self.bg_color_dark2 = self.generate_dark_color(darkness=.26)
+		self.light_color1 = self.generate_light_color(lightness=80)
+		self.light_color2 = self.generate_light_color(lightness=70)
 		self.primary_accent = self.bg_color_dark if self.dark_mode else self.light_color
 		self.card_color = self.bg_color_dark if self.dark_mode else [1, 1, 1, 1]
 		self.light_hex = self.generate_light_color(return_hex=True)
 		self.dark_hex = self.generate_dark_color(return_hex=True)
-		Window.keyboard_anim_args = {"d": 0.2, "t": "linear"}
-		Window.softinput_mode = "below_target"
 
 	def build(self):
 		self.root = Root()
 		self.root.set_current("LoginScreen")
 		self.set_list()
+
+	def on_key_height(self, instance, val):
+		print(val)
+		if self.root.current == 'LoginScreen':
+			if not self.LoginScreen:
+				self.LoginScreen = self.root.get_screen("LoginScreen")
+
+			if val > 0:
+				self.box_height = self.LoginScreen.ids.box.pos_hint["top"]
+				diff = (val - self.LoginScreen.ids.lock.y + dp(50)) / Window.height
+				Animation(pos_hint={"top": self.box_height + diff}, t="out_quad", d=.2).start(self.LoginScreen.ids.box)
+			else:
+				Animation(pos_hint={"top": self.box_height}, t="in_quad", d=.2).start(self.LoginScreen.ids.box)
+		else:
+			if not self.HomeScreen:
+				self.HomeScreen = self.root.get_screen("HomeScreen")
+			generate = self.HomeScreen.ids.create.ids.auto.ids.generate
+			# TODO: use anim only if screen is auto
+			if val > 0:
+				diff = (val - generate.y + dp(50))
+				Animation(y=diff, t="out_quad", d=.2).start(
+					self.HomeScreen)
+			else:
+				Animation(y=0, t="in_quad", d=.2).start(self.HomeScreen)
 
 	def on_signup(self, *args):
 		if not self.LoginScreen:
@@ -85,17 +115,15 @@ class MainApp(MDApp):
 			self.rv_data.append(
 				{
 					"viewclass": "List",
-					"primary_text": f"List{n}",
+					"primary_text": f"Google{n}",
 
 				}
 			)
 
-		for i in range(10):
+		for i in range(20):
 			add_list(i)
 
 	def animate_login(self, instance, ):
-		# self.LoginScreen.center_y=1
-		# self.LoginScreen.pos_hint={"top": .7}
 		if instance:
 			Animation(pos_hint={"top": .95}, opacity=1, d=.4, t='out_back').start(instance)
 
@@ -104,8 +132,10 @@ class MainApp(MDApp):
 			color = self.generate_light_color(lightness=70)[:-1]
 		mx = max(color)
 		if not darkness:
-			darkness = mx / 0.17
-		color = [i / darkness for i in color]
+			factor = mx / 0.18
+		else:
+			factor = mx / darkness
+		color = [i / factor for i in color]
 		if not return_hex:
 			return color + [1]
 		else:

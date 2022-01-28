@@ -1,9 +1,10 @@
 from kivy import platform
 from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ColorProperty, StringProperty, BooleanProperty, NumericProperty, ListProperty, \
-    get_color_from_hex
+	get_color_from_hex
 from kivy.uix.textinput import TextInput
 
 from kivymd.app import MDApp
@@ -14,7 +15,7 @@ from kivymd.uix.button import MDIconButton
 from kivymd.uix.relativelayout import MDRelativeLayout
 
 if platform == 'android':
-    from JavaAPI import fix_back_button
+	from JavaAPI import fix_back_button, keyboard_height
 
 Builder.load_string('''
 
@@ -85,122 +86,131 @@ Builder.load_string('''
 
 
 class CardTextField(MDRelativeLayout, ThemableBehavior):
-    inactive_color = ColorProperty([.5, .5, .5, .1])
-    border_color = ColorProperty([.5, .5, .5, .1])
-    active_color = [0, .7, 1, .7]
-    focus = BooleanProperty(False)
-    text_font_size = StringProperty('17sp')
-    hint_text_color = ColorProperty(None)
-    text = StringProperty('')
-    thickness = NumericProperty(dp(1) if platform == 'android' else dp(1.4))
-    hint_text = StringProperty('')
-    label_size = StringProperty('20dp')
-    label_name = StringProperty('')
-    icon_left_action = ListProperty(None)
-    multiline = BooleanProperty(False)
-    icon_color = ColorProperty([.5, .5, .5, 1])
-    icon_right_action = ListProperty(None)
-    icon_font_size = NumericProperty()
-    win = True if platform == 'win' else False
-    start_anim = BooleanProperty(False)
+	inactive_color = ColorProperty([.5, .5, .5, .1])
+	border_color = ColorProperty([.5, .5, .5, .1])
+	active_color = [0, .7, 1, .7]
+	focus = BooleanProperty(False)
+	text_font_size = StringProperty('17sp')
+	hint_text_color = ColorProperty(None)
+	text = StringProperty('')
+	thickness = NumericProperty(dp(1) if platform == 'android' else dp(1.4))
+	hint_text = StringProperty('')
+	label_size = StringProperty('20dp')
+	label_name = StringProperty('')
+	icon_left_action = ListProperty(None)
+	multiline = BooleanProperty(False)
+	icon_color = ColorProperty([.5, .5, .5, 1])
+	icon_right_action = ListProperty(None)
+	icon_font_size = NumericProperty()
+	win = True if platform == 'win' else False
+	start_anim = BooleanProperty(False)
 
-    app = None
-    c = 0
+	app = None
+	c = 0
 
-    def on_start_anim(self, instance, mode):
-        self.anim = Animation(md_bg_color=get_color_from_hex(colors["Dark" if mode else "Light"]["CardsDialogs"]), d=.3)
-        self.anim.start(instance)
+	def on_start_anim(self, instance, mode):
+		self.anim = Animation(md_bg_color=get_color_from_hex(colors["Dark" if mode else "Light"]["CardsDialogs"]), d=.3)
+		self.anim.start(instance)
 
-    def on_icon_left_action(self, instance, icon_list: 'List containing icon name and function'):
-        box = self.ids.card_box
-        rm = 0
-        for inst in box.children:
-            if isinstance(inst, TextInput):
-                rm = 1
-            else:
-                if rm:
-                    box.remove_widget(inst)
-        # self.ids.card_box.remove_widget()
-        if len(icon_list) and type(icon_list[0]) != list:
-            if len(icon_list) == 1:
-                self.icon_left = MDIconButton(icon=self.icon_left_action[0], theme_text_color='Custom',
-                                              text_color=self.icon_color, user_font_size=self.icon_font_size,
-                                              pos_hint={'center_y': .5})
+	def on_icon_left_action(self, instance, icon_list: 'List containing icon name and function'):
+		box = self.ids.card_box
+		rm = 0
+		for inst in box.children:
+			if isinstance(inst, TextInput):
+				rm = 1
+			else:
+				if rm:
+					box.remove_widget(inst)
+		# self.ids.card_box.remove_widget()
+		if len(icon_list) and type(icon_list[0]) != list:
+			if len(icon_list) == 1:
+				self.icon_left = MDIconButton(icon=self.icon_left_action[0], theme_text_color='Custom',
+											  text_color=self.icon_color, user_font_size=self.icon_font_size,
+											  pos_hint={'center_y': .5})
 
-            else:
-                self.icon_left = MDIconButton(icon=self.icon_left_action[0], theme_text_color='Custom',
-                                              text_color=self.icon_color, user_font_size=self.icon_font_size,
-                                              pos_hint={'center_y': .5}, on_release=self.icon_left_action[1])
-            self.ids.card_box.add_widget(self.icon_left, index=1)
-        elif type(icon_list[0]) == list:
-            for icons in icon_list:
-                if len(icons) == 1:
-                    self.icon_left = MDIconButton(icon=icons[0], theme_text_color='Custom',
-                                                  text_color=self.icon_color, user_font_size=self.icon_font_size,
-                                                  pos_hint={'center_y': .5})
+			else:
+				self.icon_left = MDIconButton(icon=self.icon_left_action[0], theme_text_color='Custom',
+											  text_color=self.icon_color, user_font_size=self.icon_font_size,
+											  pos_hint={'center_y': .5}, on_release=self.icon_left_action[1])
+			self.ids.card_box.add_widget(self.icon_left, index=1)
+		elif type(icon_list[0]) == list:
+			for icons in icon_list:
+				if len(icons) == 1:
+					self.icon_left = MDIconButton(icon=icons[0], theme_text_color='Custom',
+												  text_color=self.icon_color, user_font_size=self.icon_font_size,
+												  pos_hint={'center_y': .5})
 
-                else:
-                    self.icon_left = MDIconButton(icon=icons[0], theme_text_color='Custom',
-                                                  text_color=self.icon_color, user_font_size=self.icon_font_size,
-                                                  pos_hint={'center_y': .5}, on_release=icons[1])
-                self.ids.card_box.add_widget(self.icon_left, index=1)
+				else:
+					self.icon_left = MDIconButton(icon=icons[0], theme_text_color='Custom',
+												  text_color=self.icon_color, user_font_size=self.icon_font_size,
+												  pos_hint={'center_y': .5}, on_release=icons[1])
+				self.ids.card_box.add_widget(self.icon_left, index=1)
 
-    def on_icon_right_action(self, instance, icon_list):
-        if len(icon_list) and type(icon_list[0]) != list:
-            if len(icon_list) == 1:
-                self.icon_right = MDIconButton(icon=self.icon_right_action[0], theme_text_color='Custom',
-                                               text_color=self.icon_color, user_font_size=self.icon_font_size,
-                                               pos_hint={'center_y': .5})
+	def on_icon_right_action(self, instance, icon_list):
+		if len(icon_list) and type(icon_list[0]) != list:
+			if len(icon_list) == 1:
+				self.icon_right = MDIconButton(icon=self.icon_right_action[0], theme_text_color='Custom',
+											   text_color=self.icon_color, user_font_size=self.icon_font_size,
+											   pos_hint={'center_y': .5})
 
-            else:
-                self.icon_right = MDIconButton(icon=self.icon_right_action[0], theme_text_color='Custom',
-                                               text_color=self.icon_color, user_font_size=self.icon_font_size,
-                                               pos_hint={'center_y': .5}, on_release=self.icon_right_action[1])
-            self.ids.card_box.add_widget(self.icon_right)
-        elif type(icon_list[0]) == list:
-            for icons in icon_list:
-                if len(icons) == 1:
-                    self.icon_right = MDIconButton(icon=icons[0], theme_text_color='Custom',
-                                                   text_color=self.icon_color, user_font_size=self.icon_font_size,
-                                                   pos_hint={'center_y': .5})
+			else:
+				self.icon_right = MDIconButton(icon=self.icon_right_action[0], theme_text_color='Custom',
+											   text_color=self.icon_color, user_font_size=self.icon_font_size,
+											   pos_hint={'center_y': .5}, on_release=self.icon_right_action[1])
+			self.ids.card_box.add_widget(self.icon_right)
+		elif type(icon_list[0]) == list:
+			for icons in icon_list:
+				if len(icons) == 1:
+					self.icon_right = MDIconButton(icon=icons[0], theme_text_color='Custom',
+												   text_color=self.icon_color, user_font_size=self.icon_font_size,
+												   pos_hint={'center_y': .5})
 
-                else:
-                    self.icon_right = MDIconButton(icon=icons[0], theme_text_color='Custom',
-                                                   text_color=self.icon_color, user_font_size=self.icon_font_size,
-                                                   pos_hint={'center_y': .5}, on_release=icons[1])
-                self.ids.card_box.add_widget(self.icon_right)
+				else:
+					self.icon_right = MDIconButton(icon=icons[0], theme_text_color='Custom',
+												   text_color=self.icon_color, user_font_size=self.icon_font_size,
+												   pos_hint={'center_y': .5}, on_release=icons[1])
+				self.ids.card_box.add_widget(self.icon_right)
 
-    def on_icon_color(self, instance, color):
-        if self.icon_left_action is not None:
-            self.icon_left.text_color = color
-        if self.icon_right_action is not None:
-            self.icon_right.text_color = color
+	def on_icon_color(self, instance, color):
+		if self.icon_left_action is not None:
+			self.icon_left.text_color = color
+		if self.icon_right_action is not None:
+			self.icon_right.text_color = color
 
-    def on_inactive_color(self, *args):
-        self.border_color = self.inactive_color
+	def on_inactive_color(self, *args):
+		self.border_color = self.inactive_color
 
-    def on_text(self, instance, text):
-        """Use this to do what you want"""
+	def on_text(self, instance, text):
+		"""Use this to do what you want"""
 
-    def on_focus(self, instance, focus):
-        print('event:<on_focus> is_called')
-        if self.app is None:
-            self.app = MDApp.get_running_app()
-        if platform == "android":
-            if not focus:
-                fix_back_button()
+	def on_focus(self, instance, focus):
+		print('event:<on_focus> is_called')
+		if self.app is None:
+			self.app = MDApp.get_running_app()
+		if platform == "android":
+			if not focus:
+				fix_back_button()
 
-        if focus:
-            self.border_color = self.active_color
-        else:
-            self.border_color = self.inactive_color
+			def call(*args):
+				if focus:
+					if (height:=keyboard_height())>0:
+						self.app.key_height = height
+				else:
+					self.app.key_height = 0
+			Clock.schedule_once(call, .2)
+
+
+		if focus:
+			self.border_color = self.active_color
+		else:
+			self.border_color = self.inactive_color
 
 
 if __name__ == '__main__':
-    class TestCard(MDApp):
-        def build(self):
-            Window.size = (500, 900)
-            return Builder.load_string('''
+	class TestCard(MDApp):
+		def build(self):
+			Window.size = (500, 900)
+			return Builder.load_string('''
 #:import window kivy.core.window.Window
 #:set height window.height
 #:set width window.width
@@ -288,4 +298,4 @@ LoginScreen:
             ''')
 
 
-    TestCard().run()
+	TestCard().run()

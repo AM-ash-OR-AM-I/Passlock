@@ -105,7 +105,7 @@
 
 
 	RoundButton:
-
+		id: generate
 		adaptive_height:True
 		text:'GENERATE'
 		font_name:'RobotoMedium'
@@ -137,6 +137,7 @@
 	md_bg_color: app.theme_cls.bg_normal
 	MDBoxLayout:
 		orientation:'vertical'
+		id: box
 		Toolbar:
 			id: toolbar
 			title:'Passlock'
@@ -181,8 +182,6 @@
 
 <CreateScreen@MDScreen>
 	name:'CreateScreen'
-#	on_enter:app.animation_behavior(auto if tab.current else manual)
-#	on_leave:exec("auto.opacity=0") if tab.current else exec("manual.opacity=0")
 	FloatLayout:
 		DarkAnimation:
 			id: circle_mode
@@ -193,17 +192,17 @@
 	MDTabs:
 		id:tab
 		current:False
-		on_tab_switch: self.current = not self.current
+		on_tab_switch:
+			self.current = not self.current
 		default_tab:1
-		indicator_color:app.theme_cls.primary_color #if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+		indicator_color:app.theme_cls.primary_color
 		anim_duration:.2
 		background_color:app.primary_accent
 		tab_indicator_anim:True
 		tab_indicator_height:'3dp'
-#        allow_stretch:False
 		tab_hint_x:True
 		show_anim:True
-		text_color_active:app.theme_cls.primary_color #if app.theme_cls.theme_style=='Dark' else [1,1,1,1]
+		text_color_active:app.theme_cls.primary_color
 		text_color_normal:[.75,.75,.75,1]
 		Manual:
 			id: manual
@@ -228,7 +227,7 @@
         data: app.rv_data
         RecycleList:
             id: box
-			padding: "25dp"
+			padding: "15dp"
             default_size: None, dp(56)
             default_size_hint: 1, None
             size_hint_y: None
