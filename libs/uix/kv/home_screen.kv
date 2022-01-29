@@ -4,6 +4,8 @@
 #:set bg_color_dark get_color_from_hex('262626')
 #:import List libs.List.List
 #:import sm kivy.uix.screenmanager
+<ButtonLabel@ButtonBehavior+MDLabel>
+
 <MyLabel@MDLabel>
 	theme_text_color:"Custom"
 	text_color: app.text_color
@@ -12,44 +14,51 @@
 	size_hint_x:.8
 	pos_hint: {'center_x': .5}
 	spacing:'12dp'
+	active: False
 	radius:dp(5),dp(5)
 	text:''
 	MDCheckbox:
+		id: check
 		size_hint: None, None
 		size: "36dp", "36dp"
 		selected_color:app.theme_cls.primary_light
 		pos_hint: {'center_x': .5}
-	MDLabel:
-		theme_text_color:"Custom"
-		text_color: app.text_color
+	ButtonLabel:
+		on_release:
+			check.active = not check.active
 		text: root.text
 <Manual@MDBoxLayout+MDTabsBase>
 	orientation:'vertical'
 	pos_hint:{'top':1}
 	adaptive_height:True
-	spacing:'50sp'
 	padding:(0,dp(80),0,0)
-	CardTextField:
-		id:email_field
-		pos_hint:{'center_x':.5}
-		icon_font_size:icon_size
-		thickness:dp(1) if platform == 'android' else dp(1.4)
-		icon_color:app.theme_cls.primary_color
-		label_name:'Name of Password'
-		hint_text:'e.g. username@gmail.com'
-		inactive_color:app.theme_cls.primary_light[:-1]+[.6]
+	spacing:"25sp"
+	MDBoxLayout:
+		spacing:'50sp'
+		orientation:'vertical'
+		adaptive_height:True
+		CardTextField:
+			id:email_field
+			pos_hint:{'center_x':.5}
+			icon_font_size:icon_size
+			thickness:dp(1) if platform == 'android' else dp(1.4)
+			icon_color:app.theme_cls.primary_color
+			label_name:'Name of Password'
+			hint_text:'e.g. username@gmail.com'
+			inactive_color:app.theme_cls.primary_light[:-1]+[.6]
 
-	CardTextField:
-		id:password_field
-		pos_hint:{'center_x':.5}
-		icon_font_size:icon_size
-		icon_color:app.theme_cls.primary_color
-		thickness:dp(1) if platform == 'android' else dp(1.4)
-		label_name:'Password'
-		hint_text:'Enter the password'
-		inactive_color:app.theme_cls.primary_light[:-1]+[.6]
-		icon_right_action:['eye-off-outline']
+		CardTextField:
+			id:password_field
+			pos_hint:{'center_x':.5}
+			icon_font_size:icon_size
+			icon_color:app.theme_cls.primary_color
+			thickness:dp(1) if platform == 'android' else dp(1.4)
+			label_name:'Password'
+			hint_text:'Enter the password'
+			inactive_color:app.theme_cls.primary_light[:-1]+[.6]
+			icon_right_action:['eye-off-outline']
 	RoundButton:
+		id: add
 		adaptive_height:True
 		text:'CREATE'
 		font_name:'RobotoMedium'
@@ -57,61 +66,62 @@
 		font_size:'18sp'
 		pos_hint:{'center_x':.5}
 
-<Auto@MDBoxLayout+MDTabsBase>
-	orientation:'vertical'
-	pos_hint:{'top':1}
-	adaptive_height:True
-	spacing:'25sp'
-	padding:(0,dp(75),0,0)
+<Auto@ScrollView+MDTabsBase>
 	MDBoxLayout:
 		orientation:'vertical'
+		pos_hint:{'top':1}
 		adaptive_height:True
-		spacing:'50sp'
-		CardTextField:
-			id:email_field
+		spacing:'25sp'
+		padding:(0,dp(75),0,dp(20))
+		MDBoxLayout:
+			orientation:'vertical'
+			adaptive_height:True
+			spacing:'50sp'
+			CardTextField:
+				id:email_field
+				pos_hint:{'center_x':.5}
+				text_col:True
+				icon_font_size:icon_size
+				thickness:dp(1) if platform == 'android' else dp(1.4)
+				icon_color:app.theme_cls.primary_color
+				label_name:'Name of Password'
+				hint_text:'e.g. username@gmail.com'
+				inactive_color:app.theme_cls.primary_light[:-1]+[.6]
+			CardTextField:
+				id:password_field
+				pos_hint:{'center_x':.5}
+				icon_font_size:icon_size
+				text_col:True
+				thickness:dp(1) if platform == 'android' else dp(1.4)
+				icon_color:app.theme_cls.primary_color
+				label_name:'Password'
+				text:'adHKf@%123*n'
+				icon_right_action:[['content-copy'],['reload']]
+
+				inactive_color:app.theme_cls.primary_light[:-1]+[.6]
+
+		RoundButton:
+			id: generate
+			adaptive_height:True
+			text:'GENERATE'
+			font_name:'RobotoMedium'
+			size_hint_x:.8
+			font_size:'18sp'
 			pos_hint:{'center_x':.5}
-			text_col:True
-			icon_font_size:icon_size
-			thickness:dp(1) if platform == 'android' else dp(1.4)
-			icon_color:app.theme_cls.primary_color
-			label_name:'Name of Password'
-			hint_text:'e.g. username@gmail.com'
-			inactive_color:app.theme_cls.primary_light[:-1]+[.6]
-		CardTextField:
-			id:password_field
-			pos_hint:{'center_x':.5}
-			icon_font_size:icon_size
-			text_col:True
-			thickness:dp(1) if platform == 'android' else dp(1.4)
-			icon_color:app.theme_cls.primary_color
-			label_name:'Password'
-			text:'adHKf@%123*n'
-			icon_right_action:[['content-copy'],['reload']]
 
-			inactive_color:app.theme_cls.primary_light[:-1]+[.6]
+		MDBoxLayout:
+			orientation:'vertical'
+			adaptive_height:True
+			center_x:password_field.center_x
+			CheckboxLabel:
+				text:"Use uppercase letters (A, B, C,..)"
+			CheckboxLabel:
+				text:"Use lowercase letters (a, b, c,..)"
+			CheckboxLabel:
+				text:"Use numbers (1, 2, 3,..)"
+			CheckboxLabel:
+				text:"Use Special Characters ($, #, % .)"
 
-	MDBoxLayout:
-		orientation:'vertical'
-		adaptive_height:True
-		center_x:password_field.center_x
-		CheckboxLabel:
-			text:"Use uppercase letters (A, B, C,..)"
-		CheckboxLabel:
-			text:"Use lowercase letters (a, b, c,..)"
-		CheckboxLabel:
-			text:"Use numbers (1, 2, 3,..)"
-		CheckboxLabel:
-			text:"Use Special Characters ($, #, % .)"
-
-
-	RoundButton:
-		id: generate
-		adaptive_height:True
-		text:'GENERATE'
-		font_name:'RobotoMedium'
-		size_hint_x:.8
-		font_size:'18sp'
-		pos_hint:{'center_x':.5}
 
 <RoundButton>
 	canvas:

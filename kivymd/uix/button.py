@@ -891,6 +891,7 @@ class MDRoundFlatIconButton(MDRoundFlatButton):
 class MDFillRoundFlatButton(MDRoundFlatButton, BaseElevationButton):
     opposite_colors = BooleanProperty(True)
 
+
     def __init__(self, **kwargs):
         # Some blatant shit :(
         super().__init__(**kwargs)

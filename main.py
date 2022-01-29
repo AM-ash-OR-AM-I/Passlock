@@ -2,7 +2,6 @@ from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex, ListProperty, NumericProperty
-from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd.app import MDApp
 from kivymd.color_definitions import colors
@@ -12,17 +11,16 @@ from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
 from kivymd.uix.dialog import MDDialog
+from kivymd.uix.selectioncontrol import MDCheckbox
 from libs.uix.root import Root
 
-Window.keyboard_anim_args = {"d": 0.2, "t": "linear"}
-Window.softinput_mode = "below_target"
+# Window.keyboard_anim_args = {"d": 0.2, "t": "linear"}
+# Window.softinput_mode = "below_target"
 
 if platform != 'android':
 	Window.size = (450, 900)
 else:
-	from libs.JavaAPI import statusbar, keyboard_height
-
-	print(keyboard_height())
+	from libs.JavaAPI import statusbar
 
 KV = '''
 #:import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
@@ -53,7 +51,6 @@ class MainApp(MDApp):
 	path_to_live_ui = 'HomeScreenDesign.kv'
 	primary_accent = ColorProperty()
 	signup = BooleanProperty(True)
-	text_color = ColorProperty()
 	rv_data = ListProperty()
 	HomeScreen = None
 	LoginScreen = None
@@ -62,7 +59,6 @@ class MainApp(MDApp):
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.theme_cls.primary_palette = 'DeepOrange'
-		self.text_color = self.theme_cls.text_color
 		self.light_color = self.generate_light_color()
 		self.bg_color_dark = self.generate_dark_color()  # 262626
 		self.bg_color_dark2 = self.generate_dark_color(darkness=.26)
@@ -83,24 +79,28 @@ class MainApp(MDApp):
 		if self.root.current == 'LoginScreen':
 			if not self.LoginScreen:
 				self.LoginScreen = self.root.get_screen("LoginScreen")
-
-			if val > 0:
-				self.box_height = self.LoginScreen.ids.box.pos_hint["top"]
-				diff = (val - self.LoginScreen.ids.lock.y + dp(50)) / Window.height
-				Animation(pos_hint={"top": self.box_height + diff}, t="out_quad", d=.2).start(self.LoginScreen.ids.box)
-			else:
-				Animation(pos_hint={"top": self.box_height}, t="in_quad", d=.2).start(self.LoginScreen.ids.box)
+			self.diff = (val - self.LoginScreen.ids.lock.y + dp(20)) / Window.height
+			if self.diff > 0:
+				if val > 0:
+					self.box_height = self.LoginScreen.ids.box.pos_hint["top"]
+					Animation(pos_hint={"top": self.box_height + self.diff}, t="out_quad", d=.2).start(
+						self.LoginScreen.ids.box)
+				else:
+					Animation(pos_hint={"top": self.box_height}, t="in_quad", d=.2).start(self.LoginScreen.ids.box)
 		else:
 			if not self.HomeScreen:
 				self.HomeScreen = self.root.get_screen("HomeScreen")
-			generate = self.HomeScreen.ids.create.ids.auto.ids.generate
-			# TODO: use anim only if screen is auto
-			if val > 0:
-				diff = (val - generate.y + dp(50))
-				Animation(y=diff, t="out_quad", d=.2).start(
-					self.HomeScreen)
-			else:
-				Animation(y=0, t="in_quad", d=.2).start(self.HomeScreen)
+			if self.HomeScreen.ids.tab_manager.current == "CreateScreen":
+				generate = self.HomeScreen.ids.create.ids.manual.ids.add
+				self.HomeScreen.ids.create.ids.auto.scroll_y = 1
+				# TODO: use anim only if screen is auto
+				self.diff = (val - generate.y + dp(20))
+				if self.diff > 0:
+					if val > 0:
+						Animation(y=self.diff, t="out_quad", d=.2).start(
+							self.HomeScreen)
+					else:
+						Animation(y=0, t="in_quad", d=.2).start(self.HomeScreen)
 
 	def on_signup(self, *args):
 		if not self.LoginScreen:
@@ -228,15 +228,12 @@ class MainApp(MDApp):
 			if tab_manager.current == 'CreateScreen':
 				self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.3)
 				self.anim.start(self.HomeScreen)
-				if self.HomeScreen.ids.create.ids.tab.current:
-					Animation(text_color=self.theme_cls.opposite_text_color, duration=.3).start(self)
 
 			primary_color.on_complete = self.set_mode
 
 	def set_mode(self, *args):
 		print("mode set")
 		self.primary_accent = self.bg_color_dark if self.dark_mode else self.light_color
-		self.text_color = self.theme_cls.opposite_text_color
 		if self.dark_mode:
 			self.theme_cls.theme_style = 'Dark'
 			self.theme_cls.primary_hue = '300'
@@ -270,7 +267,7 @@ class Dialog(MDDialog):
 		self.md_bg_color = MDApp.get_running_app().primary_accent
 
 
-class CheckboxLabel(ThemableBehavior, ButtonBehavior, RectangularRippleBehavior, MDBoxLayout):
+class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.ripple_color = self.theme_cls.primary_light
