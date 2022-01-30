@@ -196,8 +196,8 @@ class MainApp(MDApp):
 						self.exit_dialog = Dialog(title='Exit', text='Do you want to exit?',
 												  buttons=[
 													  MDFillRoundFlatButton(text='YES', on_release=lambda x: self.stop()
-																			, _radius=dp(15)),
-													  MDFlatButton(text='NO', _radius=dp(15),
+																			, _radius=dp(20)),
+													  MDFlatButton(text='NO', _radius=dp(20),
 																   on_release=lambda x: self.exit_dialog.dismiss())])
 						self.exit_dialog.open()
 						self.screen_history = ['HomeScreen']
