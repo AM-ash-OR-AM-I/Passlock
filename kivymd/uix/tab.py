@@ -1420,6 +1420,12 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     def get_slides(self):
         return self.carousel.slides
 
+    def get_current_tab(self):
+        """
+        :return: Current Tab
+        """
+        return self.carousel.current_slide
+
     def add_widget(self, widget, index=0, canvas=None):
         # You can add only subclass of MDTabsBase.
         if not isinstance(widget, (MDTabsBase, MDTabsMain, MDTabsBar)):
@@ -1602,7 +1608,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         if self.tab_hint_x is True:
             layout.padding = [0, 0]
             Clock.schedule_once(self._update_tab_hint_x)
-            return True
+
         padding = [0, 0]
         # This is more efficient than to use sum([layout.children]).
         width = layout.width - (layout.padding[0] * 2)

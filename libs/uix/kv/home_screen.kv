@@ -22,6 +22,7 @@
 		size_hint: None, None
 		size: "36dp", "36dp"
 		selected_color:app.theme_cls.primary_light
+		unselected_color: [.8,.8,.8,1]
 		pos_hint: {'center_x': .5}
 	ButtonLabel:
 		on_release:
@@ -67,6 +68,7 @@
 		pos_hint:{'center_x':.5}
 
 <Auto@ScrollView+MDTabsBase>
+    always_overscroll: False
 	MDBoxLayout:
 		orientation:'vertical'
 		pos_hint:{'top':1}
@@ -201,10 +203,7 @@
 			halign:'left'
 	MDTabs:
 		id:tab
-		current:False
-		on_tab_switch:
-			self.current = not self.current
-		default_tab:1
+#		default_tab:1
 		indicator_color:app.theme_cls.primary_color
 		anim_duration:.2
 		background_color:app.primary_accent

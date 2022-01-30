@@ -252,8 +252,6 @@ class MainApp(MDApp):
 
 	def on_start(self):
 		# self.HomeScreen.ids.create.ids.tab.=''
-		# TODO: fix active color of tab on_start
-
 		if platform == 'android':
 			statusbar(status_color=colors["Dark"]["CardsDialogs"] if self.dark_mode else self.light_hex,
 					  white_text=not self.dark_mode)
