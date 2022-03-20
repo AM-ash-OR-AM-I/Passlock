@@ -73,8 +73,11 @@ class MainApp(MDApp):
 			update_content = Factory.UpdateContent()
 			self.update_dialog = Dialog(
 				title="Update", type="custom", content_cls=update_content,
-				buttons=[DialogButton(text="Cancel", on_release=lambda x: self.update_dialog.dismiss()),
-						 DialogButton(text=f"Update [font=Icons]{md_icons['update']}[/font]")]
+				size_hint_x=.8,
+				buttons=[
+					DialogButton(text="Cancel", on_release=lambda x: self.update_dialog.dismiss()),
+					DialogButton(text=f"Update [font=Icons]{md_icons['update']}[/font]")
+				]
 			)
 		self.update_dialog.open()
 
