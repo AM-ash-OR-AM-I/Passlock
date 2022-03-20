@@ -50,7 +50,7 @@ Builder.load_string(
         size_hint_y: None
         height: self.minimum_height
         elevation: 20
-        padding: "24dp", "24dp", "20dp", "8dp"
+        padding: "30dp", "30dp", "30dp", "15dp"
         radius: root.radius
         md_bg_color:
             root.theme_cls.bg_dark \
@@ -59,7 +59,7 @@ Builder.load_string(
         MDLabel:
             id: title
             text: root.title
-            font_style: "H6"
+            font_style: "H5"
             bold: True
             markup: True
             size_hint_y: None

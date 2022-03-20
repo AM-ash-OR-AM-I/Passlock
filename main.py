@@ -1,17 +1,21 @@
 from kivy import platform
 from kivy.animation import Animation
+from kivy.core.clipboard import Clipboard
 from kivy.core.window import Window
+from kivy.factory import Factory
+from kivy.lang import Builder
 from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex, ListProperty, NumericProperty
 
 from kivymd.app import MDApp
 from kivymd.color_definitions import colors
+from kivymd.icon_definitions import md_icons
 from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior
+from kivymd.toast import toast
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.selectioncontrol import MDCheckbox
 from libs.uix.root import Root
 
 # Window.keyboard_anim_args = {"d": 0.2, "t": "linear"}
@@ -23,7 +27,7 @@ else:
 	from libs.JavaAPI import statusbar
 
 KV = '''
-#:import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
+#: import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
 #: import Window kivy.core.window.Window
 HotReloadViewer:
 	path: app.path_to_live_ui
@@ -33,28 +37,17 @@ HotReloadViewer:
 '''
 
 
-class RoundButton(MDFillRoundFlatButton):
-	padding = [0, dp(20), 0, dp(20)]
-	_radius = dp(20), dp(20)
-
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
-		self.theme_cls.bind(primary_hue=self.update_md_bg_color)
-
-
 class MainApp(MDApp):
 	dark_mode = BooleanProperty(False)
 	screen_history = []
 	key_height = NumericProperty(0)
-	LIVE_UI = 0
+	LIVE_UI = 1
 	fps = True
-	path_to_live_ui = 'HomeScreenDesign.kv'
+	path_to_live_ui = 'custom_dialog.kv'
 	primary_accent = ColorProperty()
 	signup = BooleanProperty(True)
 	rv_data = ListProperty()
-	HomeScreen = None
-	LoginScreen = None
-	SettingScreen = None
+	HomeScreen = LoginScreen = SettingScreen = update_dialog = exit_dialog = None
 
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
@@ -73,6 +66,17 @@ class MainApp(MDApp):
 		self.root = Root()
 		self.root.set_current("LoginScreen")
 		self.set_list()
+		Builder.load_file("libs/classes.kv")
+
+	def open_update_dialog(self):
+		if not self.update_dialog:
+			update_content = Factory.UpdateContent()
+			self.update_dialog = Dialog(
+				title="Update", type="custom", content_cls=update_content,
+				buttons=[DialogButton(text="Cancel", on_release=lambda x: self.update_dialog.dismiss()),
+						 DialogButton(text=f"Update [font=Icons]{md_icons['update']}[/font]")]
+			)
+		self.update_dialog.open()
 
 	def on_key_height(self, instance, val):
 		print(val)
@@ -112,11 +116,18 @@ class MainApp(MDApp):
 
 	def set_list(self):
 		def add_list(n):
+			text_to_copy = "Demo text"
 			self.rv_data.append(
 				{
 					"viewclass": "List",
 					"primary_text": f"Google{n}",
-
+					"button_actions": {
+						"copy": lambda: exec(
+							f'Clipboard.copy("{text_to_copy}"); toast("Item copied")',
+							{"Clipboard": Clipboard, "toast": toast}),
+						"update": lambda: exec("MDApp.get_running_app().open_update_dialog()"),
+						"delete": lambda: toast("Item deleted")
+					},
 				}
 			)
 
@@ -129,13 +140,13 @@ class MainApp(MDApp):
 
 	def generate_dark_color(self, color=None, hex_color=False, darkness=None, return_hex=False):
 		if not color:
-			color = self.generate_light_color(lightness=70)[:-1]
+			color = self.generate_light_color(lightness=70)
 		mx = max(color)
 		if not darkness:
 			factor = mx / 0.18
 		else:
-			factor = mx / darkness
-		color = [i / factor for i in color]
+			factor = mx / (darkness / 100)
+		color = [i / factor for i in color[:-1]]
 		if not return_hex:
 			return color + [1]
 		else:
@@ -143,7 +154,7 @@ class MainApp(MDApp):
 			_hex = hex(round(r * 255))[2:] + hex(round(g * 255))[2:] + hex(round(b * 255))[2:]
 			return _hex
 
-	def generate_light_color(self, hex_color=False, color=None, return_hex=False, lightness=90):
+	def generate_light_color(self, hex_color=False, color=None, return_hex=False, lightness=87):
 		if hex_color:
 			color = get_color_from_hex(hex_color)
 		elif not color:
@@ -178,32 +189,14 @@ class MainApp(MDApp):
 		self.root.transition.direction = 'right'
 		self.root.current = self.screen_history[-1]
 
-	def go_back(self, instance, key, *args):
-		if key in (27, 1001):
-			if self.screen_history:
-				self.screen_history.pop()
-				if self.screen_history:
-					self.root.transition.mode = 'pop'
-					self.root.transition.direction = 'right'
-					self.root.current = self.screen_history[-1]
-
-				else:
-					sm = self.HomeScreen.ids.tab_manager
-					if sm.current == 'FindScreen':
-						sm.current = 'CreateScreen'
-						self.screen_history = ['HomeScreen']
-					else:
-						self.exit_dialog = Dialog(title='Exit', text='Do you want to exit?',
-												  buttons=[
-													  MDFillRoundFlatButton(text='YES', on_release=lambda x: self.stop()
-																			, _radius=dp(20)),
-													  MDFlatButton(text='NO', _radius=dp(20),
-																   on_release=lambda x: self.exit_dialog.dismiss())])
-						self.exit_dialog.open()
-						self.screen_history = ['HomeScreen']
-			else:
-				self.stop()
-		return True
+	def open_exit_dialog(self):
+		if not self.exit_dialog:
+			self.exit_dialog = Dialog(
+				title='Exit', text='Do you want to exit?', buttons=[
+					MDFillRoundFlatButton(text='YES', on_release=lambda x: self.stop(), _radius=dp(20)),
+					MDFlatButton(
+						text='NO', _radius=dp(20), on_release=lambda x: self.exit_dialog.dismiss())])
+		self.exit_dialog.open()
 
 	def animation_behavior(self, instance):
 		if not instance.opacity:
@@ -222,8 +215,10 @@ class MainApp(MDApp):
 			self.HomeScreen = self.root.get_screen("HomeScreen")
 		if current_screen == 'HomeScreen':
 			tab_manager = self.root.current_screen.ids.tab_manager
-			primary_color = Animation(primary_accent=self.bg_color_dark if self.dark_mode else self.light_color,
-									  duration=.3)
+			primary_color = Animation(
+				primary_accent=self.bg_color_dark if self.dark_mode else self.light_color,
+				duration=.3
+			)
 			primary_color.start(self)
 			if tab_manager.current == 'CreateScreen':
 				self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.3)
@@ -253,16 +248,41 @@ class MainApp(MDApp):
 	def on_start(self):
 		# self.HomeScreen.ids.create.ids.tab.=''
 		if platform == 'android':
-			statusbar(status_color=colors["Dark"]["CardsDialogs"] if self.dark_mode else self.light_hex,
-					  white_text=not self.dark_mode)
+			statusbar(
+				status_color=colors["Dark"]["CardsDialogs"] if self.dark_mode else self.light_hex,
+				white_text=not self.dark_mode
+			)
+
+
+class RoundButton(MDFillRoundFlatButton):
+	padding = [0, dp(20), 0, dp(20)]
+	_radius = dp(20), dp(20)
+
+	def __init__(self, **kwargs):
+		super().__init__(**kwargs)
+		self.theme_cls.bind(primary_hue=self.update_md_bg_color)
 
 
 class Dialog(MDDialog):
-	radius = dp(30), dp(30), dp(30), dp(30)
+	radius = [dp(30)] * 4
+
+	def update_bg_color(self,*args):
+		self.md_bg_color = MDApp.get_running_app().primary_accent
 
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.md_bg_color = MDApp.get_running_app().primary_accent
+		self.theme_cls.bind(theme_style=self.update_bg_color)
+
+
+
+class DialogButton(MDFlatButton):
+	def __init__(self, **kwargs):
+		super().__init__(**kwargs)
+		self.theme_text_color = "Custom"
+		self.font_name = "RobotoMedium"
+		self.font_size = "16sp"
+		self.text_color = self.theme_cls.primary_color
 
 
 class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):

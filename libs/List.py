@@ -1,9 +1,9 @@
 from kivy.animation import Animation
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, StringProperty, get_color_from_hex, ColorProperty
+from kivy.properties import BooleanProperty, StringProperty, get_color_from_hex, ColorProperty, ListProperty, \
+	DictProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-
 from kivymd.app import MDApp
 from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior
@@ -12,53 +12,53 @@ from kivymd.uix.boxlayout import MDBoxLayout
 
 KV = '''
 <List>
-    orientation:'vertical'
-    size_hint_y:None
-    padding: dp(28),dp(0),dp(10),dp(15)
-    size_hint_x:1
-    spacing:'6dp'
-    height:'90dp' if self.selected else "56dp"
-    elevation:0
-    radius:'28dp'
-    disable: True
-    md_bg_color:self.list_color_active if self.selected else app.theme_cls.primary_light[:-1] + [0]
-    MDLabel:
-        adaptive_height: True
-        text:root.primary_text
-    MDBoxLayout:
-        id: sec_box
-        size_hint_y:None
-        height:root.selected*dp(30) 
-        opacity: root.selected*1
-        MDLabel:
-            adaptive_height:True
-            text:root.secondary_text
-            theme_text_color:'Secondary'
-        MDIconButton:
-            id: button
-            disabled: not root.selected
-            md_bg_color_disabled:[0,0,0,0]
-            icon:'content-copy'
-            pos_hint:{'center_y':.5}
-        MDIconButton:
-            id: button
-            disabled: not root.selected
-            md_bg_color_disabled:[0,0,0,0]
-            icon:'pencil-outline'
-            pos_hint:{'center_y':.5}
-            # text_color:[.3,.3,.3,1]
-        MDIconButton:
-            id: button
-            disabled: not root.selected
-            md_bg_color_disabled:[0,0,0,0]
-            icon:'trash-can-outline'
-            pos_hint:{'center_y':.5}
+	orientation:'vertical'
+	size_hint_y:None
+	padding: dp(28),dp(0),dp(10),dp(15)
+	size_hint_x:1
+	spacing:'6dp'
+	height:'90dp' if self.selected else "56dp"
+	elevation:0
+	radius:'28dp'
+	disable: True
+	md_bg_color:self.list_color_active if self.selected else app.theme_cls.primary_light[:-1] + [0]
+	MDLabel:
+		adaptive_height: True
+		text:root.primary_text
+	MDBoxLayout:
+		id: sec_box
+		size_hint_y:None
+		height:root.selected*dp(30) 
+		opacity: root.selected*1
+		MDLabel:
+			adaptive_height:True
+			text:root.secondary_text
+			theme_text_color:'Secondary'
+		MDIconButton:
+			id: copy_button
+			disabled: not root.selected
+			md_bg_color_disabled:[0,0,0,0]
+			icon:'content-copy'
+			pos_hint:{'center_y':.5}
+		MDIconButton:
+			id: update_button
+			disabled: not root.selected
+			md_bg_color_disabled:[0,0,0,0]
+			icon:'pencil-outline'
+			pos_hint:{'center_y':.5} 
+			# text_color:[.3,.3,.3,1]
+		MDIconButton:
+			id: delete_button
+			disabled: not root.selected
+			md_bg_color_disabled:[0,0,0,0]
+			icon:'trash-can-outline'
+			pos_hint:{'center_y':.5}
 
 '''
 
 
-class List(RectangularRippleBehavior, RecycleDataViewBehavior, ThemableBehavior, ButtonBehavior,
-		   MDBoxLayout):  # ThemableBehavior, ButtonBehavior, MDBoxLayout or MDCard
+class List(RectangularRippleBehavior, RecycleDataViewBehavior, ThemableBehavior, ButtonBehavior, MDBoxLayout):
+	# ThemableBehavior, ButtonBehavior, MDBoxLayout or MDCard
 	Builder.load_string(KV)
 	selected = BooleanProperty(False)
 	primary_text = StringProperty('Google')
@@ -66,6 +66,13 @@ class List(RectangularRippleBehavior, RecycleDataViewBehavior, ThemableBehavior,
 	ripple_alpha = .1
 	secondary_text = StringProperty("12345678910111213")
 	list_color_active = ColorProperty()
+	button_actions = DictProperty()
+
+	def on_button_actions(self,*args):
+		if len(self.button_actions)==3:
+			self.ids.copy_button.on_release = self.button_actions["copy"]
+			self.ids.update_button.on_release = self.button_actions["update"]
+			self.ids.delete_button.on_release = self.button_actions["delete"]
 
 	def on_release(self):
 		if self.selected:
@@ -88,7 +95,7 @@ class List(RectangularRippleBehavior, RecycleDataViewBehavior, ThemableBehavior,
 		if selected:
 			self.list_color_active = self.theme_cls.primary_light[:-1] + [0]
 			Animation(list_color_active=self.theme_cls.primary_light[:-1] + [.3], d=.1).start(self)
-			# self.Li
+# self.Li
 
 
 if __name__ == '__main__':
@@ -101,34 +108,34 @@ if __name__ == '__main__':
 		def build(self):
 			return Builder.load_string("""
 MDScreen:
-    md_bg_color:[.8,.8,.8,1]
-    # RecycleView:
-    MDBoxLayout:
-        pos_hint:{'top':0.8}
-        adaptive_height: True
-        # size_hint_y:.7
-        # height:'100dp'
-        orientation:'vertical'
-        # OneLineListItem:
-        #     text:'Hi'
-        List:
-        List:
-        List:
-        List:
-        # OneLineListItem:
-        #     text:'Hi'
-        # OneLineListItem:
-        #     text:'Hi'
-        # OneLineListItem:
-        #     text:'Hi'
-        # OneLineListItem:
-        #     text:'Hi'
-        List:
-        # OneLineListItem:
-        #     text:'Hi'
-        
-            
-            """)
+	md_bg_color:[.8,.8,.8,1]
+	# RecycleView:
+	MDBoxLayout:
+		pos_hint:{'top':0.8}
+		adaptive_height: True
+		# size_hint_y:.7
+		# height:'100dp'
+		orientation:'vertical'
+		# OneLineListItem:
+		#     text:'Hi'
+		List:
+		List:
+		List:
+		List:
+		# OneLineListItem:
+		#     text:'Hi'
+		# OneLineListItem:
+		#     text:'Hi'
+		# OneLineListItem:
+		#     text:'Hi'
+		# OneLineListItem:
+		#     text:'Hi'
+		List:
+		# OneLineListItem:
+		#     text:'Hi'
+		
+			
+			""")
 
 
 	CardBehavior().run()

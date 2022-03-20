@@ -4,6 +4,7 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ListProperty
 from kivy.uix.screenmanager import ScreenManager, CardTransition
+from kivymd.app import MDApp
 
 
 class Root(ScreenManager):
@@ -49,7 +50,12 @@ class Root(ScreenManager):
 
     def _handle_keyboard(self, instance, key, *args):
         if key == 27:
-            self.goback()
+            if self.current=="HomeScreen" and self.current_screen.ids.tab_manager.current == 'FindScreen':
+                self.current_screen.ids.tab_manager.current = "CreateScreen"
+            elif self.current=="HomeScreen":
+                MDApp.get_running_app().open_exit_dialog()
+            else:
+                self.goback()
             return True
 
     def goback(self):
