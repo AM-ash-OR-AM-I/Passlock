@@ -220,8 +220,10 @@
 		Auto:
 			id: auto
 			title: "[b]AUTO"
+
 <RecycleList@LayoutSelectionBehavior+RecycleBoxLayout>
-<FindScreen@MDScreen>
+
+<FindScreen>
 	name:'FindScreen'
 	x_pad: 0
 	enter:0
@@ -234,7 +236,7 @@
     RecycleView:
         id: scroll
         key_viewclass: "viewclass"
-        data: app.rv_data
+        data: root.rv_data
         RecycleList:
             id: box
 			padding: "15dp"
