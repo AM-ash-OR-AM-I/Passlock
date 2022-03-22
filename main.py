@@ -3,7 +3,7 @@ from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex, ListProperty, NumericProperty
+from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex, NumericProperty
 from kivymd.app import MDApp
 from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
@@ -36,7 +36,6 @@ class MainApp(MDApp):
     path_to_live_ui = 'OtherStuff/custom_dialog.kv'
     primary_accent = ColorProperty()
     signup = BooleanProperty(True)
-    rv_data = ListProperty()
     HomeScreen = LoginScreen = SettingScreen = update_dialog = exit_dialog = None
 
     def __init__(self, **kwargs):
