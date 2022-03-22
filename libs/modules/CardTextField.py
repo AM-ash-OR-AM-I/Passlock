@@ -15,10 +15,11 @@ from kivymd.uix.button import MDIconButton
 from kivymd.uix.relativelayout import MDRelativeLayout
 
 if platform == 'android':
-	from JavaAPI import fix_back_button, keyboard_height
+	from AndroidAPI import fix_back_button, keyboard_height
 
 Builder.load_string('''
 
+# kv_start
 <CardTextField>
     height: '60dp'
     size_hint_y:None
@@ -82,6 +83,7 @@ Builder.load_string('''
                 root.focus = self.focus
             y: card.y
             center_x: card.center_x
+# kv_end
 ''')
 
 

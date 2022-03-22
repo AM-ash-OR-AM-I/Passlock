@@ -1,33 +1,14 @@
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import Gradient kivy_gradient.Gradient
-#:import Toolbar libs.Toolbar.Toolbar
+#:import Toolbar libs.modules.Toolbar.Toolbar
 #:set bg_color_dark get_color_from_hex('262626')
-#:import List libs.List.List
+#:import List libs.modules.List.List
 #:import sm kivy.uix.screenmanager
 <ButtonLabel@ButtonBehavior+MDLabel>
 
 <MyLabel@MDLabel>
 	theme_text_color:"Custom"
 	text_color: app.text_color
-<CheckboxLabel>
-	adaptive_size:True
-	size_hint_x:.8
-	pos_hint: {'center_x': .5}
-	spacing:'12dp'
-	active: False
-	radius:dp(5),dp(5)
-	text:''
-	MDCheckbox:
-		id: check
-		size_hint: None, None
-		size: "36dp", "36dp"
-		selected_color:app.theme_cls.primary_light
-		unselected_color: [.8,.8,.8,1]
-		pos_hint: {'center_x': .5}
-	ButtonLabel:
-		on_release:
-			check.active = not check.active
-		text: root.text
 
 <Manual@MDBoxLayout+MDTabsBase>
 	orientation:'vertical'
@@ -124,15 +105,6 @@
 				text:"Use numbers (1, 2, 3,..)"
 			CheckboxLabel:
 				text:"Use Special Characters ($, #, % .)"
-
-
-<RoundButton>
-	canvas:
-		RoundedRectangle:
-			size: self.size
-			pos: self.pos
-			radius:dp(20),dp(20)
-			texture: Gradient.horizontal([1,1,1,0], [1,1,1,.25])
 
 <DarkAnimation@Widget>
 	rad : 80
@@ -245,4 +217,3 @@
             size_hint_y: None
             height: self.minimum_height
             orientation: "vertical"
-
