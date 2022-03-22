@@ -8,7 +8,7 @@ from kivymd.app import MDApp
 from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
 from kivymd.uix.button import MDFlatButton
-from libs.uix.classes import DialogButton, RoundIconButton, Dialog
+from libs.uix.classes import DialogButton, RoundIconButton, Dialog, RoundButton
 from libs.uix.root import Root
 
 if platform != 'android':
@@ -70,6 +70,9 @@ class MainApp(MDApp):
         self.update_dialog.open()
 
     def on_key_height(self, instance, val):
+
+        """ Used to move screen up/down so that UI elements are visible when keyboard is shown. """
+
         print(val)
         if self.root.current == 'LoginScreen':
             if not self.LoginScreen:
@@ -88,7 +91,6 @@ class MainApp(MDApp):
             if self.HomeScreen.ids.tab_manager.current == "CreateScreen":
                 generate = self.HomeScreen.ids.create.ids.manual.ids.add
                 self.HomeScreen.ids.create.ids.auto.scroll_y = 1
-                # TODO: use anim only if screen is auto
                 self.diff = (val - generate.y + dp(20))
                 if self.diff > 0:
                     if val > 0:
@@ -100,6 +102,9 @@ class MainApp(MDApp):
                 Window.softinput_mode = "below_target"
 
     def on_signup(self, *args):
+
+        """ Animation to be shown when clicking on login or signup """
+
         if not self.LoginScreen:
             self.LoginScreen = self.root.get_screen("LoginScreen")
         box = self.LoginScreen.ids.box
@@ -108,6 +113,9 @@ class MainApp(MDApp):
         self.animate_login(box)
 
     def animate_login(self, instance, ):
+
+        """ Animation to be shown when user enters the app """
+
         if instance:
             Animation(pos_hint={"top": .95}, opacity=1, d=.4, t='out_back').start(instance)
 
@@ -212,7 +220,7 @@ class MainApp(MDApp):
         self.dark_mode = not self.dark_mode
 
     def on_start(self):
-        # self.HomeScreen.ids.create.ids.tab.=''
+        """ Sets status bar color in android. """
         if platform == 'android':
             statusbar(
                 status_color=colors["Dark"]["CardsDialogs"] if self.dark_mode else self.light_hex,
