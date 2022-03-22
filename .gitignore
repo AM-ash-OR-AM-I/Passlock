@@ -2,5 +2,6 @@ bin
 .buildozer
 test.py
 PassLOCK_old
-OtherSt
+OtherStuff
 uff
+.idea
