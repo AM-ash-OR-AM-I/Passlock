@@ -17,7 +17,7 @@ class RoundButton(MDFillRoundFlatButton):
 			size: self.size
 			pos: self.pos
 			radius:dp(20),dp(20)
-			texture: Gradient.horizontal([1,1,1,0], [1,1,1,.25])
+			texture: Gradient.horizontal([1,1,1,0], [1,1,1,.2])
 			
 # kv_end
 """)
@@ -35,22 +35,6 @@ class RoundIconButton(MDFillRoundFlatIconButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls.bind(primary_hue=self.update_md_bg_color)
-
-    def update_text_color(self, *args):
-        if self.text_color in (
-                [0.0, 0.0, 0.0, 0.87],
-                [0.0, 0.0, 0.0, 1.0],
-                [1.0, 1.0, 1.0, 1.0],
-        ):
-            self.text_color = [1, 1, 1, 1]
-
-    def update_icon_color(self, interval):
-        if not self.icon_color:
-            self.icon_color = [1, 1, 1, 1]
-
-    def update_md_bg_color(self, instance, value):
-        super().update_md_bg_color(instance, value)
-        self.icon_color = [1, 1, 1, 1]
 
 
 # ------- The below string loads the update dialog box content --------

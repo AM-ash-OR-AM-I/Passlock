@@ -27,7 +27,7 @@ Builder.load_string('''
     radius: dp(30)
     set_elevation: 0
     label_name:'Hi there'
-    md_bg_color: [1,1,1,1] if app.theme_cls.theme_style=='Light' else app.bg_color_dark
+    md_bg_color: [1,1,1,1] if app.theme_cls.theme_style=='Light' else app.dark_color
     label_size:'15sp'
     hint_text:''
     adaptive_height:True

@@ -71,6 +71,7 @@ Builder.load_string(
             size: self.size
             pos: self.pos
             radius: [root._radius, ]
+            # texture: Gradient.horizontal([1,1,1,0], [1,1,1,.25]) Modify this to get Gradient Effect.
 
     lbl_txt: lbl_txt
     size_hint: None, None

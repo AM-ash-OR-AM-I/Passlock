@@ -19,7 +19,7 @@
 			angle_start:0
 			angle_end:180
 		Color:
-			rgba:app.light_color2[:-1]+[.7]
+			rgba:app.login_circle_light[:-1]+[.7]
 		Ellipse:
 			pos:0,height-rad/2
 			size:rad,rad
@@ -80,7 +80,8 @@
 					elevation:10
 					icon:'login'if app.signup else "lock"
 					user_font_size:80
-					md_bg_color:app.light_color1 if not app.dark_mode else app.bg_color_dark2
+					user_font_size:80
+					md_bg_color:app.light_color if not app.dark_mode else app.dark_color
 					theme_text_color:'Custom'
 					text_color:app.theme_cls.primary_color
 					on_release:

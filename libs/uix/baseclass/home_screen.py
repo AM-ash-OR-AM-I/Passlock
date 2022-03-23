@@ -39,14 +39,14 @@ class FindScreen(MDScreen):
     def set_list(self):
 
         def add_list(n):
-            text_to_copy = "Demo text"
+            text = f"Password{n}"
             self.rv_data.append(
                 {
                     "viewclass": "List",
-                    "primary_text": f"Password{n}",
+                    "primary_text": f"{text}",
                     "button_actions": {
                         "copy": lambda: exec(
-                            f'Clipboard.copy("{text_to_copy}"); toast("Item copied")',
+                            f'Clipboard.copy("{text}"); toast("Item copied")',
                             {"Clipboard": Clipboard, "toast": toast}),
                         "update": lambda: self.open_update_dialog(),
                         "delete": partial(self.delete_item, n)

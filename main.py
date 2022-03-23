@@ -1,3 +1,5 @@
+from typing import List
+
 from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
@@ -6,7 +8,7 @@ from kivy.properties import BooleanProperty, ColorProperty, get_color_from_hex, 
 from kivymd.app import MDApp
 from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
-from kivymd.uix.button import MDFlatButton
+from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 from libs.uix.classes import Dialog, RoundButton
 from libs.uix.root import Root
 
@@ -41,12 +43,10 @@ class MainApp(MDApp):
 		super().__init__(**kwargs)
 		self.theme_cls.primary_palette = 'DeepOrange'
 		self.light_color = self.generate_light_color()
-		self.bg_color_dark = self.generate_dark_color()  # 262626
-		self.bg_color_dark2 = self.generate_dark_color(darkness=.26)
-		self.light_color1 = self.generate_light_color(lightness=80)
-		self.light_color2 = self.generate_light_color(lightness=70)
-		self.primary_accent = self.bg_color_dark if self.dark_mode else self.light_color
-		self.card_color = self.bg_color_dark if self.dark_mode else [1, 1, 1, 1]
+		self.dark_color = self.generate_dark_color()  # 262626
+		self.login_circle_light = self.generate_light_color(lightness=70)
+		self.primary_accent = self.dark_color if self.dark_mode else self.light_color
+		self.card_color = self.dark_color if self.dark_mode else [1, 1, 1, 1]
 		self.light_hex = self.generate_light_color(return_hex=True)
 		self.dark_hex = self.generate_dark_color(return_hex=True)
 
@@ -104,14 +104,20 @@ class MainApp(MDApp):
 		if instance:
 			Animation(pos_hint={"top": .95}, opacity=1, d=.4, t='out_back').start(instance)
 
-	def generate_dark_color(self, color=None, hex_color=False, darkness=None, return_hex=False):
+	def generate_dark_color(self, color = None, darkness=82, return_hex=False):
+		"""
+		:param color: Takes color like [.5,.5,.5, 1] as Parameter
+		:param darkness: int between 0 - 99 with 99 having max_darkness.
+		:param return_hex: Boolean if set true it will return dark color in hex format.
+		:return:
+		"""
 		if not color:
 			color = self.generate_light_color(lightness=70)
 		mx = max(color)
 		if not darkness:
 			factor = mx / 0.18
 		else:
-			factor = mx / (darkness / 100)
+			factor = mx / ((100 - darkness) / 100)
 		color = [i / factor for i in color[:-1]]
 		if not return_hex:
 			return color + [1]
@@ -121,6 +127,13 @@ class MainApp(MDApp):
 			return _hex
 
 	def generate_light_color(self, hex_color=False, color=None, return_hex=False, lightness=87):
+		"""
+		:param hex_color:  Instead of passing color as list hexadecimal value can be passed.
+		:param color: Takes color like [.5,.5,.5, 1] as Parameter
+		:param return_hex: Boolean value if set true the function will return hexadecimal value.
+		:param lightness: Value from 0-100. If set to 100 it will return white and 0 will return original color.
+		:return: 
+		"""
 		if hex_color:
 			color = get_color_from_hex(hex_color)
 		elif not color:
@@ -159,7 +172,7 @@ class MainApp(MDApp):
 		if not self.exit_dialog:
 			self.exit_dialog = Dialog(
 				title='Exit', text='Do you want to exit?', buttons=[
-					RoundButton(text='YES', on_release=lambda x: self.stop()),
+					MDFillRoundFlatButton(text='YES', on_release=lambda x: self.stop(), _radius = dp(20)),
 					MDFlatButton(
 						text='NO', _radius=dp(20), on_release=lambda x: self.exit_dialog.dismiss())])
 		self.exit_dialog.open()
@@ -175,7 +188,7 @@ class MainApp(MDApp):
 		if current_screen == 'HomeScreen':
 			tab_manager = self.root.current_screen.ids.tab_manager
 			primary_color = Animation(
-				primary_accent=self.bg_color_dark if self.dark_mode else self.light_color,
+				primary_accent=self.dark_color if self.dark_mode else self.light_color,
 				duration=.3
 			)
 			primary_color.start(self)
@@ -187,7 +200,7 @@ class MainApp(MDApp):
 
 	def set_mode(self, *args):
 		print("mode set")
-		self.primary_accent = self.bg_color_dark if self.dark_mode else self.light_color
+		self.primary_accent = self.dark_color if self.dark_mode else self.light_color
 		if self.dark_mode:
 			self.theme_cls.theme_style = 'Dark'
 			self.theme_cls.primary_hue = '300'
