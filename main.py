@@ -1,5 +1,3 @@
-from typing import List
-
 from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
@@ -172,7 +170,7 @@ class MainApp(MDApp):
 		if not self.exit_dialog:
 			self.exit_dialog = Dialog(
 				title='Exit', text='Do you want to exit?', buttons=[
-					MDFillRoundFlatButton(text='YES', on_release=lambda x: self.stop(), _radius = dp(20)),
+					MDFillRoundFlatButton(text='YES', on_release=lambda x: self.stop(), _radius=dp(20)),
 					MDFlatButton(
 						text='NO', _radius=dp(20), on_release=lambda x: self.exit_dialog.dismiss())])
 		self.exit_dialog.open()

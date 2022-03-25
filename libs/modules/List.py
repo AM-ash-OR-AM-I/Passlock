@@ -67,6 +67,7 @@ class List(RectangularRippleBehavior, RecycleDataViewBehavior, ThemableBehavior,
 	secondary_text = StringProperty("12345678910111213")
 	list_color_active = ColorProperty()
 	button_actions = DictProperty()
+	is_deleted = BooleanProperty()
 
 	def on_button_actions(self,*args):
 		if len(self.button_actions)==3:
@@ -74,11 +75,20 @@ class List(RectangularRippleBehavior, RecycleDataViewBehavior, ThemableBehavior,
 			self.ids.update_button.on_release = self.button_actions["update"]
 			self.ids.delete_button.on_release = self.button_actions["delete"]
 
+	def clear_selection(self):
+		self.selected = False
+		print(self, "cleared selection")
+		self.parent.clear_selection()
+
+	def on_is_deleted(self, instance, deleted):
+		print(deleted)
+		if deleted:
+			self.clear_selection()
+
 	def on_release(self):
 		if self.selected:
 			if self.right - self.last_touch.x >= dp(170):
-				self.selected = False
-				self.parent.clear_selection()
+				self.clear_selection()
 		else:
 			self.parent.select_with_touch(self.index, None)
 
@@ -136,6 +146,8 @@ MDScreen:
 		
 			
 			""")
+
+
 
 
 	CardBehavior().run()

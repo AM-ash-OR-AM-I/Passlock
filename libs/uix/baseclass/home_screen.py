@@ -1,3 +1,4 @@
+from kivy.clock import Clock
 from kivy.core.clipboard import Clipboard
 from kivy.factory import Factory
 from kivy.properties import ListProperty
@@ -33,24 +34,38 @@ class FindScreen(MDScreen):
         self.update_dialog.open()
 
     def delete_item(self, text):
-        toast("Item deleted")
-        print(text)
+        def clear_selections():
+            recycle_list = self.ids.box
+
+            for lst in recycle_list.children:
+                if lst.selected:
+                    lst.selected = False
+
+            recycle_list.clear_selection()
+
+        data = self.rv_data
+        for index, item in enumerate(data):
+            if item["primary_text"]==text:
+                print(f"Deleting {text}")
+                self.rv_data.remove(item)
+                clear_selections()
+        toast(f"{text} is deleted")
 
     def set_list(self):
-
         def add_list(n):
             text = f"Password{n}"
             self.rv_data.append(
                 {
-                    "viewclass": "List",
-                    "primary_text": f"{text}",
+                    "class": "List",
+                    "primary_text": text,
+                    "is_deleted": False,
                     "button_actions": {
                         "copy": lambda: exec(
                             f'Clipboard.copy("{text}"); toast("Item copied")',
                             {"Clipboard": Clipboard, "toast": toast}),
                         "update": lambda: self.open_update_dialog(),
-                        "delete": partial(self.delete_item, n)
-                    },
+                        "delete": partial(self.delete_item, text),
+                    }
                 }
             )
 
