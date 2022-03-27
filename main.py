@@ -37,14 +37,13 @@ class MainApp(MDApp):
 	signup = BooleanProperty(True)
 	HomeScreen = LoginScreen = SettingScreen = update_dialog = exit_dialog = None
 
-	def __init__(self, **kwargs):
-		super().__init__(**kwargs)
+	def __init__(self):
+		super().__init__()
 		self.theme_cls.primary_palette = 'DeepOrange'
 		self.light_color = self.generate_light_color()
 		self.dark_color = self.generate_dark_color()  # 262626
 		self.login_circle_light = self.generate_light_color(lightness=70)
 		self.primary_accent = self.dark_color if self.dark_mode else self.light_color
-		self.card_color = self.dark_color if self.dark_mode else [1, 1, 1, 1]
 		self.light_hex = self.generate_light_color(return_hex=True)
 		self.dark_hex = self.generate_dark_color(return_hex=True)
 

@@ -3,8 +3,8 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import ColorProperty, StringProperty, BooleanProperty, NumericProperty, ListProperty, \
-	get_color_from_hex
+from kivy.properties import ColorProperty, StringProperty, BooleanProperty, NumericProperty, ListProperty
+from kivy.utils import get_color_from_hex
 from kivy.uix.textinput import TextInput
 
 from kivymd.app import MDApp
@@ -27,7 +27,7 @@ Builder.load_string('''
     radius: dp(30)
     set_elevation: 0
     label_name:'Hi there'
-    md_bg_color: [1,1,1,1] if app.theme_cls.theme_style=='Light' else app.dark_color
+    md_bg_color: [1,1,1,1] if app.theme_cls.theme_style=='Light' else get_color_from_hex("565656")
     label_size:'15sp'
     hint_text:''
     adaptive_height:True
@@ -103,6 +103,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
 	multiline = BooleanProperty(False)
 	icon_color = ColorProperty([.5, .5, .5, 1])
 	icon_right_action = ListProperty(None)
+	dark_bg_hex = ""
 	icon_font_size = NumericProperty()
 	win = True if platform == 'win' else False
 	start_anim = BooleanProperty(False)
@@ -110,8 +111,11 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
 	app = None
 	c = 0
 
-	def on_start_anim(self, instance, mode):
-		self.anim = Animation(md_bg_color=get_color_from_hex(colors["Dark" if mode else "Light"]["CardsDialogs"]), d=.3)
+	def on_start_anim(self, instance, dark_mode):
+		self.anim = Animation(
+			md_bg_color=get_color_from_hex(colors["Dark" if dark_mode else "Light"]["CardsDialogs"])
+			if not self.dark_bg_hex else get_color_from_hex(self.dark_bg_hex if dark_mode else "ffffff"), d=.3)
+
 		self.anim.start(instance)
 
 	def on_icon_left_action(self, instance, icon_list: 'List containing icon name and function'):

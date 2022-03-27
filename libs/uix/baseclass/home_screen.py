@@ -8,18 +8,72 @@ from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
 from functools import partial
 
-from libs.uix.classes import Dialog, DialogButton, RoundIconButton
+from libs.uix.classes import Dialog, DialogButton, RoundIconButton, CustomSnackbar
 
 app = MDApp.get_running_app()
 
 
 class FindScreen(MDScreen):
+    """
+    FindScreen inside the HomeScreen.
+    TODO: While backing up passwords encrypt the email address.
+    """
+
     rv_data = ListProperty()
     update_dialog = None
+    snackbar = None
+    snackbar_duration = 2.5
 
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.set_list()
+
+        '''Replace demo passwords with the dictionary containing passwords.'''
+
+        self.demo_passwords = {}
+        for i in range(20):
+            self.demo_passwords[f"Key {i}"]=f"Password{i}"
+
+        self.add_passwords()
+        self.delete_dialog = None
+
+    def add_passwords(self):
+        """
+        Used to add password lists to the RecycleView.
+        """
+
+        for name, password in self.demo_passwords.items():
+            self.append_item(name, password)
+
+    def append_item(self, name, password):
+        self.rv_data.append(
+            {
+                "class": "List",
+                "name": name,
+                "password": password,
+                "is_deleted": False,
+                "button_actions": {
+                    "copy": lambda: exec(
+                        f'Clipboard.copy("{name}"); toast("Item copied")',
+                        {"Clipboard": Clipboard, "toast": toast}),
+                    "update": lambda: self.open_update_dialog(),
+                    "delete": partial(self.delete_item, name),
+                }
+            }
+        )
+
+    def find_password(self, text):
+        """
+        Gets executed when text is entered in search bar.
+        """
+
+        self.find_dictionary = {}
+        for key, value in self.demo_passwords.items():
+            if text in key:
+                self.find_dictionary[key] = value
+
+        self.rv_data = []
+        for name, password in self.find_dictionary.items():
+            self.append_item(name, password)
 
     def open_update_dialog(self):
         if not self.update_dialog:
@@ -32,47 +86,47 @@ class FindScreen(MDScreen):
                 ]
             )
         self.update_dialog.open()
+    
+    def delete_from_storage(self, name, dt):
+        """
+        Deletes the password from the file permanently.
+        """
 
-    def delete_item(self, text):
-        def clear_selections():
-            recycle_list = self.ids.box
+        if self.delete_permanently:
+            print("delete_permanently")
 
-            for lst in recycle_list.children:
-                if lst.selected:
-                    lst.selected = False
+    def delete_item(self, name):
+        self.delete_permanently = True
 
-            recycle_list.clear_selection()
+        def undo_delete(index, item):
+            self.delete_permanently = False
+            self.rv_data.insert(index, item)
+            self.snackbar.dismiss()
 
         data = self.rv_data
         for index, item in enumerate(data):
-            if item["primary_text"]==text:
-                print(f"Deleting {text}")
+            if item["name"]==name:
                 self.rv_data.remove(item)
-                clear_selections()
-        toast(f"{text} is deleted")
+                break
 
-    def set_list(self):
-        def add_list(n):
-            text = f"Password{n}"
-            self.rv_data.append(
-                {
-                    "class": "List",
-                    "primary_text": text,
-                    "is_deleted": False,
-                    "button_actions": {
-                        "copy": lambda: exec(
-                            f'Clipboard.copy("{text}"); toast("Item copied")',
-                            {"Clipboard": Clipboard, "toast": toast}),
-                        "update": lambda: self.open_update_dialog(),
-                        "delete": partial(self.delete_item, text),
-                    }
-                }
-            )
-
-
-        for i in range(20):
-            add_list(i)
+        Clock.schedule_once(lambda x: self.ids.box.clear_selection())
+        self.snackbar = CustomSnackbar(
+            text=f"{name} is deleted",
+            buttons=[
+                DialogButton(
+                    text="UNDO", pos_hint={"center_y": .5},
+                    on_release=lambda x: undo_delete(index, item)
+                )
+            ]
+        )
+        self.snackbar.duration = self.snackbar_duration
+        self.snackbar.open()
+        Clock.schedule_once(partial(self.delete_from_storage, name), self.snackbar_duration)
 
 
 class HomeScreen(MDScreen):
-    pass
+    """
+    It contains 2 screens:\n
+    * CreateScreen\n
+    * FindScreen
+    """

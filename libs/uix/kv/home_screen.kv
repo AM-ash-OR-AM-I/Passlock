@@ -147,13 +147,16 @@
 				size_hint_x:.85
 				pos_hint:{'center_x':.5}
 				radius: '20dp'
+				on_text:
+				    find.find_password(self.text)
 				on_focus:
 					tab_manager.current = 'FindScreen'
 				icon_left_action:["magnify" if tab_manager.current == 'CreateScreen' else 'arrow-left',lambda x: exec("tab_manager.current='CreateScreen'")]
 				hint_text:'Search passwords'
 				icon_color:app.theme_cls.primary_color
 				label_name:""
-				inactive_color:app.theme_cls.primary_light[:-1]+[.6]
+				inactive_color:[.9,.9,.9,.2]
+				dark_bg_hex: "343434"
 		ScreenManager:
 			id: tab_manager
 			transition: sm.NoTransition()
@@ -182,6 +185,7 @@
 		tab_indicator_anim:True
 		tab_indicator_height:'3dp'
 		tab_hint_x:True
+		set_elevation:5
 		show_anim:True
 		text_color_active:app.theme_cls.primary_color
 		text_color_normal:[.75,.75,.75,1]

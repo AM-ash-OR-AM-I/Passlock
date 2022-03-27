@@ -287,7 +287,6 @@ from kivymd.uix.card import MDCard
 Builder.load_string(
     """
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-#:import window kivy.core.window
 
 <BaseSnackbar>
     size_hint_y: None

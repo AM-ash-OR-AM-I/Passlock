@@ -1,4 +1,8 @@
 from kivy.lang import Builder
+from kivy.properties import BooleanProperty
+
+from kivymd.uix.snackbar import Snackbar
+
 from kivymd.app import MDApp
 from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior
@@ -105,3 +109,13 @@ class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
         super().__init__(**kwargs)
         self.ripple_color = self.theme_cls.primary_light
         self.ripple_alpha = .2
+
+
+class CustomSnackbar(Snackbar):
+    is_open = False
+
+    def on_open(self, *args):
+        self.is_open = True
+
+    def on_leave(self):
+        self.is_open = False

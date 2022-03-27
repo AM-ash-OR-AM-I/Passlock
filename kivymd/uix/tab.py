@@ -616,7 +616,7 @@ Builder.load_string(
         scrollview: scrollview
         layout: layout
         size_hint: 1, None
-        elevation: 10
+        elevation: root.set_elevation if root.set_elevation else 0
         height: root.tab_bar_height
         md_bg_color:
             self.theme_cls.primary_color \
@@ -1254,7 +1254,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `None`.
     """
 
-    elevation = NumericProperty(0)
+    set_elevation = NumericProperty(0)
     """
     Tab value elevation.
 
