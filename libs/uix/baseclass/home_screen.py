@@ -1,3 +1,6 @@
+import string
+import random
+
 from kivy.clock import Clock
 from kivy.core.clipboard import Clipboard
 from kivy.factory import Factory
@@ -8,6 +11,7 @@ from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
 from functools import partial
 
+from libs import Backend
 from libs.uix.classes import Dialog, DialogButton, RoundIconButton, CustomSnackbar
 
 app = MDApp.get_running_app()
@@ -31,9 +35,10 @@ class FindScreen(MDScreen):
 
         self.demo_passwords = {}
         for i in range(20):
-            self.demo_passwords[f"Key {i}"]=f"Password{i}"
+            key = "".join(random.sample(string.ascii_letters, 8))
+            self.demo_passwords[f"{key}{i}"]=f"Password{i}"
 
-        self.add_passwords()
+        # self.add_passwords()
         self.delete_dialog = None
 
     def add_passwords(self):
@@ -65,14 +70,11 @@ class FindScreen(MDScreen):
         """
         Gets executed when text is entered in search bar.
         """
-
-        self.find_dictionary = {}
-        for key, value in self.demo_passwords.items():
-            if text in key:
-                self.find_dictionary[key] = value
+        self.find_dictionary = Backend.find_key(self.demo_passwords, text)
+        print(self.find_dictionary)
 
         self.rv_data = []
-        for name, password in self.find_dictionary.items():
+        for name, password in self.find_dictionary:
             self.append_item(name, password)
 
     def open_update_dialog(self):

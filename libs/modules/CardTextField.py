@@ -15,7 +15,7 @@ from kivymd.uix.button import MDIconButton
 from kivymd.uix.relativelayout import MDRelativeLayout
 
 if platform == 'android':
-	from AndroidAPI import fix_back_button, keyboard_height
+	from libs.modules.AndroidAPI import fix_back_button, keyboard_height
 
 Builder.load_string('''
 
@@ -118,7 +118,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
 
 		self.anim.start(instance)
 
-	def on_icon_left_action(self, instance, icon_list: 'List containing icon name and function'):
+	def on_icon_left_action(self, instance, icon_list):
 		box = self.ids.card_box
 		rm = 0
 		for inst in box.children:
