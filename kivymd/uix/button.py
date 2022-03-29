@@ -58,7 +58,6 @@ from kivymd.uix.tooltip import MDTooltip
 Builder.load_string(
     """
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-#:import Gradient kivy_gradient.Gradient
 <BaseButton>
     canvas:
         Clear

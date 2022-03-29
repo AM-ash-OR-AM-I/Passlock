@@ -1,13 +1,13 @@
 [app]
 
 # (str) Title of your application
-title = My Application
+title = Passlock
 
 # (str) Package name
-package.name = myapp
+package.name = passlock
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.test
+package.domain = org.passlock
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -22,14 +22,14 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,json
 #source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-#source.exclude_dirs = tests, bin, venv
+source.exclude_dirs = bin, __pycache__, OtherStuff, PassLOCK_old
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.1
+version = 0.2
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
