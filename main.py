@@ -99,7 +99,7 @@ class MainApp(MDApp):
 		""" Animation to be shown when user enters the app """
 
 		if instance:
-			Animation(pos_hint={"top": .95}, opacity=1, d=1, t='out_back').start(instance)
+			Animation(pos_hint={"top": .95}, opacity=1, d=.8, t='out_back').start(instance)
 
 	def generate_dark_color(self, color = None, darkness=82, return_hex=False):
 		"""

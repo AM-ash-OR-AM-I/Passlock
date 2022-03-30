@@ -6,14 +6,15 @@ def find_key(dictionary: Dict, text: str):
 
 	def weight_passwords(text, name, password):
 		name_wo_space = name.replace(" ", "")
+		lower_text, lower_name = text.lower(), name.lower()
 		max_value = 0
 		priority = 0
 		if text == name_wo_space:
 			return True
 		else:
-			if text in name:
+			if text in name or lower_text in lower_name:
 				priority = 0
-				max_value = max(len(text) / len(name), max_value) + priority
+				max_value = max(len(text) / len(name), len(lower_text) / len(lower_name), max_value) + priority
 			if text in name_wo_space:
 				priority = -0.01
 				max_value = max(len(text) / len(name), max_value) + priority
