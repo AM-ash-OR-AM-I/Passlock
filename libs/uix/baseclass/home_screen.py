@@ -36,9 +36,9 @@ class FindScreen(MDScreen):
         self.demo_passwords = {}
         for i in range(20):
             key = "".join(random.sample(string.ascii_letters, 8))
-            self.demo_passwords[f"{key}{i}"]=f"Password{i}"
+            self.demo_passwords[f"Hello{key}{i}hi"]=f"Password{i}"
 
-        # self.add_passwords()
+        self.add_passwords()
         self.delete_dialog = None
 
     def add_passwords(self):
