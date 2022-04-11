@@ -74,7 +74,7 @@ class FindScreen(MDScreen):
         print(self.find_dictionary)
 
         self.rv_data = []
-        for name, password in self.find_dictionary:
+        for ((name, password), value) in self.find_dictionary:
             self.append_item(name, password)
 
     def open_update_dialog(self):
