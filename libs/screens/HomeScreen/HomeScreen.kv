@@ -20,7 +20,7 @@
 		orientation:'vertical'
 		adaptive_height:True
 		CardTextField:
-			id:email_field
+			id:name_field
 			pos_hint:{'center_x':.5}
 			icon_font_size:icon_size
 			thickness:dp(1) if platform == 'android' else dp(1.4)
@@ -47,6 +47,8 @@
 		size_hint_x:.8
 		font_size:'18sp'
 		pos_hint:{'center_x':.5}
+		on_release:
+			app.HomeScreen.create_password(name_field.text, password_field.text)
 
 <Auto@ScrollView+MDTabsBase>
     always_overscroll: False

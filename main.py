@@ -61,39 +61,32 @@ class MainApp(MDApp):
 
 		print(val)
 		if self.root.current == 'LoginScreen':
-			if not self.LoginScreen:
-				self.LoginScreen = self.root.get_screen("LoginScreen")
-			self.diff = (val - self.LoginScreen.ids.lock.y + dp(20)) / Window.height
+			self.diff = (val - self.root.LoginScreen.ids.lock.y + dp(20)) / Window.height
 			if self.diff > 0:
 				if val > 0:
-					self.box_height = self.LoginScreen.ids.box.pos_hint["top"]
+					self.box_height = self.root.LoginScreen.ids.box.pos_hint["top"]
 					Animation(pos_hint={"top": self.box_height + self.diff}, t="out_quad", d=.2).start(
-						self.LoginScreen.ids.box)
+						self.root.LoginScreen.ids.box)
 				else:
-					Animation(pos_hint={"top": self.box_height}, t="in_quad", d=.2).start(self.LoginScreen.ids.box)
+					Animation(pos_hint={"top": self.box_height}, t="in_quad", d=.2).start(self.root.LoginScreen.ids.box)
 		else:
-			if not self.HomeScreen:
-				self.HomeScreen = self.root.get_screen("HomeScreen")
-			if self.HomeScreen.ids.tab_manager.current == "CreateScreen":
-				generate = self.HomeScreen.ids.create.ids.manual.ids.add
-				self.HomeScreen.ids.create.ids.auto.scroll_y = 1
+			if self.root.HomeScreen.ids.tab_manager.current == "CreateScreen":
+				generate = self.root.HomeScreen.ids.create.ids.manual.ids.add
+				self.root.HomeScreen.ids.create.ids.auto.scroll_y = 1
 				self.diff = (val - generate.y + dp(20))
 				if self.diff > 0:
 					if val > 0:
 						Animation(y=self.diff, t="out_quad", d=.2).start(
-							self.HomeScreen)
+							self.root.HomeScreen)
 					else:
-						Animation(y=0, t="in_quad", d=.2).start(self.HomeScreen)
+						Animation(y=0, t="in_quad", d=.2).start(self.root.HomeScreen)
 			else:
 				Window.softinput_mode = "below_target"
 
 	def on_signup(self, *args):
 
 		""" Animation to be shown when clicking on login or signup """
-
-		if not self.LoginScreen:
-			self.LoginScreen = self.root.get_screen("LoginScreen")
-		box = self.LoginScreen.ids.box
+		box = self.root.LoginScreen.ids.box
 		box.pos_hint = {"top": .8}
 		box.opacity = 0
 		self.animate_login(box)
@@ -184,8 +177,6 @@ class MainApp(MDApp):
 
 	def on_dark_mode(self, instance, mode):
 		current_screen = self.root.current
-		if not self.HomeScreen:
-			self.HomeScreen = self.root.get_screen("HomeScreen")
 		if current_screen == 'HomeScreen':
 			tab_manager = self.root.current_screen.ids.tab_manager
 			primary_color = Animation(
@@ -195,7 +186,7 @@ class MainApp(MDApp):
 			primary_color.start(self)
 			if tab_manager.current == 'CreateScreen':
 				self.anim = Animation(md_bg_color=self.theme_cls.opposite_bg_normal, duration=.3)
-				self.anim.start(self.HomeScreen)
+				self.anim.start(self.root.HomeScreen)
 
 			primary_color.on_complete = self.set_mode
 
@@ -213,7 +204,7 @@ class MainApp(MDApp):
 			if platform == 'android':
 				statusbar(status_color=self.light_hex, white_text=True)
 
-		self.HomeScreen.ids.create.ids.circle_mode.rad = 0.1
+		self.root.HomeScreen.ids.create.ids.circle_mode.rad = 0.1
 
 	def toggle_mode(self, *args):
 		self.dark_mode = not self.dark_mode

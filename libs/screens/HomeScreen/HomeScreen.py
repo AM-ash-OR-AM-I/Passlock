@@ -135,3 +135,7 @@ class HomeScreen(MDScreen):
     * CreateScreen\n
     * FindScreen
     """
+
+    def create_password(self, name, password):
+        toast("Password Created Successfully.")
+        print(name, password)
