@@ -7,8 +7,8 @@ from kivymd.app import MDApp
 from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
 from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
-from libs.uix.classes import Dialog, RoundButton
-from libs.uix.root import Root
+from libs.screens.classes import Dialog, RoundButton
+from libs.screens.root import Root
 
 if platform != 'android':
 	Window.size = (450, 900)

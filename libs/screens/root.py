@@ -1,11 +1,10 @@
-import json
-
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ListProperty
 from kivy.uix.screenmanager import ScreenManager, CardTransition
 from kivymd.app import MDApp
-
+from kivy.logger import Logger
+import os
 
 class Root(ScreenManager):
 
@@ -15,24 +14,23 @@ class Root(ScreenManager):
         super().__init__(**kwargs)
         Window.bind(on_keyboard=self._handle_keyboard)
         self.transition = CardTransition(duration=.3)
-        # getting screens data from screens.json
-        with open("screens.json") as f:
-            self.screens_data = json.load(f)
+
 
     def set_current(self, screen_name, side="left", _from_goback=False):
         # checks that the screen already added to the screen-manager
         if not self.has_screen(screen_name):
-            screen = self.screens_data[screen_name]
             # loads the kv file
-            Builder.load_file(screen["kv"])
+            Builder.load_file(f"libs/screens/{screen_name}/{screen_name}.kv")
             # imports the screen class dynamically
-            exec(screen["import"])
+            exec(f"from libs.screens.{screen_name}.{screen_name} import {screen_name}")
             # calls the screen class to get the instance of it
-            screen_object = eval(screen["object"])
+            self.screen_object = eval(f"{screen_name}()")
             # automatically sets the screen name using the arg that passed in set_current
-            screen_object.name = screen_name
+            self.screen_object.name = screen_name
+            # saves screen instance object to access later.
+            exec(f"self.{screen_name} = self.screen_object")
             # finnaly adds the screen to the screen-manager
-            self.add_widget(screen_object)
+            self.add_widget(self.screen_object)
 
         # saves screen information to history
         # if you not want a screen to go back
