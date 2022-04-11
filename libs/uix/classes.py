@@ -14,7 +14,6 @@ from kivymd.uix.dialog import MDDialog
 
 class RoundButton(MDFillRoundFlatButton):
     Builder.load_string("""
-# kv_start
 <RoundButton>
 	canvas:
 		RoundedRectangle:
@@ -22,8 +21,6 @@ class RoundButton(MDFillRoundFlatButton):
 			pos: self.pos
 			radius:dp(20),dp(20)
 			texture: Gradient.horizontal([1,1,1,0], [1,1,1,.2])
-			
-# kv_end
 """)
     padding = [0, dp(20), 0, dp(20)]
     _radius = dp(20), dp(20)
@@ -76,9 +73,8 @@ class DialogButton(MDFlatButton):
         self.text_color = self.theme_cls.primary_color
 
 
-
-checkbox = """
-# kv_start
+class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
+    Builder.load_string("""
 <CheckboxLabel>
 	adaptive_size:True
 	size_hint_x:.8
@@ -98,12 +94,7 @@ checkbox = """
 		on_release:
 			check.active = not check.active
 		text: root.text
-# kv_end
-"""
-
-
-class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
-    Builder.load_string(checkbox)
+""")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
