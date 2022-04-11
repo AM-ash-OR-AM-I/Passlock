@@ -1,4 +1,12 @@
-def find_key(dictionary: dict, text: str):
+from typing import List, Tuple
+# if os.path.exists("data/passwords.")
+def create_password(text: str):
+	...
+
+def find_key(dictionary: dict, text: str) -> List[Tuple[Tuple[str, str], int]]:
+	"""
+	Finding Algorithm, uses basic search along with fuzzy search (self-made).
+	"""
 	weighted_pass = {}
 
 	def sub_string_search(text: str, name: str, password: str):
