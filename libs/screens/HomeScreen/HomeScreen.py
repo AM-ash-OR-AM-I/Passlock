@@ -1,5 +1,6 @@
 import string
 import random
+import threading
 
 from kivy.clock import Clock
 from kivy.core.clipboard import Clipboard
@@ -70,12 +71,14 @@ class FindScreen(MDScreen):
         """
         Gets executed when text is entered in search bar.
         """
-        self.find_dictionary = Backend.find_key(self.demo_passwords, text)
-        print(self.find_dictionary)
+        def find_password_thread(text):
+            self.find_dictionary = Backend.find_key(self.demo_passwords, text)
+            print(self.find_dictionary)
+            self.rv_data = []
+            for ((name, password), value) in self.find_dictionary:
+                self.append_item(name, password)
 
-        self.rv_data = []
-        for ((name, password), value) in self.find_dictionary:
-            self.append_item(name, password)
+        threading.Thread(target=find_password_thread, args=(text,), daemon=True).start()
 
     def open_update_dialog(self):
         if not self.update_dialog:

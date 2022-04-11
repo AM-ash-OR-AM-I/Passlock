@@ -7,7 +7,7 @@ from kivymd.app import MDApp
 from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
 from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
-from libs.screens.classes import Dialog, RoundButton
+from libs.screens.classes import Dialog
 from libs.screens.root import Root
 
 if platform != 'android':
