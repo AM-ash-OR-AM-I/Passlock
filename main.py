@@ -10,8 +10,12 @@ from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 from libs.screens.classes import Dialog
 from libs.screens.root import Root
 
+def emulate_android_device(pixels_horizontal = 1080, pixels_vertical = 2240, android_dpi = 394, monitor_dpi = 157):
+    scale_factor = monitor_dpi / android_dpi
+    Window.size = (scale_factor * pixels_horizontal, scale_factor * pixels_vertical)
+
 if platform != 'android':
-	Window.size = (450, 900)
+	emulate_android_device()
 else:
 	from libs.modules.AndroidAPI import statusbar
 
