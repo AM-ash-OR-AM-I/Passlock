@@ -41,6 +41,8 @@ Builder.load_string('''
         adaptive_height:True
         y:card.y+card.height+dp(10)
         x:card.x+dp(30)
+		theme_text_color:"Custom"
+		text_color:app.text_color
         size_hint_x:0.8
         font_size:root.label_size
         font_name:'RobotoMedium'

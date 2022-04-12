@@ -75,6 +75,7 @@ class DialogButton(MDFlatButton):
 
 class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
     Builder.load_string("""
+<ButtonLabel@ButtonBehavior+MDLabel>
 <CheckboxLabel>
 	adaptive_size:True
 	size_hint_x:.8
@@ -91,6 +92,8 @@ class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
 		unselected_color: [.8,.8,.8,1]
 		pos_hint: {'center_x': .5}
 	ButtonLabel:
+        theme_text_color:"Custom"
+        text_color:app.text_color
 		on_release:
 			check.active = not check.active
 		text: root.text

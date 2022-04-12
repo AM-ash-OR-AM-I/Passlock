@@ -3,7 +3,6 @@
 #:import Toolbar libs.modules.Toolbar.Toolbar
 #:import List libs.modules.List.List
 #:import sm kivy.uix.screenmanager
-<ButtonLabel@ButtonBehavior+MDLabel>
 
 <MyLabel@MDLabel>
 	theme_text_color:"Custom"
@@ -19,26 +18,19 @@
 		spacing:'50sp'
 		orientation:'vertical'
 		adaptive_height:True
-		CardTextField:
+		BorderCard:
 			id:name_field
 			pos_hint:{'center_x':.5}
-			icon_font_size:icon_size
-			thickness:dp(1) if platform == 'android' else dp(1.4)
-			icon_color:app.theme_cls.primary_color
 			label_name:'Name of Password'
 			hint_text:'e.g. username@gmail.com'
-			inactive_color:app.theme_cls.primary_light[:-1]+[.6]
-
-		CardTextField:
+			
+		BorderCard:
 			id:password_field
 			pos_hint:{'center_x':.5}
-			icon_font_size:icon_size
-			icon_color:app.theme_cls.primary_color
-			thickness:dp(1) if platform == 'android' else dp(1.4)
 			label_name:'Password'
 			hint_text:'Enter the password'
-			inactive_color:app.theme_cls.primary_light[:-1]+[.6]
 			icon_right_action:['eye-off-outline']
+
 	RoundButton:
 		id: add
 		adaptive_height:True
@@ -62,28 +54,19 @@
 			orientation:'vertical'
 			adaptive_height:True
 			spacing:'50sp'
-			CardTextField:
+			BorderCard:
 				id:email_field
 				pos_hint:{'center_x':.5}
 				text_col:True
-				icon_font_size:icon_size
-				thickness:dp(1) if platform == 'android' else dp(1.4)
-				icon_color:app.theme_cls.primary_color
 				label_name:'Name of Password'
 				hint_text:'e.g. username@gmail.com'
-				inactive_color:app.theme_cls.primary_light[:-1]+[.6]
-			CardTextField:
+			BorderCard:
 				id:password_field
 				pos_hint:{'center_x':.5}
-				icon_font_size:icon_size
 				text_col:True
-				thickness:dp(1) if platform == 'android' else dp(1.4)
-				icon_color:app.theme_cls.primary_color
 				label_name:'Password'
 				text:'adHKf@%123*n'
 				icon_right_action:[['content-copy'],['reload']]
-
-				inactive_color:app.theme_cls.primary_light[:-1]+[.6]
 
 		RoundButton:
 			id: generate
@@ -120,7 +103,7 @@
 			pos: (self.x - self.rad , self.y - self.rad)
 
 <HomeScreen>
-	md_bg_color: app.theme_cls.bg_normal
+	md_bg_color: app.bg_color_light
 	MDBoxLayout:
 		orientation:'vertical'
 		id: box

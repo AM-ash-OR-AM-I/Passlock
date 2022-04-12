@@ -43,6 +43,7 @@ HotReloadViewer:
 
 class MainApp(MDApp):
     dark_mode = BooleanProperty(False)
+    text_color = ColorProperty()
     screen_history = []
     key_height = NumericProperty(0)
     LIVE_UI = 1
@@ -54,10 +55,11 @@ class MainApp(MDApp):
 
     def __init__(self):
         super().__init__()
+        self.text_color = get_color_from_hex("611c05")
         self.theme_cls.primary_palette = "DeepOrange"
         self.light_color = self.generate_color()
-        self.bg_color_light = self.generate_color(lightness=.98)
-        self.bg_color_dark = self.generate_color(darkness=.1)
+        self.bg_color_light = self.generate_color(lightness=0.98)
+        self.bg_color_dark = self.generate_color(darkness=0.1)
         self.dark_color = self.generate_color(darkness=0.17)  # 262626
         self.login_circle_light = self.generate_color(lightness=0.85)
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
@@ -123,7 +125,7 @@ class MainApp(MDApp):
             )
 
     def generate_color(
-        self, hex_color=False, color=None, return_hex=False, lightness=0.95, darkness=0
+        self, hex_color=False, color=None, return_hex=False, lightness=0.94, darkness=0
     ):
         """
         :param hex_color:  Instead of passing color as list hexadecimal value can be passed.
@@ -195,7 +197,8 @@ class MainApp(MDApp):
             primary_color.start(self)
             if tab_manager.current == "CreateScreen":
                 self.anim = Animation(
-                    md_bg_color=self.bg_color_dark if mode else  self.bg_color_light, duration=0.3
+                    md_bg_color=self.bg_color_dark if mode else self.bg_color_light,
+                    duration=0.3,
                 )
                 self.anim.start(self.root.HomeScreen)
 
@@ -203,6 +206,11 @@ class MainApp(MDApp):
 
     def set_mode(self, *args):
         print("mode set")
+        self.text_color = (
+            get_color_from_hex("611c05")
+            if not self.dark_mode
+            else get_color_from_hex("fde9e2")
+        )
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         if self.dark_mode:
             self.theme_cls.theme_style = "Dark"

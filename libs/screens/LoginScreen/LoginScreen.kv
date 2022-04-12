@@ -7,6 +7,13 @@
 #: import platform kivy.platform
 #: import CardTextField libs.modules.CardTextField.CardTextField
 #: import Clock kivy.clock.Clock
+
+<BorderCard@CardTextField>
+	inactive_color:app.theme_cls.primary_light[:-1]+[.6]
+	icon_font_size:icon_size
+	thickness:dp(1) if platform == 'android' else dp(1.4)
+	icon_color:app.theme_cls.primary_light
+
 <FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
 
 <LoginScreen>:
@@ -39,7 +46,7 @@
 		spacing:'50dp'
 		MDLabel:
 			adaptive_height:True
-			text:"WELCOME\nTO [color=ff7a4f][u]PA[/u]SS" if app.signup else "LOGIN\nTO [color=ff7a4f][u]PA[/u]SS"+""
+			text:"WELCOME\nTO [color=ff7a4f][u]PASS[/u]" if app.signup else "LOGIN\nTO [color=ff7a4f][u]PASS[/u]"
 			markup:True
 			font_name:'Poppins'
 			halign:'center'
@@ -50,14 +57,10 @@
 			spacing:'50dp'
 			orientation:'vertical'
 			padding:(0,dp(15),0,0)
-			CardTextField:
+			BorderCard:
 				id: email
 				label_name:'Email Address'
 				hint_text:'username@mail.com' if app.signup else "Your mail name"
-				icon_font_size:icon_size
-				icon_color:app.theme_cls.primary_color
-				thickness:dp(1) if platform == 'android' else dp(1.4)
-				inactive_color:app.theme_cls.primary_light[:-1]+[.8]
 				pos_hint:{'center_x':.5}
 				icon_left_action:['account']
 				icon_right_action:['chevron-down']
@@ -65,14 +68,10 @@
 				adaptive_height:True
 				orientation:'vertical'
 				spacing:'35dp'
-				CardTextField:
+				BorderCard:
 					id: password
 					label_name:'Password'
 					hint_text:('Create' if app.signup else "Enter")+" Password"
-					thickness:dp(1) if platform == 'android' else dp(1.4)
-					icon_font_size:icon_size
-					icon_color:app.theme_cls.primary_color
-					inactive_color:app.theme_cls.primary_light[:-1]+[.8]
 					pos_hint:{'center_x':.5}
 					icon_right_action:['eye-off-outline']
 
