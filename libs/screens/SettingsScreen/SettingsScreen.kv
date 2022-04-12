@@ -2,7 +2,7 @@
 	_no_ripple_effect: True
 
 <SettingsScreen>
-    md_bg_color: app.theme_cls.bg_normal
+    md_bg_color: app.bg_color_dark if app.dark_mode else app.bg_color_light
     MDBoxLayout:
         adaptive_height:True
         pos_hint:{'top':1}
