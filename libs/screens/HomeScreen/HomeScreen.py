@@ -39,7 +39,7 @@ class FindScreen(MDScreen):
             key = "".join(random.sample(string.ascii_letters, 8))
             self.demo_passwords[f"Hello{key}{i}hi"]=f"Password{i}"
 
-        self.add_passwords()
+        # self.add_passwords()
         self.delete_dialog = None
 
     def add_passwords(self):

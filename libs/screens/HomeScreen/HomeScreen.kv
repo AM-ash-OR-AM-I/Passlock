@@ -134,7 +134,7 @@
 			icon_color:app.theme_cls.primary_color
 			right_action_items:
 				[['theme-light-dark',lambda x: app.toggle_mode(x)],
-				["cog",lambda x: exec("app.root.set_current('SettingsScreen')")]]
+				["cog",lambda x: exec("app.root.load_screen('SettingsScreen')")]]
 
 		MDBoxLayout:
 			adaptive_height:True

@@ -86,7 +86,7 @@
 					text_color:app.theme_cls.primary_color
 					on_release:
 						if app.fps: app.fps_monitor_start()
-						app.root.set_current('HomeScreen')
+						app.root.load_screen('HomeScreen')
 						app.HomeScreen = app.root.get_screen("HomeScreen")
 		                app.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
 					pos_hint:{'center_x':.5}
