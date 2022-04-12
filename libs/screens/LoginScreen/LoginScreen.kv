@@ -10,6 +10,7 @@
 <FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
 
 <LoginScreen>:
+	md_bg_color: app.bg_color_dark if app.dark_mode else app.bg_color_light
     canvas:
 		Color:
 			rgba:app.theme_cls.primary_color[:-1]+[.9]
