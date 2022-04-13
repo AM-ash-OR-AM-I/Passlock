@@ -71,7 +71,7 @@ Builder.load_string('''
             height: card.height
             background_color:[0,0,0,0]
             font_size:root.text_font_size
-			input_type:"null"
+			input_type:"tel"
             padding:[0,(self.height-self.font_size)/2,0,dp(0)] if not root.icon_left_action\
              else [0,(self.height-self.font_size)/2,0,dp(6)]
             foreground_color: app.theme_cls.primary_color if not app.dark_mode else app.theme_cls.primary_light
