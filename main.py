@@ -58,7 +58,7 @@ class MainApp(MDApp):
     def __init__(self):
         super().__init__()
         self.text_color = get_color_from_hex("611c05")
-        self.secondary_text_color = get_color_from_hex("93776c")
+        self.secondary_text_color = get_color_from_hex("a8928a")
         self.theme_cls.primary_palette = "DeepOrange"
         self.light_color = self.generate_color()
         self.bg_color_light = self.generate_color(lightness=0.98)
@@ -211,6 +211,7 @@ class MainApp(MDApp):
             if not self.dark_mode
             else get_color_from_hex("fde9e2")
         )
+        self.root.HomeScreen.md_bg_color = self.bg_color_dark if self.dark_mode else self.bg_color_light 
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         if self.dark_mode:
             self.theme_cls.theme_style = "Dark"

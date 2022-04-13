@@ -73,8 +73,7 @@ Builder.load_string('''
             font_size:root.text_font_size
             padding:[0,(self.height-self.font_size)/2,0,dp(0)] if not root.icon_left_action\
              else [0,(self.height-self.font_size)/2,0,dp(6)]
-            foreground_color: app.theme_cls.primary_dark if app.theme_cls.theme_style=='Light'\
-             else app.theme_cls.primary_light
+            foreground_color: app.theme_cls.primary_color if not app.dark_mode else app.theme_cls.primary_light
             hint_text_color: root.hint_text_color if root.hint_text_color is not None else [.5,.5,.5,.8]
             cursor_color: app.theme_cls.primary_color
             multiline: root.multiline

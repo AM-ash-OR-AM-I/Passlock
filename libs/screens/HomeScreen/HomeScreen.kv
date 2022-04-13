@@ -136,8 +136,9 @@
 				    find.find_password(self.text)
 				on_focus:
 					tab_manager.current = 'FindScreen'
-				icon_left_action:["magnify" if tab_manager.current == 'CreateScreen' else 'arrow-left',lambda x: exec("tab_manager.current='CreateScreen'")]
+				icon_left_action:["magnify" if tab_manager.current == 'CreateScreen' else 'arrow-left',lambda x: exec("tab_manager.current='CreateScreen';self.text =''")]
 				hint_text:'Search passwords'
+				hint_text_color:app.secondary_text_color
 				icon_color:app.theme_cls.primary_color
 				label_name:""
 				inactive_color:[.9,.9,.9,.1]
