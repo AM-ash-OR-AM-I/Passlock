@@ -27,7 +27,8 @@ KV = """
 	MDLabel:
 		adaptive_height: True
 		text:root.name
-		
+		theme_text_color:"Custom"
+		text_color: app.text_color
 	MDBoxLayout:
 		id: sec_box
 		size_hint_y:None
@@ -36,8 +37,7 @@ KV = """
 		MDLabel:
 			adaptive_height:True
 			text:root.password
-			theme_text_color:"Custom"
-			text_color: app.text_color
+			theme_text_color:"Secondary"
 		MDIconButton:
 			id: copy_button
 			disabled: not root.selected

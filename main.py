@@ -58,6 +58,7 @@ class MainApp(MDApp):
     def __init__(self):
         super().__init__()
         self.text_color = get_color_from_hex("611c05")
+        self.secondary_text_color = get_color_from_hex("93776c")
         self.theme_cls.primary_palette = "DeepOrange"
         self.light_color = self.generate_color()
         self.bg_color_light = self.generate_color(lightness=0.98)
