@@ -1,7 +1,4 @@
 import threading
-from time import time
-
-start_time = time()
 from colorsys import rgb_to_hls, hls_to_rgb
 from kivy import platform
 from kivy.animation import Animation
@@ -127,8 +124,7 @@ class MainApp(MDApp):
     def animate_login(self, instance):
 
         """Animation to be shown when user enters the app"""
-        final_time = time()
-        print("Time taken to Load App", final_time - start_time)
+        
         if instance:
             Animation(pos_hint={"top": 0.95}, opacity=1, d=0.6, t="out_back").start(
                 instance
@@ -201,13 +197,13 @@ class MainApp(MDApp):
                     primary_accent=self.dark_color
                     if self.dark_mode
                     else self.light_color,
-                    duration=0.3,
+                    duration=0.2,
                 )
                 primary_color.start(self)
                 if tab_manager.current == "CreateScreen":
                     self.anim = Animation(
                         md_bg_color=self.bg_color_dark if mode else self.bg_color_light,
-                        duration=0.3,
+                        duration=0.2,
                     )
                     self.anim.start(self.root.HomeScreen)
 
@@ -226,8 +222,6 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         if self.running:
             self.root.HomeScreen.ids.create.ids.dark_animation.rad = 0.1
-        else:
-            self.running = True
 
         if self.dark_mode:
             self.theme_cls.theme_style = "Dark"

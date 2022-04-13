@@ -116,7 +116,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
 	def on_start_anim(self, instance, dark_mode):
 		self.anim = Animation(
 			md_bg_color=get_color_from_hex(colors["Dark" if dark_mode else "Light"]["CardsDialogs"])
-			if not self.dark_bg_hex else get_color_from_hex(self.dark_bg_hex if dark_mode else "ffffff"), d=.3)
+			if not self.dark_bg_hex else get_color_from_hex(self.dark_bg_hex if dark_mode else "ffffff"), d=.2)
 
 		self.anim.start(instance)
 

@@ -104,6 +104,8 @@
 
 <HomeScreen>
 	md_bg_color: app.bg_color
+	on_enter:
+		app.running = True
 	MDBoxLayout:
 		orientation:'vertical'
 		id: box
