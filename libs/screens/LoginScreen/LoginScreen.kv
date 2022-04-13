@@ -2,7 +2,7 @@
 #:set height window.height
 #:set width window.width
 #: set rad width/2
-#: set lbl_size '17sp'
+#: set lbl_size '18sp'
 #: set icon_size 60
 #: import platform kivy.platform
 #: import CardTextField libs.modules.CardTextField.CardTextField
@@ -92,6 +92,20 @@
 						app.HomeScreen = app.root.get_screen("HomeScreen")
 		                app.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
 					pos_hint:{'center_x':.5}
+			MDSeparator:
+				size_hint_x:.8
+				pos_hint:{"center_x":.5}
+			MDTextButton:
+				text:'New user? [color=f67e55]Signup!'if not app.signup else "Existing user? [color=ff7a4f]Login."
+				markup:True
+				pos_hint:{'center_x':.5}
+				font_name:'RobotoMedium'
+				theme_text_color:"Custom"
+				text_color:app.text_color
+				halign:'center'
+				size_hint_x:1
+				on_release: app.signup = not app.signup
+				font_size:lbl_size
 
 
 	MDTextButton:
@@ -105,13 +119,4 @@
 		text_color:[0,0,0,0] if self.disabled else [0,0,0,0]
 		font_size:"12sp"
 
-	MDTextButton:
-		text:'New user? [color=ff7a4f]Signup!'if not app.signup else "Existing user? [color=ff7a4f]Login."
-		markup:True
-		pos_hint:{'center_y':.1,'center_x':.5}
-		font_name:'RobotoMedium'
-		halign:'center'
-		size_hint_x:1
-		pos_hint:{"top":.06}
-		on_release: app.signup = not app.signup
-		font_size:lbl_size
+	
