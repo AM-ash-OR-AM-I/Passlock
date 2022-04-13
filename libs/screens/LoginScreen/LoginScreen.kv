@@ -92,20 +92,23 @@
 						app.HomeScreen = app.root.get_screen("HomeScreen")
 		                app.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
 					pos_hint:{'center_x':.5}
-			MDSeparator:
-				size_hint_x:.8
-				pos_hint:{"center_x":.5}
-			MDTextButton:
-				text:'New user? [color=f67e55]Signup!'if not app.signup else "Existing user? [color=ff7a4f]Login."
-				markup:True
-				pos_hint:{'center_x':.5}
-				font_name:'RobotoMedium'
-				theme_text_color:"Custom"
-				text_color:app.text_color
-				halign:'center'
-				size_hint_x:1
-				on_release: app.signup = not app.signup
-				font_size:lbl_size
+	MDSeparator:
+		id: separator
+		size_hint_x:.8
+		y:lock.y - dp(55)
+		pos_hint:{"center_x":.5}
+	MDTextButton:
+		text:'New user? [color=f67e55]Signup!'if not app.signup else "Existing user? [color=ff7a4f]Login."
+		markup:True
+		top:separator.y - dp(20)
+		pos_hint:{'center_x':.5}
+		font_name:'RobotoMedium'
+		theme_text_color:"Custom"
+		text_color:app.text_color
+		halign:'center'
+		size_hint_x:1
+		on_release: app.signup = not app.signup
+		font_size:lbl_size
 
 
 	MDTextButton:
