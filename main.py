@@ -73,8 +73,7 @@ class MainApp(MDApp):
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
 
-        self.dark_mode = True
-        self.running = True
+        # self.dark_mode = True
 
     def build(self):
         self.root = Root()
@@ -227,6 +226,8 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         if self.running:
             self.root.HomeScreen.ids.create.ids.dark_animation.rad = 0.1
+        else:
+            self.running = True
 
         if self.dark_mode:
             self.theme_cls.theme_style = "Dark"
