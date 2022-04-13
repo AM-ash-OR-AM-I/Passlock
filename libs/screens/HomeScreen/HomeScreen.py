@@ -5,14 +5,14 @@ import threading
 from kivy.clock import Clock
 from kivy.core.clipboard import Clipboard
 from kivy.factory import Factory
-from kivy.properties import ListProperty
+from kivy.properties import ListProperty, DictProperty
 
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
 from functools import partial
 
-from libs import Backend
+from libs.Backend import *
 from libs.screens.classes import Dialog, DialogButton, RoundIconButton, CustomSnackbar
 
 app = MDApp.get_running_app()
@@ -25,6 +25,7 @@ class FindScreen(MDScreen):
     """
 
     rv_data = ListProperty()
+    passwords = DictProperty()
     update_dialog = None
     snackbar = None
     snackbar_duration = 2.5
@@ -34,10 +35,7 @@ class FindScreen(MDScreen):
 
         '''Replace demo passwords with the dictionary containing passwords.'''
 
-        self.demo_passwords = {}
-        for i in range(20):
-            key = "".join(random.sample(string.ascii_letters, 8))
-            self.demo_passwords[f"Hello{key}{i}hi"]=f"Password{i}"
+        self.passwords = load_passwords()
 
         # self.add_passwords()
         self.delete_dialog = None
@@ -47,7 +45,7 @@ class FindScreen(MDScreen):
         Used to add password lists to the RecycleView.
         """
 
-        for name, password in self.demo_passwords.items():
+        for name, password in self.passwords.items():
             self.append_item(name, password)
 
     def append_item(self, name, password):
@@ -72,8 +70,8 @@ class FindScreen(MDScreen):
         Gets executed when text is entered in search bar.
         """
         def find_password_thread(text):
-            self.find_dictionary = Backend.find_key(self.demo_passwords, text)
-            print(self.find_dictionary)
+            self.find_dictionary = find_key(self.passwords, text)
+            print(self.passwords)
             self.rv_data = []
             for ((name, password), value) in self.find_dictionary:
                 self.append_item(name, password)
@@ -137,5 +135,7 @@ class HomeScreen(MDScreen):
     """
 
     def create_password(self, name, password):
+        threading.Thread(add_password(name, password), daemon=True,).start()
+        # Updates find screen dictionary.
+        self.ids.find.passwords[name] = password
         toast("Password Created Successfully.")
-        print(name, password)
