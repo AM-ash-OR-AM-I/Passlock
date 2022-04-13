@@ -1,5 +1,6 @@
 import threading
 from time import time
+
 start_time = time()
 from colorsys import rgb_to_hls, hls_to_rgb
 from kivy import platform
@@ -45,29 +46,35 @@ HotReloadViewer:
 
 class MainApp(MDApp):
     dark_mode = BooleanProperty(False)
-    text_color = ColorProperty()
-    screen_history = []
     key_height = NumericProperty(0)
+    text_color = ColorProperty()
+    primary_accent = ColorProperty()
+    bg_color = ColorProperty()
+    screen_history = []
     LIVE_UI = 1
     fps = True
     path_to_live_ui = "OtherStuff/custom_dialog.kv"
-    primary_accent = ColorProperty()
+    running = False
     signup = BooleanProperty(True)
     HomeScreen = LoginScreen = SettingScreen = update_dialog = exit_dialog = None
 
     def __init__(self):
         super().__init__()
+        self.theme_cls.primary_palette = "DeepOrange"
         self.text_color = get_color_from_hex("611c05")
         self.secondary_text_color = get_color_from_hex("a8928a")
-        self.theme_cls.primary_palette = "DeepOrange"
         self.light_color = self.generate_color()
         self.bg_color_light = self.generate_color(lightness=0.98)
         self.bg_color_dark = self.generate_color(darkness=0.1)
-        self.dark_color = self.generate_color(darkness=0.17)  # 262626
+        self.bg_color = self.bg_color_dark if self.dark_mode else self.bg_color_light
+        self.dark_color = self.generate_color(darkness=0.18)  # 262626
         self.login_circle_light = self.generate_color(lightness=0.85)
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.17, return_hex=True)
+
+        self.dark_mode = True
+        self.running = True
 
     def build(self):
         self.root = Root()
@@ -122,7 +129,7 @@ class MainApp(MDApp):
 
         """Animation to be shown when user enters the app"""
         final_time = time()
-        print("Time taken to Load App",final_time-start_time)
+        print("Time taken to Load App", final_time - start_time)
         if instance:
             Animation(pos_hint={"top": 0.95}, opacity=1, d=0.6, t="out_back").start(
                 instance
@@ -187,22 +194,27 @@ class MainApp(MDApp):
         self.exit_dialog.open()
 
     def on_dark_mode(self, instance, mode):
-        current_screen = self.root.current
-        if current_screen == "HomeScreen":
-            tab_manager = self.root.current_screen.ids.tab_manager
-            primary_color = Animation(
-                primary_accent=self.dark_color if self.dark_mode else self.light_color,
-                duration=0.3,
-            )
-            primary_color.start(self)
-            if tab_manager.current == "CreateScreen":
-                self.anim = Animation(
-                    md_bg_color=self.bg_color_dark if mode else self.bg_color_light,
+        if self.running:
+            current_screen = self.root.current
+            if current_screen == "HomeScreen":
+                tab_manager = self.root.current_screen.ids.tab_manager
+                primary_color = Animation(
+                    primary_accent=self.dark_color
+                    if self.dark_mode
+                    else self.light_color,
                     duration=0.3,
                 )
-                self.anim.start(self.root.HomeScreen)
+                primary_color.start(self)
+                if tab_manager.current == "CreateScreen":
+                    self.anim = Animation(
+                        md_bg_color=self.bg_color_dark if mode else self.bg_color_light,
+                        duration=0.3,
+                    )
+                    self.anim.start(self.root.HomeScreen)
 
-            primary_color.on_complete = self.set_mode
+                primary_color.on_complete = self.set_mode
+        else:
+            self.set_mode()
 
     def set_mode(self, *args):
         print("mode set")
@@ -211,8 +223,11 @@ class MainApp(MDApp):
             if not self.dark_mode
             else get_color_from_hex("fde9e2")
         )
-        self.root.HomeScreen.md_bg_color = self.bg_color_dark if self.dark_mode else self.bg_color_light 
+        self.bg_color = self.bg_color_dark if self.dark_mode else self.bg_color_light
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
+        if self.running:
+            self.root.HomeScreen.ids.create.ids.dark_animation.rad = 0.1
+
         if self.dark_mode:
             self.theme_cls.theme_style = "Dark"
             self.theme_cls.primary_hue = "300"
@@ -223,8 +238,6 @@ class MainApp(MDApp):
             self.theme_cls.primary_hue = "500"
             if platform == "android":
                 statusbar(status_color=self.light_hex, white_text=True)
-
-        self.root.HomeScreen.ids.create.ids.circle_mode.rad = 0.1
 
     def toggle_mode(self, *args):
         self.dark_mode = not self.dark_mode

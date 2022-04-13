@@ -17,7 +17,7 @@
 <FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
 
 <LoginScreen>:
-	md_bg_color: app.bg_color_dark if app.dark_mode else app.bg_color_light
+	md_bg_color: app.bg_color
     canvas:
 		Color:
 			rgba:app.theme_cls.primary_color[:-1]+[.9]
@@ -48,6 +48,8 @@
 			adaptive_height:True
 			text:"WELCOME\nTO [color=ff7a4f][u]PASS[/u]" if app.signup else "LOGIN\nTO [color=ff7a4f][u]PASS[/u]"
 			markup:True
+			theme_text_color:"Custom"
+			text_color:app.text_color
 			font_name:'Poppins'
 			halign:'center'
 			font_size:'44dp'

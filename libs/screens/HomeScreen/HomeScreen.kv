@@ -103,7 +103,7 @@
 			pos: (self.x - self.rad , self.y - self.rad)
 
 <HomeScreen>
-	md_bg_color: app.bg_color_light
+	md_bg_color: app.bg_color
 	MDBoxLayout:
 		orientation:'vertical'
 		id: box
@@ -157,7 +157,7 @@
 	name:'CreateScreen'
 	FloatLayout:
 		DarkAnimation:
-			id: circle_mode
+			id: dark_animation
 			opacity:0
 			rad: 10
 			pos: window.width, window.height-dp(112)
