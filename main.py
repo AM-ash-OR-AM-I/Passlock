@@ -71,7 +71,7 @@ class MainApp(MDApp):
         self.login_circle_light = self.generate_color(lightness=0.85)
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
-        self.dark_hex = self.generate_color(darkness=0.17, return_hex=True)
+        self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
 
         self.dark_mode = True
         self.running = True
@@ -246,7 +246,7 @@ class MainApp(MDApp):
         """Sets status bar color in android."""
         if platform == "android":
             statusbar(
-                status_color=colors["Dark"]["CardsDialogs"]
+                status_color=self.dark_hex
                 if self.dark_mode
                 else self.light_hex,
                 white_text=not self.dark_mode,
