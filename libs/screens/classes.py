@@ -19,11 +19,11 @@ class RoundButton(MDFillRoundFlatButton):
 		RoundedRectangle:
 			size: self.size
 			pos: self.pos
-			radius:dp(20),dp(20)
+			radius:self._radius
 			texture: Gradient.horizontal([1,1,1,0], [1,1,1,.2])
 """)
     padding = [0, dp(20), 0, dp(20)]
-    _radius = dp(20), dp(20)
+    _radius = dp(25), dp(25)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

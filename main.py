@@ -125,7 +125,7 @@ class MainApp(MDApp):
             )
 
     def generate_color(
-        self, hex_color=False, color=None, return_hex=False, lightness=0.94, darkness=0
+        self, hex_color=False, color=None, return_hex=False, lightness=0.92, darkness=0
     ):
         """
         :param hex_color:  Instead of passing color as list hexadecimal value can be passed.
@@ -181,10 +181,6 @@ class MainApp(MDApp):
                 ],
             )
         self.exit_dialog.open()
-
-    def animation_behavior(self, instance):
-        if not instance.opacity:
-            Animation(opacity=1, d=0.2, t="in_quad").start(instance)
 
     def on_dark_mode(self, instance, mode):
         current_screen = self.root.current

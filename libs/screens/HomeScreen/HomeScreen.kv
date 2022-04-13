@@ -131,7 +131,7 @@
 				set_elevation:10
 				size_hint_x:.85
 				pos_hint:{'center_x':.5}
-				radius: '20dp'
+				radius: '15dp'
 				on_text:
 				    find.find_password(self.text)
 				on_focus:
@@ -140,7 +140,7 @@
 				hint_text:'Search passwords'
 				icon_color:app.theme_cls.primary_color
 				label_name:""
-				inactive_color:[.9,.9,.9,.2]
+				inactive_color:[.9,.9,.9,.1]
 				dark_bg_hex: "343434"
 		ScreenManager:
 			id: tab_manager
@@ -188,10 +188,6 @@
 	x_pad: 0
 	enter:0
 	md_bg_color: app.primary_accent
-	on_enter:
-	    app.animation_behavior(scroll);self.enter=1
-	on_leave:
-		scroll.opacity=0
 
     RecycleView:
         id: scroll
