@@ -123,7 +123,7 @@ class MainApp(MDApp):
         final_time = time()
         print("Time taken to Load App",final_time-start_time)
         if instance:
-            Animation(pos_hint={"top": 0.95}, opacity=1, d=0.8, t="out_back").start(
+            Animation(pos_hint={"top": 0.95}, opacity=1, d=0.6, t="out_back").start(
                 instance
             )
 
