@@ -1,4 +1,6 @@
 import threading
+from time import time
+start_time = time()
 from colorsys import rgb_to_hls, hls_to_rgb
 from kivy import platform
 from kivy.animation import Animation
@@ -118,7 +120,8 @@ class MainApp(MDApp):
     def animate_login(self, instance):
 
         """Animation to be shown when user enters the app"""
-
+        final_time = time()
+        print("Time taken to Load App",final_time-start_time)
         if instance:
             Animation(pos_hint={"top": 0.95}, opacity=1, d=0.8, t="out_back").start(
                 instance

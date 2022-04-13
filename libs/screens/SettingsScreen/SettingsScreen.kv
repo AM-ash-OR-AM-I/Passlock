@@ -1,6 +1,15 @@
 <ListItem@OneLineAvatarIconListItem>
 	_no_ripple_effect: True
 
+<MyListItem@OneLineIconListItem>
+    theme_text_color:'Custom'
+    text_color:app.text_color
+    icon:"android"
+    IconLeftWidget:
+        icon: root.icon
+        theme_text_color:'Custom'
+        text_color:root.text_color
+
 <SettingsScreen>
     md_bg_color: app.bg_color_dark if app.dark_mode else app.bg_color_light
     MDBoxLayout:
@@ -20,33 +29,19 @@
 	    MDBoxLayout:
             adaptive_height:True
             orientation:'vertical'
-
-            OneLineIconListItem:
-                text:"Theme"
-                theme_text_color:'Custom'
-                text_color:app.theme_cls.primary_color
-                IconLeftWidget:
-                    id: icon_left
-                    icon:'circle-half-full'
-                    theme_text_color:'Custom'
-                    text_color:app.theme_cls.primary_color
-
-            OneLineIconListItem:
+            MyListItem:
                 text:"Advanced Security"
-                IconLeftWidget:
-                    icon:'shield-star'
-            OneLineIconListItem:
+                icon:'shield-star'
+            MyListItem:
                 text:"Backup & Restore"
-                IconLeftWidget:
-                    icon:"backup-restore"
-            OneLineIconListItem:
+                icon:"backup-restore"
+            MyListItem:
                 text:"Change Password"
-                IconLeftWidget:
-                    icon:"lock"
-            OneLineIconListItem:
+                icon:"lock"
+            MyListItem:
                 text:"Delete Account"
-                IconLeftWidget:
-                    icon:"trash-can-outline"
+                icon:"trash-can"
+
         MDSeparator:
         MDBoxLayout:
             adaptive_height:True
