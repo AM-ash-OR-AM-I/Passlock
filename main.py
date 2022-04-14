@@ -3,6 +3,9 @@ from colorsys import rgb_to_hls, hls_to_rgb
 from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
+from Crypto import Random
+import hashlib
+from Crypto.Cipher import AES
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
@@ -17,6 +20,7 @@ from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 from libs.screens.classes import Dialog
 from libs.screens.root import Root
 
+print(hashlib.sha256("password".encode()).hexdigest())
 
 def emulate_android_device(
     pixels_horizontal=1080, pixels_vertical=2240, android_dpi=394, monitor_dpi=157
@@ -124,7 +128,7 @@ class MainApp(MDApp):
     def animate_login(self, instance):
 
         """Animation to be shown when user enters the app"""
-        
+
         if instance:
             Animation(pos_hint={"top": 0.95}, opacity=1, d=0.6, t="out_back").start(
                 instance
@@ -241,9 +245,7 @@ class MainApp(MDApp):
         """Sets status bar color in android."""
         if platform == "android":
             statusbar(
-                status_color=self.dark_hex
-                if self.dark_mode
-                else self.light_hex,
+                status_color=self.dark_hex if self.dark_mode else self.light_hex,
                 white_text=not self.dark_mode,
             )
 

@@ -64,6 +64,12 @@ class FindScreen(MDScreen):
                 }
             }
         )
+    
+    def on_passwords(self, instance, value):
+        """
+        Gets executed when the passwords dictionary is changed.
+        """
+        print(value)
 
     def find_password(self, text):
         """
