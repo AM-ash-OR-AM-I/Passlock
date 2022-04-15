@@ -12,7 +12,7 @@ from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
 from functools import partial
 
-from libs.Backend import *
+from libs.Backend import find_key
 from libs.screens.classes import Dialog, DialogButton, RoundIconButton, CustomSnackbar
 
 app = MDApp.get_running_app()

@@ -1,4 +1,3 @@
-import imp
 from kivymd.app import MDApp
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
