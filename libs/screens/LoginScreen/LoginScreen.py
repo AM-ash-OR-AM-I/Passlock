@@ -10,7 +10,7 @@ class LoginScreen(MDScreen):
 
     def login_button_pressed(self, email, password):
         def initialise_encryption():
-            app.root.load_screen('HomeScreen')
+            app.root.set_current('HomeScreen')
             app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
             from libs.Backend import Encryption
             try:
