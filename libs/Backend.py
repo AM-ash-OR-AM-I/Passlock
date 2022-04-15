@@ -1,28 +1,82 @@
 import os, pickle
 from typing import List, Tuple
+import hashlib
+from Crypto import Random
+from Crypto.Cipher import AES
+from base64 import b64encode, b64decode
 
 if not os.path.exists("data"):
     os.mkdir("data")
 
-def load_passwords():
-    if os.path.exists("data/password"):
-        with open("data/password", "rb") as f:
-            data = pickle.load(f)
-    else:
-        data={}
-    return data
+class Encryption:
+    BLOCK_SIZE = 16
 
-def add_password(name: str, password: str):
-    data = load_passwords()
-    if os.path.exists("data/password"):
-        with open("data/password", "rb") as f:
-            data = pickle.load(f)
-    else:
-        data={}
+    def __init__(self, master_password: str) -> None:
+        self.key = hashlib.sha256(master_password.encode()).digest()
 
-    data[name] = password
-    with open("data/password", "wb") as f:
-        pickle.dump(data, f)
+    def encrypt(self, plain_text: str) -> str:
+        plain_text = self.pad(plain_text)
+        iv = Random.new().read(self.BLOCK_SIZE)  # Initialization vector
+        aes = AES.new(self.key, AES.MODE_CBC, iv)
+        encrypted_text = aes.encrypt(plain_text.encode())
+        return b64encode(iv + encrypted_text).decode("utf-8")
+
+    def decrypt(self, encrypted_text: str) -> str:
+        encrypted_text = b64decode(encrypted_text)
+        iv = encrypted_text[:self.BLOCK_SIZE]
+        aes = AES.new(self.key, AES.MODE_CBC, iv)
+        plain_text = aes.decrypt(encrypted_text[self.BLOCK_SIZE:]).decode("utf-8")
+        return self.unpad(plain_text)
+
+    def pad(self, plain_text: str) -> str:
+        number_of_bytes_to_pad = self.BLOCK_SIZE - len(plain_text) % self.BLOCK_SIZE
+        letter = chr(number_of_bytes_to_pad)
+        padding_str = number_of_bytes_to_pad * letter
+        padded_plain_text = plain_text + padding_str
+        return padded_plain_text
+
+    def unpad(self, plain_text: str) -> str:
+        return plain_text[:-ord(plain_text[-1:])]
+    
+    def load_decrypted(self) -> dict:
+        decrypted_pass = {}
+        encrypted_pass = self.load_passwords()
+        for name in encrypted_pass:
+            decrypted_pass[self.decrypt(name)] = self.decrypt(encrypted_pass[name])
+        return decrypted_pass
+    
+    def add(self, name: str, password: str) -> None:
+        data = self.load_passwords()
+        data[self.encrypt(name)] = self.encrypt(password)
+        with open("data/password", "wb") as f:
+            pickle.dump(data, f)
+
+    def delete(self, name: str) -> None:
+        data = self.load_passwords()
+        del data[name]
+        self.update_dictionary(data)
+    
+    def update(self, name: str, password: str) -> None:
+        data = self.load_passwords()
+        password = self.encrypt(password)
+        data[name] = password
+        self.update_dictionary(data)
+    
+    @staticmethod
+    def load_passwords() -> dict:
+        if os.path.exists("data/password"):
+            with open("data/password", "rb") as f:
+                encrypted_pass = pickle.load(f)
+            return encrypted_pass
+        else:
+            return {}
+
+    @staticmethod
+    def update_dictionary(dictionary: dict) -> None:
+        with open("data/password", "wb") as f:
+            pickle.dump(dictionary, f)
+    
+    
 
 def find_key(dictionary: dict, text: str) -> List[Tuple[Tuple[str, str], int]]:
     """
@@ -164,5 +218,21 @@ def find_key(dictionary: dict, text: str) -> List[Tuple[Tuple[str, str], int]]:
 
     return sort_keys(weighted_pass)
 
-password_dict = load_passwords()
-print(password_dict.items())
+# password_dict = load_passwords()
+# print(password_dict.items())
+# encrypt_obj = Encryption("MyPass")
+# encrypted_text = encrypt_obj.encrypt("test")
+
+# def write(encrypted_text: str):
+#     with open("test.txt","w") as f:
+#         f.write(encrypted_text)
+
+# def read():
+#     with open("test.txt","r") as f:
+#         res = f.read()
+#     return res
+
+# print(type(encrypt_obj.encrypt("Hi there")))
+# print(encrypt_obj.decrypt(read()))
+# decrypted_text = encrypt_obj.decrypt(encrypted_text)
+# print(encrypted_text, decrypted_text)

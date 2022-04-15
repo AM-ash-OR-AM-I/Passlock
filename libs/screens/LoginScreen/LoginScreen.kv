@@ -87,10 +87,7 @@
 					theme_text_color:'Custom'
 					text_color:app.theme_cls.primary_color
 					on_release:
-						if app.fps: app.fps_monitor_start()
-						app.root.load_screen('HomeScreen')
-						app.HomeScreen = app.root.get_screen("HomeScreen")
-		                app.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
+						root.login_button_pressed(email.text, password.text)
 					pos_hint:{'center_x':.5}
 	MDSeparator:
 		id: separator

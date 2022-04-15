@@ -46,8 +46,10 @@ Builder.load_string("""
     orientation: "vertical"
     spacing: "5dp"
     MDTextField:
+        id: name
         hint_text: "Name"
     MDTextField:
+        id: password
         hint_text: "Password"
 """)
 

@@ -97,7 +97,7 @@ class List(
                 self.parent.clear_selection()
         else:
             recycle_list = self.parent.children
-            snack = app.HomeScreen.ids.find.snackbar
+            snack = app.root.HomeScreen.ids.find.snackbar
 
             if not (snack and snack.is_open) or self not in recycle_list[:2]:
                 self.parent.select_with_touch(self.index, None)

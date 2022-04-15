@@ -40,7 +40,7 @@
 		font_size:'18sp'
 		pos_hint:{'center_x':.5}
 		on_release:
-			app.HomeScreen.create_password(name_field.text, password_field.text)
+			app.root.HomeScreen.create_password(name_field.text, password_field.text)
 
 <Auto@ScrollView+MDTabsBase>
     always_overscroll: False
@@ -179,10 +179,10 @@
 		text_color_normal:[.75,.75,.75,1]
 		Manual:
 			id: manual
-			title: "[b]MANUAL"
+			text: "[b]MANUAL"
 		Auto:
 			id: auto
-			title: "[b]AUTO"
+			text: "[b]AUTO"
 
 <RecycleList@LayoutSelectionBehavior+RecycleBoxLayout>
 
