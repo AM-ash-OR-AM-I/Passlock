@@ -10,6 +10,8 @@ class LoginScreen(MDScreen):
 
     def login_button_pressed(self, email, password):
         def initialise_encryption():
+            app.root.load_screen('HomeScreen')
+            app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
             from libs.Backend import Encryption
             try:
                 if app.fps: 
@@ -22,7 +24,6 @@ class LoginScreen(MDScreen):
             except UnicodeDecodeError:
                 toast('Invalid password')
         
-        app.root.load_screen('HomeScreen')
-        app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
+        
         threading.Thread(target=initialise_encryption, daemon=True).start()
         
