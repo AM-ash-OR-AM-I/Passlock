@@ -5,6 +5,10 @@ from Crypto import Random
 from Crypto.Cipher import AES
 from base64 import b64encode, b64decode
 
+from kivymd.app import MDApp
+
+app = MDApp.get_running_app()
+
 if not os.path.exists("data"):
     os.mkdir("data")
 
@@ -46,8 +50,16 @@ class Encryption:
         return decrypted_pass
     
     def add(self, name: str, password: str) -> None:
+        """
+        Add a new password to the dictionary.
+        params:
+            name: gets a name of password in plain text.
+            password: gets password in plain text.
+        """
         data = self.load_passwords()
-        data[self.encrypt(name)] = self.encrypt(password)
+        encrypted_name = self.encrypt(name)
+        app.encrypted_keys[name] = encrypted_name
+        data[encrypted_name] = self.encrypt(password)
         with open("data/password", "wb") as f:
             pickle.dump(data, f)
 
@@ -60,6 +72,7 @@ class Encryption:
         data = self.load_passwords()
         password = self.encrypt(password)
         data[name] = password
+        app.encrypted_keys[self.decrypt(name)] = name
         self.update_dictionary(data)
     
     @staticmethod

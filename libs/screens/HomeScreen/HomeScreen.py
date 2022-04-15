@@ -54,7 +54,7 @@ class FindScreen(MDScreen):
                 "is_deleted": False,
                 "button_actions": {
                     "copy": lambda: exec(
-                        f'Clipboard.copy("{name}"); toast("Item copied")',
+                        f'Clipboard.copy("{password}"); toast("Item copied")',
                         {"Clipboard": Clipboard, "toast": toast},
                     ),
                     "update": lambda: self.open_update_dialog(name),
@@ -82,29 +82,29 @@ class FindScreen(MDScreen):
         """
         Updates the password in the file.
         """
+
         def update_thread():
             if name == original_name:
                 app.passwords[name] = password
+                print(name in app.encrypted_keys)
                 app.encryption_class.update(app.encrypted_keys[name], password)
             else:
                 del app.passwords[original_name]
                 app.encryption_class.delete(app.encrypted_keys[original_name])
                 app.passwords[name] = password
                 app.encryption_class.add(name, password)
-        
-        threading.Thread(update_thread(), daemon=True).start()
+
+        threading.Thread(target=update_thread, daemon=True).start()
 
         toast(text=f"{name} is updated")
 
     def open_update_dialog(self, original_name):
         if not self.update_dialog:
-            update_content = Factory.UpdateContent()
-            update_content.ids.name.text = original_name
-            update_content.ids.password.text = app.passwords[original_name]
+            self.update_content = Factory.UpdateContent()
             self.update_dialog = Dialog(
                 title="Update",
                 type="custom",
-                content_cls=update_content,
+                content_cls=self.update_content,
                 pos_hint={"center_y": 0.6},
                 buttons=[
                     DialogButton(
@@ -115,12 +115,14 @@ class FindScreen(MDScreen):
                         icon="update",
                         on_release=lambda x: self.update_password(
                             original_name,
-                            name=update_content.ids.name.text,
-                            password=update_content.ids.password.text,
+                            name=self.update_content.ids.name.text,
+                            password=self.update_content.ids.password.text,
                         ),
                     ),
                 ],
             )
+        self.update_content.ids.name.text = original_name
+        self.update_content.ids.password.text = app.passwords[original_name]
         self.update_dialog.open()
 
     def delete_from_storage(self, name, dt):
@@ -136,7 +138,9 @@ class FindScreen(MDScreen):
             del app.passwords[name]
             if name in app.encrypted_keys:
                 encrypted_key = app.encrypted_keys[name]
-                threading.Thread(remove_permanently(encrypted_key), daemon=True).start()
+                threading.Thread(
+                    target=remove_permanently, args=(encrypted_key,), daemon=True
+                ).start()
 
     def delete_item(self, name):
         self.delete_permanently = True
@@ -186,7 +190,8 @@ class HomeScreen(MDScreen):
 
     def create_password(self, name, password):
         threading.Thread(
-            app.encryption_class.add(name, password),
+            target=app.encryption_class.add,
+            args=(name, password),
             daemon=True,
         ).start()
         # Updates passwords dictionary.

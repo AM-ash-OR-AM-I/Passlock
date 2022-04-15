@@ -42,7 +42,7 @@ class RoundIconButton(MDFillRoundFlatIconButton):
 Builder.load_string("""
 <UpdateContent@MDBoxLayout>
     adaptive_height: True
-    padding: 0, dp(20), 0, 0
+    padding: 0, dp(15), 0, 0
     orientation: "vertical"
     spacing: "5dp"
     MDTextField:

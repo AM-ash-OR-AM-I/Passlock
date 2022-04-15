@@ -25,5 +25,5 @@ class LoginScreen(MDScreen):
             except UnicodeDecodeError:
                 toast('Invalid password')
 
-        threading.Thread(initialise_encryption(), daemon=True).start()
+        threading.Thread(target=initialise_encryption, daemon=True).start()
         
