@@ -1,14 +1,15 @@
 from kivymd.app import MDApp
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
+from kivy.clock import Clock
 import threading
 
 app = MDApp.get_running_app()
 
 class LoginScreen(MDScreen):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def on_enter(self, *args):
+        Clock.schedule_once(lambda x:app.animate_login(self.ids.box),1.5)
         def load_backend():
             from libs.Backend import Encryption
             self.encryption = Encryption
