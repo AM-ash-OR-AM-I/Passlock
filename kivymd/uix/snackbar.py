@@ -420,6 +420,7 @@ class BaseSnackbar(MDCard):
     """
 
     _interval = 0
+    is_open = True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -520,9 +521,11 @@ class BaseSnackbar(MDCard):
         self.dispatch("on_open")
 
     def on_open(self, *args):
+        self.is_open = True
         """Called when a dialog is opened."""
 
     def on_dismiss(self, *args):
+        self.is_open = False
         """Called when the dialog is closed."""
 
     def on_buttons(self, instance, value):
