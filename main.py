@@ -1,5 +1,4 @@
 from time import time
-from typing import final
 initial = time()
 from colorsys import rgb_to_hls, hls_to_rgb
 from kivy import platform
