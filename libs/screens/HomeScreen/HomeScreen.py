@@ -12,7 +12,6 @@ from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
 from functools import partial
 
-# from libs.Backend import find_key
 from libs.screens.classes import Dialog, DialogButton, RoundIconButton, CustomSnackbar
 
 app = MDApp.get_running_app()
@@ -70,7 +69,7 @@ class FindScreen(MDScreen):
         self.ids.box.clear_selection()
 
         def find_password_thread(text):
-            self.find_dictionary = find_key(app.passwords, text)
+            self.find_dictionary = app.encryption_class.find_key(app.passwords, text)
 
             self.rv_data = []
             for ((name, password), value) in self.find_dictionary:
