@@ -3,7 +3,7 @@ from kivymd.app import MDApp
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
 import threading
-from libs.Backend import Encryption
+# from libs.Backend import Encryption
 
 app = MDApp.get_running_app()
 
