@@ -191,7 +191,6 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
 		"""Use this to do what you want"""
 
 	def on_focus(self, instance, focus):
-		print('event:<on_focus> is_called')
 		if self.app is None:
 			self.app = MDApp.get_running_app()
 		if platform == "android":

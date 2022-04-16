@@ -35,12 +35,13 @@ class LoginScreen(MDScreen):
                 self.load = False
                 toast('Invalid password')
                 print(e)
-            Clock.schedule_once(dismiss_spinner)
+            # Clock.schedule_once(dismiss_spinner)
             
             
         if self.spinner is None:
             self.spinner = Factory.LoadingSpinner()
 
         self.spinner.open()
+        Clock.schedule_once(lambda x:self.spinner.dismiss(), 1)
         threading.Thread(target=initialise_encryption, daemon=True).start()
         
