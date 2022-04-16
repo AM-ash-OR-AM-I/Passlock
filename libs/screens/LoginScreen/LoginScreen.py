@@ -14,8 +14,8 @@ class LoginScreen(MDScreen):
         @mainthread
         def dismiss_spinner():
             self.spinner.dismiss()
-            if self.load:
-                app.root.load_screen('HomeScreen')
+            # if self.load:
+            #     app.root.load_screen('HomeScreen')
 
         def initialise_encryption():
             from libs.Backend import Encryption
