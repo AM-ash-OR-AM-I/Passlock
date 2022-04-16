@@ -2,6 +2,7 @@ from kivymd.app import MDApp
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
 import threading
+from kivy.clock import mainthread
 from kivy.factory import Factory
 app = MDApp.get_running_app()
 
@@ -10,6 +11,9 @@ class LoginScreen(MDScreen):
     spinner =  None
 
     def login_button_pressed(self, email, password):
+        @mainthread
+        def dismiss_spinner():
+            self.spinner.dismiss()
         def initialise_encryption():
             from libs.Backend import Encryption
             try:
@@ -24,7 +28,8 @@ class LoginScreen(MDScreen):
                 # app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
             except UnicodeDecodeError:
                 toast('Invalid password')
-            self.spinner.dismiss()
+            dismiss_spinner()
+            
             
         if self.spinner is None:
             self.spinner = Factory.LoadingSpinner()
