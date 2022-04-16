@@ -13,14 +13,16 @@ class LoginScreen(MDScreen):
     def login_button_pressed(self, email, password):
         @mainthread
         def dismiss_spinner(*args):
+            print("dismissed")
             self.spinner.dismiss()
             if self.load:
                 app.root.load_screen('HomeScreen')
 
         def initialise_encryption():
+            dismiss_spinner()
             from libs.Backend import Encryption
             try:
-                Clock.schedule_once(dismiss_spinner)
+                
                 self.load = True
                 if app.fps: 
                     app.fps_monitor_start()
