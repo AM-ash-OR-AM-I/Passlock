@@ -14,13 +14,13 @@ class LoginScreen(MDScreen):
         @mainthread
         def dismiss_spinner(*args):
             self.spinner.dismiss()
-            print("dismissed")
-            # if self.load:
-            #     app.root.load_screen('HomeScreen')
+            if self.load:
+                app.root.load_screen('HomeScreen')
 
         def initialise_encryption():
             from libs.Backend import Encryption
             try:
+                Clock.schedule_once(dismiss_spinner)
                 self.load = True
                 if app.fps: 
                     app.fps_monitor_start()
@@ -35,7 +35,7 @@ class LoginScreen(MDScreen):
                 self.load = False
                 toast('Invalid password')
                 print(e)
-            Clock.schedule_once(dismiss_spinner)
+            
             
             
         if self.spinner is None:
