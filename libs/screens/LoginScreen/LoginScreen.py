@@ -2,7 +2,7 @@ from kivymd.app import MDApp
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
 import threading
-from kivy.clock import mainthread
+from kivy.clock import Clock, mainthread
 from kivy.factory import Factory
 app = MDApp.get_running_app()
 
@@ -12,7 +12,7 @@ class LoginScreen(MDScreen):
 
     def login_button_pressed(self, email, password):
         @mainthread
-        def dismiss_spinner():
+        def dismiss_spinner(*args):
             self.spinner.dismiss()
             # if self.load:
             #     app.root.load_screen('HomeScreen')
@@ -34,7 +34,7 @@ class LoginScreen(MDScreen):
                 self.load = False
                 toast('Invalid password')
                 print(e)
-            dismiss_spinner()
+            Clock.schedule_once(dismiss_spinner)
             
             
         if self.spinner is None:
