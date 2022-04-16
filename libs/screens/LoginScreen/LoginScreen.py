@@ -34,12 +34,12 @@ class LoginScreen(MDScreen):
             except Exception as e:
                 toast('Invalid password')
                 print(e)
-            dismiss_spinner()
+            # dismiss_spinner()
             
             
         if self.spinner is None:
             self.spinner = Factory.LoadingSpinner()
 
-        self.spinner.open()
+        # self.spinner.open()
         threading.Thread(target=initialise_encryption, daemon=True).start()
         
