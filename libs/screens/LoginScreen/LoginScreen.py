@@ -14,14 +14,13 @@ class LoginScreen(MDScreen):
         @mainthread
         def dismiss_spinner():
             self.spinner.dismiss()
-        
-        @mainthread
-        def load_homescreen():
-            app.root.load_screen('HomeScreen')
+            if self.load:
+                app.root.load_screen('HomeScreen')
 
         def initialise_encryption():
             from libs.Backend import Encryption
             try:
+                self.load = True
                 if app.fps: 
                     app.fps_monitor_start()
                 app.encryption_class = Encryption(password)
@@ -29,17 +28,18 @@ class LoginScreen(MDScreen):
                 encrypted_pass = app.encryption_class.load_passwords()
                 for keys in encrypted_pass:
                     app.encrypted_keys[app.encryption_class.decrypt(keys)] = keys
-                load_homescreen()
+                # load_homescreen()
                 # app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
             except Exception as e:
+                self.load = False
                 toast('Invalid password')
                 print(e)
-            # dismiss_spinner()
+            dismiss_spinner()
             
             
         if self.spinner is None:
             self.spinner = Factory.LoadingSpinner()
 
-        # self.spinner.open()
+        self.spinner.open()
         threading.Thread(target=initialise_encryption, daemon=True).start()
         
