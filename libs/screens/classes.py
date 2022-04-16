@@ -13,6 +13,7 @@ from kivymd.uix.dialog import MDDialog
 
 Builder.load_string("""
 #: import AKSpinnerDoubleBounce libs.modules.spinners.AKSpinnerDoubleBounce
+# test
 <LoadingSpinner@ModalView>:
     auto_dismiss: False
     background_color: 0, 0, 0, 0
