@@ -4,9 +4,9 @@ import hashlib
 from Crypto import Random
 from Crypto.Cipher import AES
 from base64 import b64encode, b64decode
-# from kivymd.app import MDApp
+from kivymd.app import MDApp
 
-# app= MDApp.get_running_app()
+app= MDApp.get_running_app()
 
 if not os.path.exists("data"):
     os.mkdir("data")
