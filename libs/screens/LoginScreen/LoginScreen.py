@@ -19,11 +19,12 @@ class LoginScreen(MDScreen):
                 app.root.load_screen('HomeScreen')
 
         def initialise_encryption():
+            self.load = True
             dismiss_spinner()
             from libs.Backend import Encryption
             try:
                 
-                self.load = True
+                
                 if app.fps: 
                     app.fps_monitor_start()
                 app.encryption_class = Encryption(password)
