@@ -9,11 +9,11 @@ app = MDApp.get_running_app()
 
 class LoginScreen(MDScreen):
     spinner =  None
+    @mainthread
+    def dismiss_spinner(self):
+        self.spinner.dismiss()
 
     def login_button_pressed(self, email, password):
-        @mainthread
-        def dismiss_spinner():
-            self.spinner.dismiss()
         def initialise_encryption():
             from libs.Backend import Encryption
             try:
@@ -28,7 +28,7 @@ class LoginScreen(MDScreen):
                 # app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
             except UnicodeDecodeError:
                 toast('Invalid password')
-            dismiss_spinner()
+            self.dismiss_spinner()
             
             
         if self.spinner is None:
