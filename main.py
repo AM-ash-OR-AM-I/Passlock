@@ -8,8 +8,7 @@ from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     get_color_from_hex,
-    NumericProperty,
-    DictProperty
+    NumericProperty
 )
 
 from kivymd.app import MDApp
