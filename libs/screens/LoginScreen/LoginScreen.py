@@ -14,6 +14,7 @@ class LoginScreen(MDScreen):
         @mainthread
         def dismiss_spinner(*args):
             self.spinner.dismiss()
+            print("dismissed")
             # if self.load:
             #     app.root.load_screen('HomeScreen')
 
