@@ -9,6 +9,9 @@ app = MDApp.get_running_app()
 
 class LoginScreen(MDScreen):
     spinner =  None
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.spinner = Factory.LoadingSpinner()
 
     def login_button_pressed(self, email, password):
         @mainthread
@@ -38,11 +41,6 @@ class LoginScreen(MDScreen):
                 self.load = False
                 toast('Invalid password')
                 print(e)
-            
-            
-            
-        if self.spinner is None:
-            self.spinner = Factory.LoadingSpinner()
 
         self.spinner.open()
         threading.Thread(target=initialise_encryption, daemon=True).start()
