@@ -10,9 +10,9 @@ app = MDApp.get_running_app()
 
 class LoginScreen(MDScreen):
     spinner =  None
-    # def __init__(self, **kw):
-    #     super().__init__(**kw)
-    #     self.spinner = Factory.LoadingSpinner()
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.spinner = Factory.LoadingSpinner()
 
     def login_button_pressed(self, email, password):
         @mainthread
@@ -26,7 +26,7 @@ class LoginScreen(MDScreen):
             i = time()
             from libs.Backend import Encryption
             self.load = True
-            # Clock.schedule_once(dismiss_spinner)
+            Clock.schedule_once(dismiss_spinner)
             try:
                 if app.fps: 
                     app.fps_monitor_start()
@@ -43,6 +43,6 @@ class LoginScreen(MDScreen):
                 print(e)
             print(f"Time taken to load passwords = {time()-i}")
 
-        # self.spinner.open()
+        self.spinner.open()
         threading.Thread(target=initialise_encryption, daemon=True).start()
         
