@@ -43,5 +43,6 @@ class LoginScreen(MDScreen):
             Clock.schedule_once(dismiss_spinner)
 
         self.spinner.open()
+        app.root.load_screen('HomeScreen')
         threading.Thread(target=initialise_encryption, daemon=True).start()
         

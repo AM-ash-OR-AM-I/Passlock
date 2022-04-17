@@ -81,7 +81,7 @@ class MainApp(MDApp):
     def build(self):
         self.root = Root()
         self.root.load_screen("LoginScreen")
-        self.root.load_screen("HomeScreen", set_current=False)
+        # self.root.load_screen("HomeScreen", set_current=False)
 
     def on_key_height(self, instance, val):
 
