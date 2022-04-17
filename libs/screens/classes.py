@@ -12,7 +12,6 @@ from kivymd.uix.button import MDFillRoundFlatButton, MDFillRoundFlatIconButton, 
 from kivymd.uix.dialog import MDDialog
 
 Builder.load_string("""
-#: import AKSpinnerDoubleBounce libs.modules.spinners.AKSpinnerDoubleBounce
 <LoadingSpinner@ModalView>:
     auto_dismiss: False
     background_color: 0, 0, 0, 0
