@@ -26,7 +26,6 @@ class LoginScreen(MDScreen):
             i = time()
             from libs.Backend import Encryption
             self.load = True
-            Clock.schedule_once(dismiss_spinner)
             try:
                 if app.fps: 
                     app.fps_monitor_start()
@@ -42,6 +41,7 @@ class LoginScreen(MDScreen):
                 toast('Invalid password')
                 print(e)
             print(f"Time taken to load passwords = {time()-i}")
+            Clock.schedule_once(dismiss_spinner)
 
         self.spinner.open()
         threading.Thread(target=initialise_encryption, daemon=True).start()

@@ -15,9 +15,15 @@ Builder.load_string("""
 <LoadingSpinner@ModalView>:
     auto_dismiss: False
     background_color: 0, 0, 0, 0
+    overlay_color: 0, 0, 0, 0.4
     FloatLayout:
         MDLabel:
-            text:"Loading"
+            font_style:"H4"
+            theme_text_color:"Custom"
+            pos_hint:{"center_y":.5}
+            text_color: app.text_color
+            halign:"center"
+            text:"Loading\\n..."    
 """)
 class RoundButton(MDFillRoundFlatButton):
     Builder.load_string("""
