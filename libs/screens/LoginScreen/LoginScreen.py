@@ -48,6 +48,6 @@ class LoginScreen(MDScreen):
             
 
         self.loading_view.open()
-        initialise_encryption()
+        self.loading_view.on_open = lambda *args: initialise_encryption()
         
         
