@@ -17,9 +17,10 @@ Builder.load_string("""
     auto_dismiss: False
     background_color: 0, 0, 0, 0
     FloatLayout:
-        AKSpinnerDoubleBounce:
+        MDSpinner:
+            size_hint:None, None
+            size: dp(46), dp(46)
             pos_hint: {'center_x': .5, 'center_y': .5}
-            spinner_size: dp(30)
             active: True
 """)
 class RoundButton(MDFillRoundFlatButton):
