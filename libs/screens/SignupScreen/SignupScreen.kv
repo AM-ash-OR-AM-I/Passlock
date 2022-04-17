@@ -43,10 +43,10 @@
 		opacity:0
 		pos_hint:{"top":.7}
 		orientation:'vertical'
-		spacing:'70dp'
+		spacing:'50dp'
 		MDLabel:
 			adaptive_height:True
-			text:"LOGIN\nTO [color=ff7a4f][u]PASS[/u]"
+			text:"WELCOME\nTO [color=ff7a4f][u]PASS[/u]" if app.signup else "LOGIN\nTO [color=ff7a4f][u]PASS[/u]"
 			markup:True
 			theme_text_color:"Custom"
 			text_color:app.text_color
@@ -59,6 +59,13 @@
 			spacing:'50dp'
 			orientation:'vertical'
 			padding:(0,dp(15),0,0)
+			BorderCard:
+				id: email
+				label_name:'Email Address'
+				hint_text:'username@mail.com' if app.signup else "Your mail name"
+				pos_hint:{'center_x':.5}
+				icon_left_action:['account']
+				icon_right_action:['chevron-down']
 			MDBoxLayout:
 				adaptive_height:True
 				orientation:'vertical'
@@ -80,16 +87,36 @@
 					theme_text_color:'Custom'
 					text_color:app.theme_cls.primary_color
 					on_release:
-						root.login_button_pressed(password.text)
+						root.signup(email.text, password.text)
 					pos_hint:{'center_x':.5}
+	MDSeparator:
+		id: separator
+		size_hint_x:.8
+		y:lock.y - dp(55)
+		pos_hint:{"center_x":.5}
+	MDTextButton:
+		text:'New user? [color=f67e55]Signup!'if not app.signup else "Existing user? [color=ff7a4f]Login."
+		markup:True
+		top:separator.y - dp(20)
+		pos_hint:{'center_x':.5}
+		font_name:'RobotoMedium'
+		theme_text_color:"Custom"
+		text_color:app.text_color
+		halign:'center'
+		size_hint_x:1
+		on_release: app.signup = not app.signup
+		font_size:lbl_size
 
-	# MDTextButton:
-	# 	id:forgot
-	# 	x: password.x+dp(25)
-	# 	y: password.y-dp(25)
-	# 	text:'Forgot Password?'
-	# 	font_name:'RobotoMedium'
-	# 	theme_text_color:"Secondary"
-	# 	font_size:"12sp"
+
+	MDTextButton:
+		id:forgot
+		x: password.x+dp(25)
+		y: password.y-dp(25)
+		text:'Forgot Password?'
+		font_name:'RobotoMedium'
+		disabled: app.signup
+		theme_text_color:'Custom' if self.disabled else "Secondary"
+		text_color:[0,0,0,0] if self.disabled else [0,0,0,0]
+		font_size:"12sp"
 
 	

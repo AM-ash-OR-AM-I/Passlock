@@ -28,7 +28,7 @@ Builder.load_string("""
             pos_hint:{"center_y":.5}
             text_color: app.text_color
             halign:"center"
-            text:"Loading..."    
+            text:"Checking..."    
 """
 )
 

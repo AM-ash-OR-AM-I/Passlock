@@ -3,7 +3,7 @@ from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
 import threading
 from time import time
-from kivy.clock import Clock, mainthread
+from kivy.clock import mainthread
 from kivy.factory import Factory
 app = MDApp.get_running_app()
 
@@ -14,14 +14,13 @@ class LoginScreen(MDScreen):
         super().__init__(**kw)
         self.loading_view = Factory.LoadingScreen()
 
-    def login_button_pressed(self, email, password):
+    def login_button_pressed(self, password):
         @mainthread
         def load_home(*args):
             app.root.load_screen('HomeScreen', set_current = False)
 
         @mainthread
         def dismiss_spinner(*args):
-            print("dismissed")
             self.loading_view.dismiss()
             if self.load:
                 app.root.load_screen('HomeScreen')
