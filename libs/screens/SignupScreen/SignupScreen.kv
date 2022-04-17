@@ -1,6 +1,7 @@
-#:import window kivy.core.window.Window
-#:set height window.height
-#:set width window.width
+#: import window kivy.core.window.Window
+#: set height window.height
+#: import md_icons kivymd.icon_definitions.md_icons
+#: set width window.width
 #: set rad width/2
 #: set lbl_size '18sp'
 #: set icon_size 60
@@ -16,7 +17,7 @@
 
 <FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
 
-<LoginScreen>:
+<SignupScreen>:
 	md_bg_color: app.bg_color
     canvas:
 		Color:
@@ -46,7 +47,7 @@
 		spacing:'50dp'
 		MDLabel:
 			adaptive_height:True
-			text:"WELCOME\nTO [color=ff7a4f][u]PASS[/u]" if app.signup else "LOGIN\nTO [color=ff7a4f][u]PASS[/u]"
+			text:"WELCOME\nTO [color=ff7a4f][u]PASS[/u]" if root.show_signup else "LOGIN\nTO [color=ff7a4f][u]PASS[/u]"
 			markup:True
 			theme_text_color:"Custom"
 			text_color:app.text_color
@@ -61,8 +62,9 @@
 			padding:(0,dp(15),0,0)
 			BorderCard:
 				id: email
+                opacity: 0 if root.offline_only else 1
 				label_name:'Email Address'
-				hint_text:'username@mail.com' if app.signup else "Your mail name"
+				hint_text:'username@mail.com' if root.show_signup else "Your mail name"
 				pos_hint:{'center_x':.5}
 				icon_left_action:['account']
 				icon_right_action:['chevron-down']
@@ -73,14 +75,13 @@
 				BorderCard:
 					id: password
 					label_name:'Password'
-					hint_text:('Create' if app.signup else "Enter")+" Password"
+					hint_text:('Create' if root.show_signup else "Enter")+" Password"
 					pos_hint:{'center_x':.5}
 					icon_right_action:['eye-off-outline']
-
 				FloatingButton:
 					id: lock
 					elevation:10
-					icon:'login'if app.signup else "lock"
+					icon:'login' if not root.show_signup else "lock"
 					user_font_size:80
 					user_font_size:80
 					md_bg_color:app.light_color if not app.dark_mode else app.dark_color
@@ -89,13 +90,29 @@
 					on_release:
 						root.signup(email.text, password.text)
 					pos_hint:{'center_x':.5}
+
+    # MDTextButton:
+	# 	id:forgot
+	# 	x: password.x+dp(25)
+	# 	y: password.y-dp(25)
+	# 	text:'Forgot Password?'
+	# 	font_name:'RobotoMedium'
+	# 	disabled: root.show_signup
+	# 	theme_text_color:'Custom' if self.disabled else "Secondary"
+	# 	text_color:[0,0,0,0] if self.disabled else [0,0,0,0]
+	# 	font_size:"12sp"
+
 	MDSeparator:
 		id: separator
+        opacity: 0 if root.offline_only else 1
 		size_hint_x:.8
 		y:lock.y - dp(55)
 		pos_hint:{"center_x":.5}
+
 	MDTextButton:
-		text:'New user? [color=f67e55]Signup!'if not app.signup else "Existing user? [color=ff7a4f]Login."
+        id: switch_signin
+        opacity: 0 if root.offline_only else 1
+		text:'New user? [color=f67e55]Signup!'if not root.show_signup else "Existing user? [color=ff7a4f]Login."
 		markup:True
 		top:separator.y - dp(20)
 		pos_hint:{'center_x':.5}
@@ -104,19 +121,19 @@
 		text_color:app.text_color
 		halign:'center'
 		size_hint_x:1
-		on_release: app.signup = not app.signup
+		on_release: root.show_signup = not root.show_signup
 		font_size:lbl_size
-
-
-	MDTextButton:
-		id:forgot
-		x: password.x+dp(25)
-		y: password.y-dp(25)
-		text:'Forgot Password?'
+    
+    MDTextButton:
+		text: f'Use Offline only [font=Icons]{md_icons["cloud-off-outline"]}[/font]' if not root.offline_only else f'Use email to sync [font=Icons]{md_icons["cloud-sync-outline"]}[/font]'
+		pos_hint:{'center_x':.5,"top":.1}
+        markup:True
 		font_name:'RobotoMedium'
-		disabled: app.signup
-		theme_text_color:'Custom' if self.disabled else "Secondary"
-		text_color:[0,0,0,0] if self.disabled else [0,0,0,0]
-		font_size:"12sp"
+		theme_text_color:"Custom"
+		text_color:app.text_color
+		halign:'center'
+		size_hint_x:1
+		on_release: root.offline_only = not root.offline_only
+		font_size:lbl_size
 
 	

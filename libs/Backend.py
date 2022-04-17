@@ -227,22 +227,4 @@ class Encryption:
                     fuzzy_search(text, name, password)
 
         return sort_keys(weighted_pass)
-
-# password_dict = load_passwords()
-# print(password_dict.items())
-# encrypt_obj = Encryption("MyPass")
-# encrypted_text = encrypt_obj.encrypt("test")
-
-# def write(encrypted_text: str):
-#     with open("test.txt","w") as f:
-#         f.write(encrypted_text)
-
-# def read():
-#     with open("test.txt","r") as f:
-#         res = f.read()
-#     return res
-
-# print(type(encrypt_obj.encrypt("Hi there")))
-# print(encrypt_obj.decrypt(read()))
-# decrypted_text = encrypt_obj.decrypt(encrypted_text)
-# print(encrypted_text, decrypted_text)
+        

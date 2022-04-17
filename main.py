@@ -1,4 +1,5 @@
 from time import time
+
 initial = time()
 from colorsys import rgb_to_hls, hls_to_rgb
 from kivy import platform
@@ -8,18 +9,19 @@ from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     get_color_from_hex,
-    NumericProperty
+    NumericProperty,
 )
-import cProfile
+import cProfile, os.path
 from kivymd.app import MDApp
-from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
 from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 from libs.screens.classes import Dialog
 from libs.screens.root import Root
 from kivy.config import Config
+
 Config.set("kivy", "log_level", "info")
 Config.write()
+
 
 def emulate_android_device(
     pixels_horizontal=1080, pixels_vertical=2240, android_dpi=394, monitor_dpi=157
@@ -58,13 +60,13 @@ class MainApp(MDApp):
     fps = True
     path_to_live_ui = "OtherStuff/custom_dialog.kv"
     running = False
-    signup = BooleanProperty(True)
     HomeScreen = LoginScreen = SettingScreen = update_dialog = exit_dialog = None
 
     def __init__(self):
         super().__init__()
         self.theme_cls.primary_palette = "DeepOrange"
         self.text_color = get_color_from_hex("611c05")
+        self.signup = False if os.path.exists("data/email.txt") else True
         self.secondary_text_color = get_color_from_hex("a8928a")
         self.light_color = self.generate_color()
         self.bg_color_light = self.generate_color(lightness=0.98)
@@ -80,52 +82,8 @@ class MainApp(MDApp):
 
     def build(self):
         self.root = Root()
-        self.root.load_screen("LoginScreen")
-        self.root.load_screen("HomeScreen", set_current=False)
-
-    def on_key_height(self, instance, val):
-
-        """Used to move screen up/down so that UI elements are visible when keyboard is shown."""
-
-        print(val)
-        if self.root.current == "LoginScreen":
-            self.diff = (
-                val - self.root.LoginScreen.ids.lock.y + dp(20)
-            ) / Window.height
-            if self.diff > 0:
-                if val > 0:
-                    self.box_height = self.root.LoginScreen.ids.box.pos_hint["top"]
-                    Animation(
-                        pos_hint={"top": self.box_height + self.diff},
-                        t="out_quad",
-                        d=0.2,
-                    ).start(self.root.LoginScreen.ids.box)
-                else:
-                    Animation(
-                        pos_hint={"top": self.box_height}, t="in_quad", d=0.2
-                    ).start(self.root.LoginScreen.ids.box)
-        else:
-            if self.root.HomeScreen.ids.tab_manager.current == "CreateScreen":
-                generate = self.root.HomeScreen.ids.create.ids.manual.ids.add
-                self.root.HomeScreen.ids.create.ids.auto.scroll_y = 1
-                self.diff = val - generate.y + dp(20)
-                if self.diff > 0:
-                    if val > 0:
-                        Animation(y=self.diff, t="out_quad", d=0.2).start(
-                            self.root.HomeScreen
-                        )
-                    else:
-                        Animation(y=0, t="in_quad", d=0.2).start(self.root.HomeScreen)
-            else:
-                Window.softinput_mode = "below_target"
-
-    def on_signup(self, *args):
-
-        """Animation to be shown when clicking on login or signup"""
-        box = self.root.LoginScreen.ids.box
-        box.pos_hint = {"top": 0.8}
-        box.opacity = 0
-        self.animate_login(box)
+        self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
+        # self.root.load_screen("HomeScreen", set_current=False)
 
     def animate_login(self, instance):
 
@@ -243,21 +201,56 @@ class MainApp(MDApp):
     def toggle_mode(self, *args):
         self.dark_mode = not self.dark_mode
 
+    def on_key_height(self, instance, val):
+
+        """Used to move screen up/down so that UI elements are visible when keyboard is shown."""
+
+        print(val)
+        signup = self.root.SignupScreen
+        if self.root.current == "LoginScreen":
+            self.diff = (val - signup.ids.lock.y + dp(20)) / Window.height
+            if self.diff > 0:
+                if val > 0:
+                    self.box_height = signup.ids.box.pos_hint["top"]
+                    Animation(
+                        pos_hint={"top": self.box_height + self.diff},
+                        t="out_quad",
+                        d=0.2,
+                    ).start(signup.ids.box)
+                else:
+                    Animation(
+                        pos_hint={"top": self.box_height}, t="in_quad", d=0.2
+                    ).start(signup.ids.box)
+        else:
+            if self.root.HomeScreen.ids.tab_manager.current == "CreateScreen":
+                generate = self.root.HomeScreen.ids.create.ids.manual.ids.add
+                self.root.HomeScreen.ids.create.ids.auto.scroll_y = 1
+                self.diff = val - generate.y + dp(20)
+                if self.diff > 0:
+                    if val > 0:
+                        Animation(y=self.diff, t="out_quad", d=0.2).start(
+                            self.root.HomeScreen
+                        )
+                    else:
+                        Animation(y=0, t="in_quad", d=0.2).start(self.root.HomeScreen)
+            else:
+                Window.softinput_mode = "below_target"
+
     def on_start(self):
         """Sets status bar color in android."""
-        self.profile = cProfile.Profile()
-        self.profile.enable()
         if platform == "android":
             statusbar(
-                status_color=self.dark_hex
-                if self.dark_mode
-                else self.light_hex,
+                status_color=self.dark_hex if self.dark_mode else self.light_hex,
                 white_text=not self.dark_mode,
             )
+        else:
+            self.profile = cProfile.Profile()
+            self.profile.enable()
 
     def on_stop(self):
-        self.profile.disable()
-        self.profile.dump_stats('myapp.profile')
+        if platform != "android":
+            self.profile.disable()
+            self.profile.dump_stats("myapp.profile")
 
 
 if __name__ == "__main__":
