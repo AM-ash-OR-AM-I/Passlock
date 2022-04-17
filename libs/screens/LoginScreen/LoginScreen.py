@@ -19,7 +19,7 @@ class LoginScreen(MDScreen):
         def initialise_encryption():
             i = time()
             from libs.Backend import Encryption
-            # print(f"Time taken to import = {time()-i}")
+            print(f"Time taken to import = {time()-i}")
             try:
                 self.load = True
                 if app.fps: 
@@ -27,9 +27,9 @@ class LoginScreen(MDScreen):
                 app.encryption_class = Encryption(password)
                 
                 app.passwords = app.encryption_class.load_decrypted()
+                print(f"Time taken to call_encryption = {time()-i}")
                 dismiss_spinner()
                 encrypted_pass = app.encryption_class.load_passwords()
-                print(f"Time taken to call_encryption = {time()-i}")
                 for keys in encrypted_pass:
                     app.encrypted_keys[app.encryption_class.decrypt(keys)] = keys
                 # app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
