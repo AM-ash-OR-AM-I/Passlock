@@ -10,7 +10,7 @@ from kivy.properties import (
     get_color_from_hex,
     NumericProperty
 )
-
+import cProfile
 from kivymd.app import MDApp
 from kivymd.color_definitions import colors
 from kivymd.material_resources import dp
@@ -81,7 +81,7 @@ class MainApp(MDApp):
     def build(self):
         self.root = Root()
         self.root.load_screen("LoginScreen")
-        # self.root.load_screen("HomeScreen", set_current=False)
+        self.root.load_screen("HomeScreen", set_current=False)
 
     def on_key_height(self, instance, val):
 
@@ -245,6 +245,8 @@ class MainApp(MDApp):
 
     def on_start(self):
         """Sets status bar color in android."""
+        self.profile = cProfile.Profile()
+        self.profile.enable()
         if platform == "android":
             statusbar(
                 status_color=self.dark_hex
@@ -252,6 +254,10 @@ class MainApp(MDApp):
                 else self.light_hex,
                 white_text=not self.dark_mode,
             )
+
+    def on_stop(self):
+        self.profile.disable()
+        self.profile.dump_stats('myapp.profile')
 
 
 if __name__ == "__main__":
