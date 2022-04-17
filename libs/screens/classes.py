@@ -8,23 +8,31 @@ from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDFillRoundFlatButton, MDFillRoundFlatIconButton, MDFlatButton
+from kivymd.uix.button import (
+    MDFillRoundFlatButton,
+    MDFillRoundFlatIconButton,
+    MDFlatButton,
+)
 from kivymd.uix.dialog import MDDialog
 
 Builder.load_string("""
 <LoadingSpinner@ModalView>:
     auto_dismiss: False
     background_color: 0, 0, 0, 0
-    overlay_color: 0, 0, 0, 0.4
+    overlay_color: 0, 0, 0, 0.2
     FloatLayout:
         MDLabel:
-            font_style:"H4"
+            font_size:"40dp"
+            font_name:"Poppins"
             theme_text_color:"Custom"
             pos_hint:{"center_y":.5}
             text_color: app.text_color
             halign:"center"
-            text:"Loading\\n..."    
-""")
+            text:"Loading..."    
+"""
+)
+
+
 class RoundButton(MDFillRoundFlatButton):
     Builder.load_string("""
 <RoundButton>
@@ -34,7 +42,8 @@ class RoundButton(MDFillRoundFlatButton):
 			pos: self.pos
 			radius:self._radius
 			texture: Gradient.horizontal([1,1,1,0], [1,1,1,.2])
-""")
+"""
+    )
     padding = [0, dp(20), 0, dp(20)]
     _radius = dp(25), dp(25)
 
@@ -64,7 +73,8 @@ Builder.load_string("""
     MDTextField:
         id: password
         hint_text: "Password"
-""")
+"""
+)
 
 
 class Dialog(MDDialog):
@@ -112,12 +122,13 @@ class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
 		on_release:
 			check.active = not check.active
 		text: root.text
-""")
+"""
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.ripple_color = self.theme_cls.primary_light
-        self.ripple_alpha = .2
+        self.ripple_alpha = 0.2
 
 
 class CustomSnackbar(Snackbar):
