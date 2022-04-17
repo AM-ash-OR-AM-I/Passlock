@@ -15,20 +15,15 @@ class LoginScreen(MDScreen):
         self.loading_view = Factory.LoadingScreen()
 
     def login_button_pressed(self, password):
-        @mainthread
-        def load_home(*args):
-            app.root.load_screen('HomeScreen', set_current = False)
 
-        @mainthread
         def dismiss_spinner(*args):
-            self.loading_view.dismiss()
             if self.load:
                 app.root.load_screen('HomeScreen')
+            self.loading_view.dismiss()
 
         def initialise_encryption():
             i = time()
             from libs.Backend import Encryption
-            load_home()
             try:
                 self.load = True
                 if app.fps: 
