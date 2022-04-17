@@ -16,6 +16,10 @@ class LoginScreen(MDScreen):
 
     def login_button_pressed(self, email, password):
         @mainthread
+        def load_home(*args)
+            app.root.load_screen('HomeScreen', set_current = False)
+            
+        @mainthread
         def dismiss_spinner(*args):
             print("dismissed")
             self.spinner.dismiss()
@@ -25,7 +29,7 @@ class LoginScreen(MDScreen):
         def initialise_encryption():
             i = time()
             from libs.Backend import Encryption
-            app.root.load_screen('HomeScreen', set_current = False)
+            load_home()
             self.load = True
             try:
                 if app.fps: 
@@ -41,7 +45,7 @@ class LoginScreen(MDScreen):
                 toast('Invalid password')
                 print(e)
             print(f"Time taken to load passwords = {time()-i}")
-            Clock.schedule_once(dismiss_spinner)
+            dismiss_spinner()
 
         self.spinner.open()
         threading.Thread(target=initialise_encryption, daemon=True).start()
