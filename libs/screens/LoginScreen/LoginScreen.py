@@ -2,6 +2,7 @@ from kivymd.app import MDApp
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
 import threading
+from time import time
 from kivy.clock import Clock, mainthread
 from kivy.factory import Factory
 app = MDApp.get_running_app()
@@ -22,8 +23,10 @@ class LoginScreen(MDScreen):
                 app.root.load_screen('HomeScreen')
 
         def initialise_encryption():
+            i = time()
             from libs import Backend
             self.load = True
+            print(time()-i)
             Clock.schedule_once(dismiss_spinner)
             # try:
             #     if app.fps: 
