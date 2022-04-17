@@ -16,9 +16,9 @@ class LoginScreen(MDScreen):
 
     def login_button_pressed(self, email, password):
         @mainthread
-        def load_home(*args)
+        def load_home(*args):
             app.root.load_screen('HomeScreen', set_current = False)
-            
+
         @mainthread
         def dismiss_spinner(*args):
             print("dismissed")
