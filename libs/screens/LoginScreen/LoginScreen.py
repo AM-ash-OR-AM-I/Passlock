@@ -22,7 +22,7 @@ class LoginScreen(MDScreen):
                 app.root.load_screen('HomeScreen')
 
         def initialise_encryption():
-            from libs.Backend import Encryption
+            # from libs.Backend import Encryption
             self.load = True
             Clock.schedule_once(dismiss_spinner)
             # try:
