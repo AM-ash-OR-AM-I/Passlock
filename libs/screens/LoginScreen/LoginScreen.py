@@ -25,6 +25,7 @@ class LoginScreen(MDScreen):
         def initialise_encryption():
             i = time()
             from libs.Backend import Encryption
+            app.root.load_screen('HomeScreen', set_current = False)
             self.load = True
             try:
                 if app.fps: 
@@ -44,5 +45,5 @@ class LoginScreen(MDScreen):
 
         self.spinner.open()
         threading.Thread(target=initialise_encryption, daemon=True).start()
-        app.root.load_screen('HomeScreen', set_current = False)
+        
         
