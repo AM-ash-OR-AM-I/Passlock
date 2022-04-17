@@ -14,6 +14,7 @@
 	icon_color:app.theme_cls.primary_light
 
 <FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
+	_no_ripple_effect: True
 
 <LoginScreen>:
 	md_bg_color: app.bg_color
@@ -65,20 +66,20 @@
 				BorderCard:
 					id: password
 					label_name:'Password'
-					hint_text:('Create' if app.signup else "Enter")+" Password"
+					hint_text:"Enter Password"
 					pos_hint:{'center_x':.5}
 					icon_right_action:['eye-off-outline']
 
 				FloatingButton:
 					id: lock
 					elevation:10
-					icon:'login'if app.signup else "lock"
+					icon:'login'
 					user_font_size:80
 					user_font_size:80
 					md_bg_color:app.light_color if not app.dark_mode else app.dark_color
 					theme_text_color:'Custom'
 					text_color:app.theme_cls.primary_color
-					on_release:
+					on_press:
 						root.login_button_pressed(password.text)
 					pos_hint:{'center_x':.5}
 

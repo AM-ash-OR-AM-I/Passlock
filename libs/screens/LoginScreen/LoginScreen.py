@@ -1,18 +1,13 @@
 from kivymd.app import MDApp
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
-import threading
 from time import time
-from kivy.clock import mainthread
 from kivy.factory import Factory
 app = MDApp.get_running_app()
 
 
 class LoginScreen(MDScreen):
     loading_view =  None
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self.loading_view = Factory.LoadingScreen()
 
     def login_button_pressed(self, password):
 
@@ -41,7 +36,8 @@ class LoginScreen(MDScreen):
                 toast('Invalid password')
             print(f"Time taken to load passwords = {time()-i}")
             
-
+        if self.loading_view is None:
+            self.loading_view = Factory.LoadingScreen()
         self.loading_view.open()
         self.loading_view.on_open = lambda *args: initialise_encryption()
         
