@@ -16,11 +16,8 @@ Builder.load_string("""
     auto_dismiss: False
     background_color: 0, 0, 0, 0
     FloatLayout:
-        MDSpinner:
-            size_hint:None, None
-            size: dp(46), dp(46)
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            active: True
+        MDLabel:
+            text:"Loading"
 """)
 class RoundButton(MDFillRoundFlatButton):
     Builder.load_string("""
