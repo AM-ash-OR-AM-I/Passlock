@@ -34,7 +34,6 @@ class LoginScreen(MDScreen):
                 encrypted_pass = app.encryption_class.load_passwords()
                 for keys in encrypted_pass:
                     app.encrypted_keys[app.encryption_class.decrypt(keys)] = keys
-                app.root.load_screen('HomeScreen')
                 # app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
             except Exception as e:
                 self.load = False
