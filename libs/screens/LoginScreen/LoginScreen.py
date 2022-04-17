@@ -48,6 +48,6 @@ class LoginScreen(MDScreen):
             
 
         self.loading_view.open()
-        threading.Thread(target=initialise_encryption, daemon=True).start()
+        initialise_encryption()
         
         

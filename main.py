@@ -132,7 +132,7 @@ class MainApp(MDApp):
         """Animation to be shown when user enters the app"""
         print(f"Time taken = {time() - initial}")
         if instance:
-            Animation(pos_hint={"top": 0.95}, opacity=1, d=0.6, t="out_back").start(
+            Animation(pos_hint={"top": 0.95}, opacity=1, d=0.5, t="out_back").start(
                 instance
             )
 

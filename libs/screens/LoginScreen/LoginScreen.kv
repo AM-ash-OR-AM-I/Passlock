@@ -2,7 +2,6 @@
 #:set height window.height
 #:set width window.width
 #: set rad width/2
-#: set lbl_size '18sp'
 #: set icon_size 60
 #: import platform kivy.platform
 #: import CardTextField libs.modules.CardTextField.CardTextField
@@ -35,7 +34,7 @@
 			angle_end:270
 
     on_enter:
-        Clock.schedule_once(lambda x:app.animate_login(box),1.5)
+        Clock.schedule_once(lambda x:app.animate_login(box),1)
 
 	MDBoxLayout:
 		adaptive_height:True
