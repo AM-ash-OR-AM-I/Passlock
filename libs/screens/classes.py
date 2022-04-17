@@ -16,7 +16,7 @@ from kivymd.uix.button import (
 from kivymd.uix.dialog import MDDialog
 
 Builder.load_string("""
-<LoadingSpinner@ModalView>:
+<LoadingScreen@ModalView>:
     auto_dismiss: False
     background_color: 0, 0, 0, 0
     overlay_color: 0, 0, 0, 0.2
