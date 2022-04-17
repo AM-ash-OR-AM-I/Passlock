@@ -25,22 +25,20 @@ class LoginScreen(MDScreen):
             from libs.Backend import Encryption
             self.load = True
             Clock.schedule_once(dismiss_spinner)
-            try:
-                
-                
-                if app.fps: 
-                    app.fps_monitor_start()
-                app.encryption_class = Encryption(password)
-                app.passwords = app.encryption_class.load_decrypted()
-                encrypted_pass = app.encryption_class.load_passwords()
-                for keys in encrypted_pass:
-                    app.encrypted_keys[app.encryption_class.decrypt(keys)] = keys
-                # load_homescreen()
-                # app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
-            except Exception as e:
-                self.load = False
-                toast('Invalid password')
-                print(e)
+            # try:
+            #     if app.fps: 
+            #         app.fps_monitor_start()
+            #     app.encryption_class = Encryption(password)
+            #     app.passwords = app.encryption_class.load_decrypted()
+            #     encrypted_pass = app.encryption_class.load_passwords()
+            #     for keys in encrypted_pass:
+            #         app.encrypted_keys[app.encryption_class.decrypt(keys)] = keys
+            #     # load_homescreen()
+            #     # app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
+            # except Exception as e:
+            #     self.load = False
+            #     toast('Invalid password')
+            #     print(e)
 
         self.spinner.open()
         threading.Thread(target=initialise_encryption, daemon=True).start()
