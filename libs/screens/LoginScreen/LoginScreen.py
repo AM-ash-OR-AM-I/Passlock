@@ -1,6 +1,7 @@
 from kivymd.app import MDApp
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
+import os.path
 from time import time
 from kivy.factory import Factory
 app = MDApp.get_running_app()
@@ -24,7 +25,15 @@ class LoginScreen(MDScreen):
                 if app.fps: 
                     app.fps_monitor_start()
                 app.encryption_class = Encryption(password)
-                app.passwords = app.encryption_class.load_decrypted()
+                if os.path.exists("data/password"):
+                    app.passwords = app.encryption_class.load_decrypted()
+                else:
+                    if os.path.exists("data/encrypted_file.txt"):
+                        with open("data/encrypted_file.txt","r")as f:
+                            app.encryption_class.decrypt(f.read())
+                    else:
+                        print("'encrypted_file' not found, can't check password.")
+                    
                 dismiss_spinner()
                 encrypted_pass = app.encryption_class.load_passwords()
                 for keys in encrypted_pass:

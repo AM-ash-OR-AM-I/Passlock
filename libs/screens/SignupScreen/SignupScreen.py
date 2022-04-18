@@ -59,6 +59,7 @@ class SignupScreen(MDScreen):
 
         if self.loading_view is None:
             self.loading_view = Factory.LoadingScreen()
+            self.loading_view.text = "Signing up..."
         self.loading_view.open()
         self.loading_view.on_open = lambda *args: initialise_encryption()
     

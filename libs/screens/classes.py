@@ -20,6 +20,7 @@ Builder.load_string("""
     auto_dismiss: False
     background_color: 0, 0, 0, 0
     overlay_color: 0, 0, 0, 0.2
+    text: "Checking..." 
     FloatLayout:
         MDLabel:
             font_size:"40dp"
@@ -28,7 +29,7 @@ Builder.load_string("""
             pos_hint:{"center_y":.5}
             text_color: app.text_color
             halign:"center"
-            text:"Checking..."    
+            text:root.text   
 """
 )
 
