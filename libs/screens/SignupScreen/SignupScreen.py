@@ -25,6 +25,8 @@ class SignupScreen(MDScreen):
         app.animate_login(box)
 
     def signup(self, email, password):
+        def create_account_firebase():
+            ...
         def dismiss_loading(*args):
             if self.load:
                 app.root.load_screen('HomeScreen')
