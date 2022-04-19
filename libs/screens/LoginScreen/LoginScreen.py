@@ -13,15 +13,13 @@ class LoginScreen(MDScreen):
     def login_button_pressed(self, password):
 
         def dismiss_spinner(*args):
-            if self.load:
-                app.root.load_screen('HomeScreen')
+            app.root.load_screen('HomeScreen')
             self.loading_view.dismiss()
 
         def initialise_encryption():
             i = time()
             from libs.Backend import Encryption
             try:
-                self.load = True
                 if app.fps: 
                     app.fps_monitor_start()
                 app.encryption_class = Encryption(password)
@@ -40,8 +38,7 @@ class LoginScreen(MDScreen):
                     app.encrypted_keys[app.encryption_class.decrypt(keys)] = keys
                 # app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
             except UnicodeDecodeError:
-                self.load = False
-                dismiss_spinner()
+                self.loading_view.dismiss()
                 toast('Invalid password')
             print(f"Time taken to load passwords = {time()-i}")
             
