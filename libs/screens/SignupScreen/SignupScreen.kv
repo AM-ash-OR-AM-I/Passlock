@@ -89,7 +89,8 @@
 					theme_text_color:'Custom'
 					text_color:app.theme_cls.primary_color
 					on_release:
-						root.signup(email.text, password.text)
+						root.signup(email.text, password.text) if root.show_signup\
+						else root.login(email.text, password.text)
 					pos_hint:{'center_x':.5}
 
     # MDTextButton:

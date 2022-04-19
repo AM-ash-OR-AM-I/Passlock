@@ -171,12 +171,12 @@ class MainApp(MDApp):
                     )
                     self.anim.start(self.root.HomeScreen)
 
-                primary_color.on_complete = self.set_mode
+                primary_color.on_complete = self.set_theme_style
         else:
-            self.set_mode()
+            self.set_theme_style()
 
-    def set_mode(self, *args):
-        print("mode set")
+    def set_theme_style(self, *args):
+        print("theme_style set")
         self.text_color = (
             get_color_from_hex("611c05")
             if not self.dark_mode
