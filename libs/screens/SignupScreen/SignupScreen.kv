@@ -48,7 +48,7 @@
 		spacing:'50dp'
 		MDLabel:
 			adaptive_height:True
-			text:"WELCOME\nTO [color=ff7a4f][u]PASS[/u]" if root.show_signup else "LOGIN\nTO [color=ff7a4f][u]PASS[/u]"
+			text:"SIGN UP\nTO [color=ff7a4f][u]PASS[/u]" if root.show_signup else "LOGIN\nTO [color=ff7a4f][u]PASS[/u]"
 			markup:True
 			theme_text_color:"Custom"
 			text_color:app.text_color
@@ -89,8 +89,7 @@
 					theme_text_color:'Custom'
 					text_color:app.theme_cls.primary_color
 					on_release:
-						root.signup(email.text, password.text) if root.show_signup\
-						else root.login(email.text, password.text)
+						root.button_pressed(email.text, password.text)
 					pos_hint:{'center_x':.5}
 
     # MDTextButton:

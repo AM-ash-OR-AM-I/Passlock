@@ -1,6 +1,6 @@
 from kivy.lang import Builder
 from kivy.properties import BooleanProperty
-
+from kivy.uix.modalview import ModalView
 from kivymd.uix.snackbar import Snackbar
 
 from kivymd.app import MDApp
@@ -15,8 +15,10 @@ from kivymd.uix.button import (
 )
 from kivymd.uix.dialog import MDDialog
 
-Builder.load_string("""
-<LoadingScreen@ModalView>:
+class LoadingScreen(ModalView):
+    is_open = False
+    Builder.load_string("""
+<LoadingScreen>:
     auto_dismiss: False
     background_color: 0, 0, 0, 0
     overlay_color: 0, 0, 0, 0.2
@@ -30,8 +32,16 @@ Builder.load_string("""
             text_color: app.text_color
             halign:"center"
             text:root.text   
-"""
+    """
 )
+    def on_open(self):
+        self.is_open = True
+        super().on_open()
+    
+    def on_dismiss(self):
+        self.is_open = False
+        super().on_dismiss()
+    
 
 
 class RoundButton(MDFillRoundFlatButton):

@@ -40,56 +40,76 @@ class SignupScreen(MDScreen):
     def dismiss_loading(self, *args):
         app.root.load_screen('HomeScreen')
         self.loading_view.dismiss()
-    
-    def signup_failure(self, req, result):
-        print(result["error"]["message"])
-        toast(result["error"]["message"])
-        self.loading_view.dismiss()
-    
-    def signup_success(self, req, result):
-        toast("Signup successful")
-        app.encryption_class = self.encryption(self.password)
-        self.dismiss_loading()
-        threading.Thread(target = self.save_email_password, args=(self.email,)).start()
         
-    def signup(self, email, password):
+    def signup(self, email, password):    
+        def signup_success(req, result):
+            toast("Signup successful")
+            app.encryption_class = self.encryption(self.password)
+            self.dismiss_loading()
+            threading.Thread(target = self.save_email_password, args=(self.email,)).start()
+
+        def signup_failure(req, result):
+            print(result["error"]["message"])
+            toast(result["error"]["message"])
+            self.loading_view.dismiss()
+            
+        self.firebase.signup_success = lambda req, result: signup_success(req, result)
+        self.firebase.signup_failure = lambda req, result: signup_failure(req, result)
+        self.firebase.signup(email, password)
+        app.root.load_screen('HomeScreen', set_current = False)
+    
+    def login(self, email, password):       
+        def login_success(req, result):
+            toast("Login successful")
+            app.encryption_class = self.encryption(self.password)
+            #TODO: Restore backed up user passwords
+            self.restore(email)
+            threading.Thread(target = self.save_email_password, args=(self.email,)).start()
+
+        def login_failure(req, result):
+            print(result["error"]["message"])
+            toast(result["error"]["message"])
+            self.loading_view.dismiss()
+
+        self.firebase.login_success = lambda req, result: login_success(req, result)
+        self.firebase.login_failure = lambda req, result: login_failure(req, result)
+        self.firebase.login(email, password)
+        app.root.load_screen('HomeScreen', set_current = False)
+    
+    def restore(self, email):
+        """
+        Restore user's passwords from Database.
+        """
+        def restore_success(req, result):
+            toast("Restore successful")
+            self.dismiss_loading()
+
+        def restore_failure(req, result):
+            print(result)
+            toast("Restore failed")
+            self.dismiss_loading()
+
+        self.firebase.restore_success = lambda req, result: restore_success(req, result)
+        self.firebase.restore_failure = lambda req, result: restore_failure(req, result)
+        self.firebase.restore(email)
+        self.loading_view.text = "Restoring Passwords..."
+        
+    def button_pressed(self, email, password):
         def import_encryption():
             from libs.Backend import Encryption
             self.encryption = Encryption
-        
+
         self.email = email
         self.password = password
-        firebse = Firebase()
-        firebse.signup_success = lambda req, result: self.signup_success(req, result)
-        firebse.signup_failure = lambda req, result: self.signup_failure(req, result)
-        firebse.signup(email, password)
+        self.firebase = Firebase()
+        if self.show_signup:
+            self.signup(email, password)
+        else:
+            self.login(email, password)
+
         if self.loading_view is None:
             self.loading_view = Factory.LoadingScreen()
-            self.loading_view.text = "Signing up..."
-        self.loading_view.open()
-        self.loading_view.on_open = lambda *args: import_encryption()
-    
-    def login_success(self, req, result):
-        toast("Login successful")
-        app.encryption_class = self.encryption(self.password)
-        #TODO: Restore backed up user passwords
-        self.dismiss_loading()
-        threading.Thread(target = self.save_email_password, args=(self.email,)).start()
-    
-    def login(self, email, password):
-        def import_encryption():
-            from libs.Backend import Encryption
-            self.encryption = Encryption
-        
-        self.email = email
-        self.password = password
-        firebse = Firebase()
-        firebse.login_success = lambda req, result: self.login_success(req, result)
-        firebse.login_failure = lambda req, result: self.login_failure(req, result)
-        firebse.login(email, password)
-        if self.loading_view is None:
-            self.loading_view = Factory.LoadingScreen()
-            self.loading_view.text = "Logging in..."
+            self.loading_view.text = "Signing up..." if self.show_signup else "Logging in..."
         self.loading_view.open()
         self.loading_view.on_open = lambda *args: import_encryption()
     

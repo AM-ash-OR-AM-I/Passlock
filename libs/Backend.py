@@ -3,7 +3,7 @@ from typing import List, Tuple
 import hashlib
 from Crypto import Random
 from Crypto.Cipher import AES
-from base64 import b64encode, b64decode
+from base64 import urlsafe_b64encode, urlsafe_b64decode
 from kivymd.app import MDApp
 
 app= MDApp.get_running_app()
@@ -22,10 +22,10 @@ class Encryption:
         iv = Random.new().read(self.BLOCK_SIZE)  # Initialization vector
         aes = AES.new(self.key, AES.MODE_CBC, iv)
         encrypted_text = aes.encrypt(plain_text.encode())
-        return b64encode(iv + encrypted_text).decode("utf-8")
+        return urlsafe_b64encode(iv + encrypted_text).decode("utf-8")
 
     def decrypt(self, encrypted_text: str) -> str:
-        encrypted_text = b64decode(encrypted_text)
+        encrypted_text = urlsafe_b64decode(encrypted_text)
         iv = encrypted_text[:self.BLOCK_SIZE]
         aes = AES.new(self.key, AES.MODE_CBC, iv)
         plain_text = aes.decrypt(encrypted_text[self.BLOCK_SIZE:]).decode("utf-8")

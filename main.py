@@ -1,5 +1,7 @@
 from time import time
 
+from libs.firebase import Firebase
+
 initial = time()
 from colorsys import rgb_to_hls, hls_to_rgb
 from kivy import platform
@@ -77,6 +79,7 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
+        self.firebase = Firebase()
 
         # self.dark_mode = True
 
@@ -84,6 +87,11 @@ class MainApp(MDApp):
         self.root = Root()
         self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
         # self.root.load_screen("HomeScreen", set_current=False)
+    
+    def backup(self):
+        self.firebase.backup()
+        # if 
+        
 
     def animate_login(self, instance):
 
