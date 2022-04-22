@@ -119,6 +119,8 @@
 			icon_color:app.theme_cls.primary_color
 			right_action_items:
 				[['theme-light-dark',lambda x: app.toggle_mode(x)],
+				['upload',lambda x: root.backup()],
+				['cloud-download',lambda x: root.restore()],
 				["cog",lambda x: exec("app.root.load_screen('SettingsScreen')")]]
 
 		MDBoxLayout:

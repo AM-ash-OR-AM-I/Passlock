@@ -85,7 +85,6 @@ class FindScreen(MDScreen):
         def update_thread():
             if name == original_name:
                 app.passwords[name] = password
-                print(name in app.encrypted_keys)
                 app.encryption_class.update(app.encrypted_keys[name], password)
             else:
                 del app.passwords[original_name]
@@ -186,6 +185,21 @@ class HomeScreen(MDScreen):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        from libs.firebase import Firebase
+        self.firebase = Firebase()
+    
+    def backup(self):
+        self.firebase.backup()
+    
+    def restore(self):
+        def restore_success(req, result):
+            from libs.utils import write_passwords, get_uid
+            write_passwords(result)
+            app.passwords = app.encryption_class.load_decrypted()
+            toast("Restored successfully")
+            
+        self.firebase.restore()
+        self.firebase.restore_success = lambda req, result: restore_success(req, result)
 
     def create_password(self, name, password):
         threading.Thread(

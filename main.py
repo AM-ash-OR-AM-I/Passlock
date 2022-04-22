@@ -1,9 +1,10 @@
-from time import time
-
-from libs.firebase import Firebase
-
-initial = time()
+from time import time; initial = time()
 from colorsys import rgb_to_hls, hls_to_rgb
+import cProfile, os.path
+from libs.screens.classes import Dialog
+from libs.screens.root import Root
+
+from kivy.config import Config
 from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
@@ -13,13 +14,10 @@ from kivy.properties import (
     get_color_from_hex,
     NumericProperty,
 )
-import cProfile, os.path
+
 from kivymd.app import MDApp
 from kivymd.material_resources import dp
 from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
-from libs.screens.classes import Dialog
-from libs.screens.root import Root
-from kivy.config import Config
 
 Config.set("kivy", "log_level", "info")
 Config.write()
@@ -68,7 +66,7 @@ class MainApp(MDApp):
         super().__init__()
         self.theme_cls.primary_palette = "DeepOrange"
         self.text_color = get_color_from_hex("611c05")
-        self.signup = False if os.path.exists("data/email.txt") else True
+        self.signup = False if os.path.exists("data/user_id.txt") else True
         self.secondary_text_color = get_color_from_hex("a8928a")
         self.light_color = self.generate_color()
         self.bg_color_light = self.generate_color(lightness=0.98)
@@ -79,19 +77,12 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
-        self.firebase = Firebase()
 
         # self.dark_mode = True
 
     def build(self):
         self.root = Root()
         self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
-        # self.root.load_screen("HomeScreen", set_current=False)
-    
-    def backup(self):
-        self.firebase.backup()
-        # if 
-        
 
     def animate_login(self, instance):
 

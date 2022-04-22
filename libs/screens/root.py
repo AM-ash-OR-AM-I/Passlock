@@ -3,8 +3,6 @@ from kivy.lang import Builder
 from kivy.properties import ListProperty
 from kivy.uix.screenmanager import ScreenManager, CardTransition
 from kivymd.app import MDApp
-from kivy.logger import Logger
-import os
 
 class Root(ScreenManager):
 

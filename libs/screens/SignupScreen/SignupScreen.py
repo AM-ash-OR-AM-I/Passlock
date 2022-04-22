@@ -25,15 +25,15 @@ class SignupScreen(MDScreen):
         box.opacity = 0
         app.animate_login(box)
     
-    def save_email_password(self, email):
+    def save_uid_password(self, uid):
         """
-        Saves email and a file that has been encrypted with master password.
+        Saves user_id and a file that has been encrypted with master password.
         This makes sure that even when user hasn't created any passwords,
         app can still verify the password.
         """
 
-        with open("data/email.txt","w")as f:
-            f.write(email)
+        with open("data/user_id.txt","w")as f:
+            f.write(uid)
         with open("data/encrypted_file.txt","w")as f:
             f.write(app.encryption_class.encrypt("Test"))
     
@@ -43,16 +43,17 @@ class SignupScreen(MDScreen):
         
     def signup(self, email, password):    
         def signup_success(req, result):
+            user_id  = result["localId"]
             toast("Signup successful")
             app.encryption_class = self.encryption(self.password)
             self.dismiss_loading()
-            threading.Thread(target = self.save_email_password, args=(self.email,)).start()
+            threading.Thread(target = self.save_uid_password, args=(user_id,)).start()
 
         def signup_failure(req, result):
             print(result["error"]["message"])
             toast(result["error"]["message"])
             self.loading_view.dismiss()
-            
+
         self.firebase.signup_success = lambda req, result: signup_success(req, result)
         self.firebase.signup_failure = lambda req, result: signup_failure(req, result)
         self.firebase.signup(email, password)
@@ -60,11 +61,12 @@ class SignupScreen(MDScreen):
     
     def login(self, email, password):       
         def login_success(req, result):
+            user_id  = result["localId"]
             toast("Login successful")
             app.encryption_class = self.encryption(self.password)
             #TODO: Restore backed up user passwords
-            self.restore(email)
-            threading.Thread(target = self.save_email_password, args=(self.email,)).start()
+            self.restore(user_id)
+            threading.Thread(target = self.save_uid_password, args=(user_id, )).start()
 
         def login_failure(req, result):
             print(result["error"]["message"])
@@ -76,12 +78,16 @@ class SignupScreen(MDScreen):
         self.firebase.login(email, password)
         app.root.load_screen('HomeScreen', set_current = False)
     
-    def restore(self, email):
+    def restore(self, user_id):
         """
         Restore user's passwords from Database.
         """
         def restore_success(req, result):
-            toast("Restore successful")
+            from libs.utils import write_passwords
+            result = eval(result)
+            write_passwords(result)
+            app.passwords = app.encryption_class.load_decrypted()
+            toast("Restored successfully")
             self.dismiss_loading()
 
         def restore_failure(req, result):
@@ -91,12 +97,12 @@ class SignupScreen(MDScreen):
 
         self.firebase.restore_success = lambda req, result: restore_success(req, result)
         self.firebase.restore_failure = lambda req, result: restore_failure(req, result)
-        self.firebase.restore(email)
+        self.firebase.restore(user_id)
         self.loading_view.text = "Restoring Passwords..."
         
     def button_pressed(self, email, password):
         def import_encryption():
-            from libs.Backend import Encryption
+            from libs.encryption import Encryption
             self.encryption = Encryption
 
         self.email = email
