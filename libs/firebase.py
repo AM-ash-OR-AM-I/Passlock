@@ -15,9 +15,9 @@ class Firebase:
         "https://www.googleapis.com/identitytoolkit/v3/relyingparty/deleteAccount?key="
     )
 
-    WEB_API_KEY = "AIzaSyB0-Xy5Ar7JL_Rlg1PeO4CLKkaVbjM71TQ"
+    WEB_API_KEY = "AIzaSyB0-Xy5Ar7JL_Rlg1PeO4CLKkaVbjM71TQ"  # Use your API key, for your own project.
 
-    DATABASE_URL = "https://paock-9978a-default-rtdb.asia-southeast1.firebasedatabase.app"
+    DATABASE_URL = "https://paock-9978a-default-rtdb.asia-southeast1.firebasedatabase.app"  # Use your database URL, for your own project.
 
     def signup_success(self, req, result):
         """
@@ -123,7 +123,6 @@ class Firebase:
         """
         if user_id is None:
             user_id = get_uid()
-            print(user_id)
         
         UrlRequest(
             f"{self.DATABASE_URL}/{user_id}.json",
