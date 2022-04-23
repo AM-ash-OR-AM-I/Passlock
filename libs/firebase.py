@@ -17,8 +17,6 @@ class Firebase:
 
     WEB_API_KEY = "AIzaSyB0-Xy5Ar7JL_Rlg1PeO4CLKkaVbjM71TQ"
 
-    AUTH_KEY = "CLdKHvvXDax1hu36fH8Z73cg4v3k1ar6ayMWJDQw" #Check in the setting/service accounts of project
-
     DATABASE_URL = "https://paock-9978a-default-rtdb.asia-southeast1.firebasedatabase.app"
 
     def signup_success(self, req, result):
@@ -126,8 +124,9 @@ class Firebase:
         if user_id is None:
             user_id = get_uid()
             print(user_id)
+        
         UrlRequest(
-            f"{self.DATABASE_URL}/{user_id}/.json?auth={self.AUTH_KEY}",
+            f"{self.DATABASE_URL}/{user_id}.json",
             on_success=self.restore_success,
             on_failure=self.restore_failure,
             on_error=self.restore_failure,
