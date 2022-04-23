@@ -33,14 +33,15 @@
                 text:"Advanced Security"
                 icon:'shield-star'
             MyListItem:
-                text:"Backup & Restore"
-                icon:"backup-restore"
+                text:"Sync Passwords"
+                icon:"sync"
+                on_release: app.root.HomeScreen.open_sync_dialog()
             MyListItem:
-                text:"Change Password"
-                icon:"lock"
-            MyListItem:
-                text:"Delete Account"
-                icon:"trash-can"
+                text:"Log out"
+                icon:"logout"
+                disabled: app.signup
+                on_release: 
+                    root.logout()
 
         MDSeparator:
         MDBoxLayout:

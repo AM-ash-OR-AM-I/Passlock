@@ -119,8 +119,7 @@
 			icon_color:app.theme_cls.primary_color
 			right_action_items:
 				[['theme-light-dark',lambda x: app.toggle_mode(x)],
-				['upload',lambda x: root.backup()],
-				['cloud-download',lambda x: root.restore()],
+				['sync',lambda x: root.open_sync_dialog()],
 				["cog",lambda x: exec("app.root.load_screen('SettingsScreen')")]]
 
 		MDBoxLayout:
@@ -193,7 +192,16 @@
 	x_pad: 0
 	enter:0
 	md_bg_color: app.primary_accent
-
+	MDLabel:
+		id: find_label
+		opacity: .5
+		font_style:'H4'
+		font_name:"Poppins"
+		text:"Type to search"
+		halign:"center"
+		theme_text_color:"Custom"
+		text_color: app.text_color
+		pos_hint:{'center_y':.7}
     RecycleView:
         id: scroll
         key_viewclass: "class"

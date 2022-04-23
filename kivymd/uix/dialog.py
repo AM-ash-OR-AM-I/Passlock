@@ -60,6 +60,8 @@ Builder.load_string(
             id: title
             text: root.title
             font_style: "H5"
+            theme_text_color: "Custom" if root.title_color else "Primary"
+            text_color: root.title_color
             bold: True
             markup: True
             size_hint_y: None
@@ -122,6 +124,8 @@ class MDDialog(BaseDialog):
     text = StringProperty()
 
     buttons = ListProperty()
+
+    title_color = ColorProperty(None)
 
     items = ListProperty()
 

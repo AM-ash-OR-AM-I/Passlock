@@ -5,7 +5,7 @@ import threading
 from kivy.clock import Clock
 from kivy.core.clipboard import Clipboard
 from kivy.factory import Factory
-from kivy.properties import ListProperty, DictProperty
+from kivy.properties import ListProperty
 
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
@@ -20,7 +20,6 @@ app = MDApp.get_running_app()
 class FindScreen(MDScreen):
     """
     FindScreen inside the HomeScreen.
-    TODO: While backing up passwords encrypt the email address.
     """
 
     rv_data = ListProperty()
@@ -66,16 +65,25 @@ class FindScreen(MDScreen):
         """
         Gets executed when text is entered in search bar.
         """
-        self.ids.box.clear_selection()
-
-        def find_password_thread(text):
-            self.find_dictionary = app.encryption_class.find_key(app.passwords, text)
-
+        if not text:
             self.rv_data = []
-            for ((name, password), value) in self.find_dictionary:
-                self.append_item(name, password)
+            self.ids.find_label.text = "Type to search"
+            self.ids.find_label.opacity = 0.5
+        else:
+            self.ids.box.clear_selection()
+            
+            def find_password_thread(text):
+                self.find_dictionary = app.encryption_class.find_key(app.passwords, text)
+                if self.find_dictionary:
+                    self.ids.find_label.opacity = 0
+                else:
+                    self.ids.find_label.opacity = 0.5
+                    self.ids.find_label.text = "No results found :("
+                self.rv_data = []
+                for ((name, password), value) in self.find_dictionary:
+                    self.append_item(name, password)
 
-        threading.Thread(target=find_password_thread, args=(text,), daemon=True).start()
+            threading.Thread(target=find_password_thread, args=(text,), daemon=True).start()
 
     def update_password(self, original_name: str, name: str, password: str) -> None:
         """
@@ -182,13 +190,37 @@ class HomeScreen(MDScreen):
     * CreateScreen\n
     * FindScreen
     """
+    sync_dialog = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         from libs.firebase import Firebase
         self.firebase = Firebase()
     
+    def open_sync_dialog(self):
+        if not self.sync_dialog:
+            self.sync_dialog = Dialog(
+                title="Sync",
+                text="Do you want to backup or restore passwords from cloud?",
+                buttons=[
+                    RoundIconButton(
+                        text="Backup", 
+                        icon="cloud-upload",
+                        on_release=lambda x: self.backup()
+                    ),
+                    RoundIconButton(
+                        text="Restore",
+                        icon="cloud-download",
+                        on_release=lambda x: self.restore(),
+                    ),
+                ],
+            )
+        self.sync_dialog.open()
+    
     def backup(self):
+        self.sync_dialog.dismiss()
+        self.firebase.backup_success = lambda *args: toast("Backup, Successful!")
+        self.firebase.backup_failure = lambda *args: toast("Backup, Failed!")
         self.firebase.backup()
     
     def restore(self):
@@ -198,9 +230,10 @@ class HomeScreen(MDScreen):
             write_passwords(result)
             app.passwords = app.encryption_class.load_decrypted()
             toast("Restored successfully")
-            
-        self.firebase.restore()
+        self.sync_dialog.dismiss()
         self.firebase.restore_success = lambda req, result: restore_success(req, result)
+        self.firebase.restore_failure = lambda req, result: toast("Couldn't restore passwords, check your internet connection.")
+        self.firebase.restore()
 
     def create_password(self, name, password):
         threading.Thread(

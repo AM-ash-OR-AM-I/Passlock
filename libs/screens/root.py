@@ -14,7 +14,7 @@ class Root(ScreenManager):
         self.transition = CardTransition(duration=.3)
 
 
-    def load_screen(self, screen_name, side="left", _from_goback=False, set_current = True):
+    def load_screen(self, screen_name, side="left", _from_goback=False, set_current = True, empty_history = False):
         # checks that the screen already added to the screen-manager
         if not self.has_screen(screen_name):
             # loads the kv file
@@ -41,9 +41,11 @@ class Root(ScreenManager):
             self.history.append(screen_name)
 
         # sets transition direction
-        # sets to the current screen
+        # sets the current screen
         if set_current:
             self.current = screen_name
+        if empty_history:
+            self.history = []
 
     def _handle_keyboard(self, instance, key, *args):
         if key == 27:

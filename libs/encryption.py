@@ -1,4 +1,3 @@
-import os, pickle
 from typing import List, Tuple
 import hashlib
 from libs.utils import *
@@ -8,9 +7,6 @@ from base64 import urlsafe_b64encode, urlsafe_b64decode
 from kivymd.app import MDApp
 
 app= MDApp.get_running_app()
-
-if not os.path.exists("data"):
-    os.mkdir("data")
 
 class Encryption:
     BLOCK_SIZE = 16

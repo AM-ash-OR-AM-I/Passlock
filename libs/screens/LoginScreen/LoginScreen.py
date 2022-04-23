@@ -25,7 +25,7 @@ class LoginScreen(MDScreen):
                 if app.fps:
                     app.fps_monitor_start()
                 app.encryption_class = Encryption(password)
-                if os.path.exists("data/password"):
+                if os.path.exists("data/passwords"):
                     app.passwords = app.encryption_class.load_decrypted()
                 else:
                     if os.path.exists("data/encrypted_file.txt"):
