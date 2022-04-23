@@ -194,9 +194,9 @@ class HomeScreen(MDScreen):
     def restore(self):
         def restore_success(req, result):
             print(result)
-            # from libs.utils import write_passwords, get_uid
-            # write_passwords(result)
-            # app.passwords = app.encryption_class.load_decrypted()
+            from libs.utils import write_passwords, get_uid
+            write_passwords(result)
+            app.passwords = app.encryption_class.load_decrypted()
             toast("Restored successfully")
             
         self.firebase.restore()

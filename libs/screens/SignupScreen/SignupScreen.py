@@ -84,10 +84,12 @@ class SignupScreen(MDScreen):
         """
         def restore_success(req, result):
             from libs.utils import write_passwords
-            result = eval(result)
-            write_passwords(result)
-            app.passwords = app.encryption_class.load_decrypted()
-            toast("Restored successfully")
+            if result:
+                write_passwords(result)
+                app.passwords = app.encryption_class.load_decrypted()
+                toast("Restored successfully")
+            else:
+                toast("No passwords to restore")
             self.dismiss_loading()
 
         def restore_failure(req, result):
