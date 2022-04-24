@@ -44,7 +44,7 @@ requirements = python3,kivy==2.0.0,pillow,pycryptodome
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-#presplash.filename = %(source.dir)s/data/presplash.png
+presplash.filename = ./assets/pass_logo.png
 
 # (str) Icon of the application
 icon.filename = ./assets/pass_logo.png
