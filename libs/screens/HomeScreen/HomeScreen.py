@@ -88,6 +88,7 @@ class FindScreen(MDScreen):
     def update_password(self, original_name: str, name: str, password: str) -> None:
         """
         Updates the password in the file.
+        TODO: Fix passwords not updating after changing key.
         """
 
         def update_thread():
