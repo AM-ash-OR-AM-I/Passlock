@@ -190,7 +190,6 @@ class MainApp(MDApp):
         else:
             self.set_theme_style()
 
-    @mainthread
     def set_theme_style(self, *args):
         print("theme_style set")
         self.text_color = (
