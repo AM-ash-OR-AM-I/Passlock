@@ -1,8 +1,10 @@
+from os import system
 from time import time; initial = time()
 from colorsys import rgb_to_hls, hls_to_rgb
-import cProfile, os.path
+import os.path
 from libs.screens.classes import Dialog
 from libs.screens.root import Root
+from libs.utils import is_dark_mode, set_dark_mode
 
 from kivy.config import Config
 from kivy import platform
@@ -33,7 +35,7 @@ def emulate_android_device(
 if platform != "android":
     emulate_android_device()
 else:
-    from libs.modules.AndroidAPI import statusbar
+    from libs.modules.AndroidAPI import statusbar, dark_mode
 
 KV = """
 #: import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
@@ -59,7 +61,7 @@ class MainApp(MDApp):
     LIVE_UI = 1
     fps = True
     path_to_live_ui = "OtherStuff/custom_dialog.kv"
-    running = False
+    entered_app = False
     HomeScreen = LoginScreen = SettingScreen = update_dialog = exit_dialog = None
 
     def __init__(self):
@@ -77,8 +79,11 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
-
-        # self.dark_mode = True
+        if platform=="android":
+            self.dark_mode = dark_mode() if is_dark_mode(system = True) else is_dark_mode()
+        else:
+            self.dark_mode = is_dark_mode()
+        self.entered_app = True
 
     def build(self):
         self.root = Root()
@@ -152,7 +157,7 @@ class MainApp(MDApp):
         self.exit_dialog.open()
 
     def on_dark_mode(self, instance, mode):
-        if self.running:
+        if self.entered_app:
             current_screen = self.root.current
             if current_screen == "HomeScreen":
                 tab_manager = self.root.current_screen.ids.tab_manager
@@ -173,6 +178,7 @@ class MainApp(MDApp):
                 primary_color.on_complete = self.set_theme_style
         else:
             self.set_theme_style()
+            self.entered_app = True
 
     def set_theme_style(self, *args):
         print("theme_style set")
@@ -183,7 +189,7 @@ class MainApp(MDApp):
         )
         self.bg_color = self.bg_color_dark if self.dark_mode else self.bg_color_light
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
-        if self.running:
+        if self.entered_app:
             self.root.HomeScreen.ids.create.ids.dark_animation.rad = 0.1
 
         if self.dark_mode:
@@ -242,15 +248,13 @@ class MainApp(MDApp):
                 status_color=self.dark_hex if self.dark_mode else self.light_hex,
                 white_text=not self.dark_mode,
             )
-        else:
-            self.profile = cProfile.Profile()
-            self.profile.enable()
-
+    
+    def on_pause(self):
+        set_dark_mode(self.dark_mode)
+        return True
+    
     def on_stop(self):
-        if platform != "android":
-            self.profile.disable()
-            self.profile.dump_stats("myapp.profile")
-
+        set_dark_mode(self.dark_mode)
 
 if __name__ == "__main__":
     MainApp().run()
