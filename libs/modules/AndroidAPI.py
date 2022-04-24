@@ -39,8 +39,8 @@ if platform == "android":
     def statusbar(
         theme="Custom",
         status_color="121212",
-        nav_color="FAFAFA",
-        white_text=" ",
+        nav_color=None,
+        white_text=None,
         full=False,
     ):
         window = activity.getWindow()
@@ -63,6 +63,8 @@ if platform == "android":
                     | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 )
             elif theme == "Custom":
+                if nav_color is None:
+                    nav_color = status_color
                 window.setNavigationBarColor(Color.parseColor("#" + nav_color))
                 window.setStatusBarColor(Color.parseColor("#" + status_color))
                 if white_text is True:
