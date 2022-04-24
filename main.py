@@ -1,4 +1,5 @@
 from os import system
+import re
 from kivy.clock import mainthread
 import threading
 from time import time
@@ -77,15 +78,17 @@ class MainApp(MDApp):
         self.secondary_text_color = get_color_from_hex("a8928a")
         self.light_color = self.generate_color()
         self.bg_color_light = self.generate_color(lightness=0.98)
+        self.bg_color_light_hex = self.generate_color(lightness=0.98, return_hex=True)
         self.bg_color_dark = self.generate_color(darkness=0.1)
+        self.bg_color_dark_hex = self.generate_color(darkness=0.1, return_hex=True)
         self.bg_color = self.bg_color_dark if self.dark_mode else self.bg_color_light
         self.dark_color = self.generate_color(darkness=0.18)  # 262626
         self.login_circle_light = self.generate_color(lightness=0.85)
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
-        threading.Thread(target = self.set_dark_mode, daemon=True).start()
-    
+        threading.Thread(target=self.set_dark_mode, daemon=True).start()
+
     def set_dark_mode(self):
         self.system_dark_mode = is_dark_mode(system=True)
         if platform == "android":
@@ -95,7 +98,6 @@ class MainApp(MDApp):
         else:
             self.dark_mode = is_dark_mode()
         self.entered_app = True
-        
 
     def build(self):
         self.root = Root()
@@ -209,12 +211,14 @@ class MainApp(MDApp):
             self.theme_cls.theme_style = "Dark"
             self.theme_cls.primary_hue = "300"
             if platform == "android":
-                statusbar(status_color=self.dark_hex)
+                statusbar(status_color=self.dark_hex, nav_color=self.bg_color_dark_hex)
         else:
             self.theme_cls.theme_style = "Light"
             self.theme_cls.primary_hue = "500"
             if platform == "android":
-                statusbar(status_color=self.light_hex)
+                statusbar(
+                    status_color=self.light_hex, nav_color=self.bg_color_light_hex
+                )
 
     def toggle_mode(self, *args):
         self.dark_mode = not self.dark_mode
@@ -259,7 +263,9 @@ class MainApp(MDApp):
         if platform == "android":
             statusbar(
                 status_color=self.dark_hex if self.dark_mode else self.light_hex,
-                
+                nav_color=self.bg_color_dark_hex
+                if self.dark_mode
+                else self.bg_color_light_hex,
             )
 
     def on_pause(self):
