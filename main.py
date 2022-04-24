@@ -1,4 +1,6 @@
 from os import system
+from kivy.clock import mainthread
+import threading
 from time import time
 
 initial = time()
@@ -82,6 +84,9 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
+        threading.Thread(target = self.set_dark_mode, daemon=True).start()
+    
+    def set_dark_mode(self):
         self.system_dark_mode = is_dark_mode(system=True)
         if platform == "android":
             self.dark_mode = (
@@ -89,7 +94,7 @@ class MainApp(MDApp):
             )
         else:
             self.dark_mode = is_dark_mode()
-        self.entered_app = True
+        
 
     def build(self):
         self.root = Root()
@@ -184,8 +189,8 @@ class MainApp(MDApp):
                 primary_color.on_complete = self.set_theme_style
         else:
             self.set_theme_style()
-            self.entered_app = True
 
+    @mainthread
     def set_theme_style(self, *args):
         print("theme_style set")
         self.text_color = (
@@ -197,6 +202,8 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         if self.entered_app:
             self.root.HomeScreen.ids.create.ids.dark_animation.rad = 0.1
+        else:
+            self.entered_app = True
 
         if self.dark_mode:
             self.theme_cls.theme_style = "Dark"
