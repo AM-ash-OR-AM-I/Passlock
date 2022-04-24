@@ -10,6 +10,7 @@ from libs.utils import is_dark_mode, set_dark_mode
 
 from kivy.config import Config
 from kivy import platform
+from kivy.clock import Clock
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.properties import (
@@ -82,18 +83,21 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
-        # self.system_dark_mode = is_dark_mode(system=True)
-        # if platform == "android":
-        #     self.dark_mode = (
-        #         android_dark_mode() if self.system_dark_mode else is_dark_mode()
-        #     )
-        # else:
-        #     self.dark_mode = is_dark_mode()
-        # self.entered_app = True
+        
 
     def build(self):
         self.root = Root()
         self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
+    
+    def set_dark_mode(self, *args):
+        self.system_dark_mode = is_dark_mode(system=True)
+        if platform == "android":
+            self.dark_mode = (
+                android_dark_mode() if self.system_dark_mode else is_dark_mode()
+            )
+        else:
+            self.dark_mode = is_dark_mode()
+        self.entered_app = True
 
     def animate_login(self, instance):
 
@@ -103,6 +107,7 @@ class MainApp(MDApp):
             Animation(pos_hint={"top": 0.95}, opacity=1, d=0.5, t="out_back").start(
                 instance
             )
+        Clock.schedule_once(self.set_dark_mode, .5)
 
     def generate_color(
         self, hex_color=False, color=None, return_hex=False, lightness=0.92, darkness=0
