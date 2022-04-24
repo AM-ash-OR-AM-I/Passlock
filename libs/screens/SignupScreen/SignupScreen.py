@@ -114,10 +114,6 @@ class SignupScreen(MDScreen):
         self.email = email
         self.password = password
         self.firebase = Firebase()
-        if self.show_signup:
-            self.signup(email, password)
-        else:
-            self.login(email, password)
 
         if self.loading_view is None:
             self.loading_view = Factory.LoadingScreen()
@@ -126,3 +122,7 @@ class SignupScreen(MDScreen):
             )
         self.loading_view.open()
         self.loading_view.on_open = lambda *args: import_encryption()
+        if self.show_signup:
+            self.signup(email, password)
+        else:
+            self.login(email, password)
