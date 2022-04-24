@@ -48,6 +48,10 @@ def set_dark_mode(dark_mode: bool, system=False) -> None:
             _dict = pickle.load(f)
     else:
         _dict = {}
+    if not "system_dark_mode" in _dict:
+        _dict["system_dark_mode"] = False
+    if not "dark_mode" in _dict:
+        _dict["dark_mode"] = False
     _dict["system_dark_mode" if system else "dark_mode"] = dark_mode
     with open("data/dark_mode", "wb") as f:
         pickle.dump(_dict, f)
