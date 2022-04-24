@@ -94,15 +94,16 @@ class MainApp(MDApp):
             )
         else:
             self.dark_mode = is_dark_mode()
+        self.entered_app = True
         
 
     def build(self):
         self.root = Root()
         self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
 
-    def animate_login(self, instance):
+    def animate_signup(self, instance):
 
-        """Animation to be shown when user enters the app"""
+        """Animation to be shown when user enters the signup screen"""
         print(f"Time taken = {time() - initial}")
         if instance:
             Animation(pos_hint={"top": 0.95}, opacity=1, d=0.5, t="out_back").start(

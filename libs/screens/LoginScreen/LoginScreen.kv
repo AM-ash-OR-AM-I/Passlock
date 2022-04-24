@@ -34,14 +34,10 @@
 			angle_start:90
 			angle_end:270
 
-    on_enter:
-        Clock.schedule_once(lambda x:app.animate_login(box),1)
-
 	MDBoxLayout:
 		adaptive_height:True
 		id: box
-		opacity:0
-		pos_hint:{"top":.7}
+		pos_hint:{"top":.95}
 		orientation:'vertical'
 		spacing:'70dp'
 		MDLabel:

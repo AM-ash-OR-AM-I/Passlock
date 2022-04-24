@@ -16,6 +16,7 @@ class SignupScreen(MDScreen):
     loading_view = None
     show_signup = BooleanProperty(True)
     offline_only = BooleanProperty(False)
+    encryption = None
 
     def on_show_signup(self, *args):
         """Animation to be shown when clicking on login or signup"""
@@ -65,7 +66,6 @@ class SignupScreen(MDScreen):
             user_id = result["localId"]
             toast("Login successful")
             app.encryption_class = self.encryption(self.password)
-            # TODO: Restore backed up user passwords
             self.restore(user_id)
             threading.Thread(target=self.save_uid_password, args=(user_id,)).start()
 
@@ -107,9 +107,11 @@ class SignupScreen(MDScreen):
 
     def button_pressed(self, email, password):
         def import_encryption():
+            #TODO: fix app crashing as this gets called after encryption class is initialized
             from libs.encryption import Encryption
-
             self.encryption = Encryption
+            if not self.show_signup:
+                self.login(email, password)
 
         self.email = email
         self.password = password
@@ -124,5 +126,3 @@ class SignupScreen(MDScreen):
         self.loading_view.on_open = lambda *args: import_encryption()
         if self.show_signup:
             self.signup(email, password)
-        else:
-            self.login(email, password)
