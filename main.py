@@ -35,7 +35,7 @@ def emulate_android_device(
 if platform != "android":
     emulate_android_device()
 else:
-    from libs.modules.AndroidAPI import statusbar, dark_mode
+    from libs.modules.AndroidAPI import statusbar, android_dark_mode
 
 KV = """
 #: import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
@@ -54,6 +54,7 @@ class MainApp(MDApp):
     text_color = ColorProperty()
     primary_accent = ColorProperty()
     bg_color = ColorProperty()
+    system_dark_mode = False
     encryption_class = None
     passwords = {}
     encrypted_keys = {}
@@ -79,8 +80,9 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
+        self.system_dark_mode = is_dark_mode(system = True)
         if platform=="android":
-            self.dark_mode = dark_mode() if is_dark_mode(system = True) else is_dark_mode()
+            self.dark_mode = android_dark_mode() if self.system_dark_mode else is_dark_mode()
         else:
             self.dark_mode = is_dark_mode()
         self.entered_app = True
@@ -255,6 +257,7 @@ class MainApp(MDApp):
     
     def on_stop(self):
         set_dark_mode(self.dark_mode)
+        set_dark_mode(self.system_dark_mode, system=True)
 
 if __name__ == "__main__":
     MainApp().run()

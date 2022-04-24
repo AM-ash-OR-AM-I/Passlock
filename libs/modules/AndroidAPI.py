@@ -87,7 +87,7 @@ if platform == 'android':
 			pass
 
 
-	def dark_mode():
+	def android_dark_mode():
 		night_mode_flags = activity.getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK
 		if night_mode_flags == Configuration.UI_MODE_NIGHT_YES:
 			return True

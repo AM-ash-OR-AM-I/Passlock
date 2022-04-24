@@ -1,5 +1,8 @@
+#: import set_dark_mode libs.utils.set_dark_mode
 <ListItem@OneLineAvatarIconListItem>
 	_no_ripple_effect: True
+
+<RightSwitch@IRightBodyTouch+MDSwitch>
 
 <MyListItem@OneLineIconListItem>
     theme_text_color:'Custom'
@@ -42,6 +45,22 @@
                 disabled: app.signup
                 on_release: 
                     root.logout()
+            ListItem:
+                id: system_dark_item
+                text:"Use system theme"
+                theme_text_color:'Custom'
+                text_color:app.text_color
+                on_release:
+                    system_dark_switch.active = not system_dark_switch.active
+                RightSwitch:
+                    id: system_dark_switch
+                    active: app.system_dark_mode
+                    width: dp(44)
+                    on_active: app.system_dark_mode = system_dark_switch.active
+                IconLeftWidget:
+                    icon: "theme-light-dark"
+                    theme_text_color:'Custom'
+                    text_color:app.text_color
 
         MDSeparator:
         MDBoxLayout:
