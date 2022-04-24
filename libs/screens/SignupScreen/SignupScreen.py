@@ -25,7 +25,7 @@ class SignupScreen(MDScreen):
         box = self.ids.box
         box.pos_hint = {"top": 0.8}
         box.opacity = 0
-        app.animate_login(box)
+        app.animate_signup(box)
 
     def save_uid_password(self, uid):
         """
