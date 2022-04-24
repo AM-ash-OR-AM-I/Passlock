@@ -211,13 +211,19 @@ class MainApp(MDApp):
             self.theme_cls.theme_style = "Dark"
             self.theme_cls.primary_hue = "300"
             if platform == "android":
-                statusbar(status_color=self.dark_hex, nav_color=self.bg_color_dark_hex)
+                statusbar(
+                    status_color=self.dark_hex,
+                    nav_color=self.bg_color_dark_hex,
+                    white_text=False,
+                )
         else:
             self.theme_cls.theme_style = "Light"
             self.theme_cls.primary_hue = "500"
             if platform == "android":
                 statusbar(
-                    status_color=self.light_hex, nav_color=self.bg_color_light_hex
+                    status_color=self.light_hex,
+                    nav_color=self.bg_color_light_hex,
+                    white_text=True,
                 )
 
     def toggle_mode(self, *args):
@@ -266,6 +272,7 @@ class MainApp(MDApp):
                 nav_color=self.bg_color_dark_hex
                 if self.dark_mode
                 else self.bg_color_light_hex,
+                white_text=not self.dark_mode,
             )
 
     def on_pause(self):
