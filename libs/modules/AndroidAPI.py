@@ -9,12 +9,8 @@ if platform == 'android':
 	WindowManager = autoclass('android.view.WindowManager$LayoutParams')
 	activity = autoclass('org.kivy.android.PythonActivity').mActivity
 	View = autoclass('android.view.View')
+	Configuration = autoclass("android.content.res.Configuration")
 
-
-	# WindowInsetsControllerCompat = autoclass('androidx.core.view.WindowInsetsControllerCompat')
-	# ViewCompat = autoclass('androidx.core.view.ViewCompat')
-	# Configuration = autoclass("android.content.res.Configuration")
-	# WindowInsetsCompat=autoclass("androidx.core.view.WindowInsetsCompat")
 	def _class_call(cls, args: tuple, instantiate: bool):
 		if not args:
 			return cls() if instantiate else cls
