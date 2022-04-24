@@ -1,4 +1,6 @@
 import os.path, pickle
+import string
+import random
 
 if not os.path.exists("data"):
     os.mkdir("data")
@@ -52,3 +54,8 @@ def set_dark_mode(app: bool, system: bool) -> None:
     _dict["dark_mode"] = app
     with open("data/dark_mode", "wb") as f:
         pickle.dump(_dict, f)
+
+def auto_password(len: str, ascii = True, digits = True, special_char = True) -> str:
+    sample = string.ascii_letters*ascii + string.digits*digits + string.punctuation*special_char
+    random_pass = "".join(random.sample(sample, int(len)))
+    return random_pass

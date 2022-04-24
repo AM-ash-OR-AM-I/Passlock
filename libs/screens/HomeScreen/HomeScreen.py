@@ -1,5 +1,3 @@
-import string
-import random
 import threading
 
 from kivy.clock import Clock
@@ -203,6 +201,9 @@ class HomeScreen(MDScreen):
         from libs.firebase import Firebase
 
         self.firebase = Firebase()
+    
+    def auto_create(self):
+        ...
 
     def open_sync_dialog(self):
         if not self.sync_dialog:

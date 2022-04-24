@@ -82,9 +82,9 @@
 			adaptive_height:True
 			center_x:password_field.center_x
 			CheckboxLabel:
-				text:"Use uppercase letters (A, B, C,..)"
-			CheckboxLabel:
-				text:"Use lowercase letters (a, b, c,..)"
+				id: ascii_checkbox
+				text:"Use letters (a, A, b, B,..)"
+				on_active: lambda active: print(active)
 			CheckboxLabel:
 				text:"Use numbers (1, 2, 3,..)"
 			CheckboxLabel:
