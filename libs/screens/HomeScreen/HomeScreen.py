@@ -71,9 +71,11 @@ class FindScreen(MDScreen):
             self.ids.find_label.opacity = 0.5
         else:
             self.ids.box.clear_selection()
-            
+
             def find_password_thread(text):
-                self.find_dictionary = app.encryption_class.find_key(app.passwords, text)
+                self.find_dictionary = app.encryption_class.find_key(
+                    app.passwords, text
+                )
                 if self.find_dictionary:
                     self.ids.find_label.opacity = 0
                 else:
@@ -83,7 +85,9 @@ class FindScreen(MDScreen):
                 for ((name, password), value) in self.find_dictionary:
                     self.append_item(name, password)
 
-            threading.Thread(target=find_password_thread, args=(text,), daemon=True).start()
+            threading.Thread(
+                target=find_password_thread, args=(text,), daemon=True
+            ).start()
 
     def update_password(self, original_name: str, name: str, password: str) -> None:
         """
@@ -191,13 +195,15 @@ class HomeScreen(MDScreen):
     * CreateScreen\n
     * FindScreen
     """
+
     sync_dialog = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         from libs.firebase import Firebase
+
         self.firebase = Firebase()
-    
+
     def open_sync_dialog(self):
         if not self.sync_dialog:
             self.sync_dialog = Dialog(
@@ -205,9 +211,9 @@ class HomeScreen(MDScreen):
                 text="Do you want to backup or restore passwords from cloud?",
                 buttons=[
                     RoundIconButton(
-                        text="Backup", 
+                        text="Backup",
                         icon="cloud-upload",
-                        on_release=lambda x: self.backup()
+                        on_release=lambda x: self.backup(),
                     ),
                     RoundIconButton(
                         text="Restore",
@@ -217,23 +223,27 @@ class HomeScreen(MDScreen):
                 ],
             )
         self.sync_dialog.open()
-    
+
     def backup(self):
         self.sync_dialog.dismiss()
         self.firebase.backup_success = lambda *args: toast("Backup, Successful!")
         self.firebase.backup_failure = lambda *args: toast("Backup, Failed!")
         self.firebase.backup()
-    
+
     def restore(self):
         def restore_success(req, result):
             print(result)
             from libs.utils import write_passwords, get_uid
+
             write_passwords(result)
             app.passwords = app.encryption_class.load_decrypted()
             toast("Restored successfully")
+
         self.sync_dialog.dismiss()
         self.firebase.restore_success = lambda req, result: restore_success(req, result)
-        self.firebase.restore_failure = lambda req, result: toast("Couldn't restore passwords, check your internet connection.")
+        self.firebase.restore_failure = lambda req, result: toast(
+            "Couldn't restore passwords, check your internet connection."
+        )
         self.firebase.restore()
 
     def create_password(self, name, password):

@@ -8,7 +8,8 @@ from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 
-Builder.load_string('''
+Builder.load_string(
+    """
 <Toolbar>
     id: toolbox
     set_opacity: root.set_opacity
@@ -49,14 +50,20 @@ Builder.load_string('''
         
     
         
-''')
+"""
+)
 
 
-class Toolbar(MDBoxLayout, ThemableBehavior, FakeRectangularElevationBehavior, SpecificBackgroundColorBehavior):
+class Toolbar(
+    MDBoxLayout,
+    ThemableBehavior,
+    FakeRectangularElevationBehavior,
+    SpecificBackgroundColorBehavior,
+):
     elevation = NumericProperty(0)
     adaptive_height = True
     md_bg_color = ColorProperty()
-    title = StringProperty('')
+    title = StringProperty("")
     increase_height = NumericProperty(0)
     left_action_items = ListProperty()
     right_action_items = ListProperty()
@@ -70,14 +77,23 @@ class Toolbar(MDBoxLayout, ThemableBehavior, FakeRectangularElevationBehavior, S
         self.ids.left_action_box.clear_widgets()
         for icon_left_action in self.left_action_items:
             if len(icon_left_action) == 1:
-                self.icon_left = MDIconButton(icon=icon_left_action[0], theme_text_color='Custom',
-                                              text_color=self.icon_color, user_font_size=self.text_height,
-                                              pos_hint={'center_y': .5})
+                self.icon_left = MDIconButton(
+                    icon=icon_left_action[0],
+                    theme_text_color="Custom",
+                    text_color=self.icon_color,
+                    user_font_size=self.text_height,
+                    pos_hint={"center_y": 0.5},
+                )
 
             else:
-                self.icon_left = MDIconButton(icon=icon_left_action[0], theme_text_color='Custom',
-                                              text_color=self.icon_color, user_font_size=self.text_height,
-                                              pos_hint={'center_y': .5}, on_release=icon_left_action[1])
+                self.icon_left = MDIconButton(
+                    icon=icon_left_action[0],
+                    theme_text_color="Custom",
+                    text_color=self.icon_color,
+                    user_font_size=self.text_height,
+                    pos_hint={"center_y": 0.5},
+                    on_release=icon_left_action[1],
+                )
 
             self.ids.left_action_box.add_widget(self.icon_left)
 
@@ -85,14 +101,23 @@ class Toolbar(MDBoxLayout, ThemableBehavior, FakeRectangularElevationBehavior, S
         self.ids.right_action_box.clear_widgets()
         for icon_right_action in self.right_action_items:
             if len(icon_right_action) == 1:
-                self.icon_right = MDIconButton(icon=icon_right_action[0], theme_text_color='Custom',
-                                               text_color=self.icon_color, user_font_size=self.text_height,
-                                               pos_hint={'center_y': .5})
+                self.icon_right = MDIconButton(
+                    icon=icon_right_action[0],
+                    theme_text_color="Custom",
+                    text_color=self.icon_color,
+                    user_font_size=self.text_height,
+                    pos_hint={"center_y": 0.5},
+                )
 
             else:
-                self.icon_right = MDIconButton(icon=icon_right_action[0], theme_text_color='Custom',
-                                               text_color=self.icon_color, user_font_size=self.text_height,
-                                               pos_hint={'center_y': .5}, on_release=icon_right_action[1])
+                self.icon_right = MDIconButton(
+                    icon=icon_right_action[0],
+                    theme_text_color="Custom",
+                    text_color=self.icon_color,
+                    user_font_size=self.text_height,
+                    pos_hint={"center_y": 0.5},
+                    on_release=icon_right_action[1],
+                )
             self.ids.right_action_box.add_widget(self.icon_right)
 
     def on_icon_color(self, instance, color):
@@ -102,16 +127,18 @@ class Toolbar(MDBoxLayout, ThemableBehavior, FakeRectangularElevationBehavior, S
             icon.text_color = color
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+
     class ToolbarApp(MDApp):
         def build(self):
-            return Builder.load_string('''
+            return Builder.load_string(
+                """
 Screen:
     Toolbar: 
         title:'Test'
         icon_color: [1,0,.4,1]
         right_action_items:[['cog',lambda x: print('Call any function you want like this.')]]
-                ''')
-
+                """
+            )
 
     ToolbarApp().run()

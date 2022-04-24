@@ -99,7 +99,11 @@ class List(
             recycle_list = self.parent.children
             snack = app.root.HomeScreen.ids.find.snackbar
 
-            if not (snack and snack.is_open) or self not in recycle_list[:2] or len(recycle_list) <=13:
+            if (
+                not (snack and snack.is_open)
+                or self not in recycle_list[:2]
+                or len(recycle_list) <= 13
+            ):
                 self.parent.select_with_touch(self.index, None)
 
     def refresh_view_attrs(self, rv, index, data):

@@ -1,5 +1,7 @@
 from os import system
-from time import time; initial = time()
+from time import time
+
+initial = time()
 from colorsys import rgb_to_hls, hls_to_rgb
 import os.path
 from libs.screens.classes import Dialog
@@ -80,12 +82,14 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
-        self.system_dark_mode = is_dark_mode(system = True)
-        if platform=="android":
-            self.dark_mode = android_dark_mode() if self.system_dark_mode else is_dark_mode()
-        else:
-            self.dark_mode = is_dark_mode()
-        self.entered_app = True
+        # self.system_dark_mode = is_dark_mode(system=True)
+        # if platform == "android":
+        #     self.dark_mode = (
+        #         android_dark_mode() if self.system_dark_mode else is_dark_mode()
+        #     )
+        # else:
+        #     self.dark_mode = is_dark_mode()
+        # self.entered_app = True
 
     def build(self):
         self.root = Root()
@@ -250,13 +254,14 @@ class MainApp(MDApp):
                 status_color=self.dark_hex if self.dark_mode else self.light_hex,
                 white_text=not self.dark_mode,
             )
-    
+
     def on_pause(self):
-        set_dark_mode(app = self.dark_mode, system = self.system_dark_mode)
+        set_dark_mode(app=self.dark_mode, system=self.system_dark_mode)
         return True
-    
+
     def on_stop(self):
-        set_dark_mode(app = self.dark_mode, system = self.system_dark_mode)
+        set_dark_mode(app=self.dark_mode, system=self.system_dark_mode)
+
 
 if __name__ == "__main__":
     MainApp().run()

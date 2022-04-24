@@ -44,15 +44,15 @@ class Firebase:
             req_body=data,
             on_success=self.signup_success,
             on_failure=self.signup_failure,
-            timeout=15
+            timeout=15,
         )
-    
+
     def login_success(self, req, result):
         """
         Implement this method to handle the result of the successful login request.
         """
         Logger.warn("Firebase: Login success not implemented")
-    
+
     def login_failure(self, req, result):
         """
         Implement this method to handle the result of the login failure request.
@@ -73,15 +73,15 @@ class Firebase:
             req_body=data,
             on_success=self.login_success,
             on_failure=self.login_failure,
-            timeout=10
+            timeout=10,
         )
-    
+
     def backup_success(self, req, result):
         """
         Override this method to handle the result of the successful backup request.
         """
         Logger.warn(f"Firebase: Backup success not implemented, {result}")
-    
+
     def backup_failure(self, req, result):
         """
         Override this method to handle the result of the failure in backup request.
@@ -102,14 +102,14 @@ class Firebase:
             on_success=self.backup_success,
             on_failure=self.backup_failure,
             on_error=self.backup_failure,
-            method='PATCH'
+            method="PATCH",
         )
-    
+
     def restore_success(self, req, result):
         """
         Override this method to handle the result of the successful restore request.
         """
-        Logger.warn(f"Firebase: Restore success not implemented, {result}") 
+        Logger.warn(f"Firebase: Restore success not implemented, {result}")
 
     def restore_failure(self, req, result):
         """
@@ -123,11 +123,10 @@ class Firebase:
         """
         if user_id is None:
             user_id = get_uid()
-        
+
         UrlRequest(
             f"{self.DATABASE_URL}/{user_id}.json",
             on_success=self.restore_success,
             on_failure=self.restore_failure,
             on_error=self.restore_failure,
         )
-

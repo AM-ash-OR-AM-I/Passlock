@@ -6,8 +6,11 @@ from kivymd.app import MDApp
 
 app = MDApp.get_running_app()
 
+
 class SettingsScreen(MDScreen):
     def logout(self):
-        app.root.load_screen("SignupScreen", empty_history = True)
-        app.root.SignupScreen.on_enter = lambda *args: Clock.schedule_once(lambda x:app.animate_login(app.root.SignupScreen.ids.box),0)
+        app.root.load_screen("SignupScreen", empty_history=True)
+        app.root.SignupScreen.on_enter = lambda *args: Clock.schedule_once(
+            lambda x: app.animate_login(app.root.SignupScreen.ids.box), 0
+        )
         remove_user_data()

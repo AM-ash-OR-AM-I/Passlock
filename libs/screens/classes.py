@@ -15,9 +15,11 @@ from kivymd.uix.button import (
 )
 from kivymd.uix.dialog import MDDialog
 
+
 class LoadingScreen(ModalView):
     is_open = False
-    Builder.load_string("""
+    Builder.load_string(
+        """
 <LoadingScreen>:
     auto_dismiss: False
     background_color: 0, 0, 0, 0
@@ -33,19 +35,20 @@ class LoadingScreen(ModalView):
             halign:"center"
             text:root.text   
     """
-)
+    )
+
     def on_open(self):
         self.is_open = True
         super().on_open()
-    
+
     def on_dismiss(self):
         self.is_open = False
         super().on_dismiss()
-    
 
 
 class RoundButton(MDFillRoundFlatButton):
-    Builder.load_string("""
+    Builder.load_string(
+        """
 <RoundButton>
 	canvas:
 		RoundedRectangle:
@@ -72,7 +75,8 @@ class RoundIconButton(MDFillRoundFlatIconButton):
 
 
 # ------- The below string loads the update dialog box content --------
-Builder.load_string("""
+Builder.load_string(
+    """
 <UpdateContent@MDBoxLayout>
     adaptive_height: True
     padding: 0, dp(15), 0, 0
@@ -93,7 +97,7 @@ class Dialog(MDDialog):
 
     def update_bg_color(self, *args):
         self.md_bg_color = MDApp.get_running_app().primary_accent
-    
+
     # def update_title_color(self, *args):
     #     self.title_color = MDApp.get_running_app().text_color
 
@@ -115,7 +119,8 @@ class DialogButton(MDFlatButton):
 
 
 class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
-    Builder.load_string("""
+    Builder.load_string(
+        """
 <ButtonLabel@ButtonBehavior+MDLabel>
 <CheckboxLabel>
 	adaptive_size:True

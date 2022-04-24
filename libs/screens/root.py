@@ -4,6 +4,7 @@ from kivy.properties import ListProperty
 from kivy.uix.screenmanager import ScreenManager, CardTransition
 from kivymd.app import MDApp
 
+
 class Root(ScreenManager):
 
     history = ListProperty()
@@ -11,10 +12,16 @@ class Root(ScreenManager):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Window.bind(on_keyboard=self._handle_keyboard)
-        self.transition = CardTransition(duration=.3)
+        self.transition = CardTransition(duration=0.3)
 
-
-    def load_screen(self, screen_name, side="left", _from_goback=False, set_current = True, empty_history = False):
+    def load_screen(
+        self,
+        screen_name,
+        side="left",
+        _from_goback=False,
+        set_current=True,
+        empty_history=False,
+    ):
         # checks that the screen already added to the screen-manager
         if not self.has_screen(screen_name):
             # loads the kv file
@@ -36,8 +43,8 @@ class Root(ScreenManager):
         # if not from_goback and screen_name not in ["auth", ...]
 
         if not _from_goback and set_current:
-            self.transition.mode = 'push'
-            self.transition.direction = 'left'
+            self.transition.mode = "push"
+            self.transition.direction = "left"
             self.history.append(screen_name)
 
         # sets transition direction
@@ -49,9 +56,12 @@ class Root(ScreenManager):
 
     def _handle_keyboard(self, instance, key, *args):
         if key == 27:
-            if self.current=="HomeScreen" and self.current_screen.ids.tab_manager.current == 'FindScreen':
+            if (
+                self.current == "HomeScreen"
+                and self.current_screen.ids.tab_manager.current == "FindScreen"
+            ):
                 self.current_screen.ids.tab_manager.current = "CreateScreen"
-            elif self.current=="HomeScreen":
+            elif self.current == "HomeScreen":
                 MDApp.get_running_app().open_exit_dialog()
             else:
                 self.goback()
@@ -61,6 +71,6 @@ class Root(ScreenManager):
         if len(self.history) > 1:
             self.history.pop()
             prev_screen = self.history[-1]
-            self.transition.mode = 'pop'
-            self.transition.direction = 'right'
+            self.transition.mode = "pop"
+            self.transition.direction = "right"
             self.load_screen(prev_screen, _from_goback=True)

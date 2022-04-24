@@ -6,7 +6,8 @@ from Crypto.Cipher import AES
 from base64 import urlsafe_b64encode, urlsafe_b64decode
 from kivymd.app import MDApp
 
-app= MDApp.get_running_app()
+app = MDApp.get_running_app()
+
 
 class Encryption:
     BLOCK_SIZE = 16
@@ -23,9 +24,9 @@ class Encryption:
 
     def decrypt(self, encrypted_text: str) -> str:
         encrypted_text = urlsafe_b64decode(encrypted_text)
-        iv = encrypted_text[:self.BLOCK_SIZE]
+        iv = encrypted_text[: self.BLOCK_SIZE]
         aes = AES.new(self.key, AES.MODE_CBC, iv)
-        plain_text = aes.decrypt(encrypted_text[self.BLOCK_SIZE:]).decode("utf-8")
+        plain_text = aes.decrypt(encrypted_text[self.BLOCK_SIZE :]).decode("utf-8")
         return self.unpad(plain_text)
 
     def pad(self, plain_text: str) -> str:
@@ -36,15 +37,15 @@ class Encryption:
         return padded_plain_text
 
     def unpad(self, plain_text: str) -> str:
-        return plain_text[:-ord(plain_text[-1:])]
-    
+        return plain_text[: -ord(plain_text[-1:])]
+
     def load_decrypted(self) -> dict:
         decrypted_pass = {}
         encrypted_pass = load_passwords()
         for name in encrypted_pass:
             decrypted_pass[self.decrypt(name)] = self.decrypt(encrypted_pass[name])
         return decrypted_pass
-    
+
     def add(self, name: str, password: str) -> None:
         """
         Add a new password to the dictionary.
@@ -59,7 +60,7 @@ class Encryption:
         data = load_passwords()
         del data[name]
         write_passwords(data)
-    
+
     def update(self, name: str, password: str) -> None:
         data = load_passwords()
         password = self.encrypt(password)
@@ -67,7 +68,9 @@ class Encryption:
         app.encrypted_keys[self.decrypt(name)] = name
         write_passwords(data)
 
-    def find_key(self, dictionary: dict, text: str) -> List[Tuple[Tuple[str, str], int]]:
+    def find_key(
+        self, dictionary: dict, text: str
+    ) -> List[Tuple[Tuple[str, str], int]]:
         """
         Finding Algorithm, uses basic search along with fuzzy search (self-made).
         """
@@ -109,7 +112,9 @@ class Encryption:
                     if (
                         text in name_wo_space
                     ):  # Removes spaces from keys then checks whether text is found.
-                        max_value = get_max_val(text, name=name_wo_space, priority=-0.01)
+                        max_value = get_max_val(
+                            text, name=name_wo_space, priority=-0.01
+                        )
 
                     if (
                         text_wo_space in name_wo_space
@@ -190,14 +195,18 @@ class Encryption:
             )  # Sorts the list based on the weighted values.
             return key_arr
 
-        if text in dictionary or text.lower() in dictionary or text.upper() in dictionary:
+        if (
+            text in dictionary
+            or text.lower() in dictionary
+            or text.upper() in dictionary
+        ):
             return [((text, dictionary[text]), 1)]
         else:
             for name, password in dictionary.items():
 
                 # If text equals password without space then it returns that, else checks all passwords.
                 if sub_string_search(text, name, password):
-                    return [((name, password),1)]
+                    return [((name, password), 1)]
 
             if not weighted_pass:
                 for name, password in dictionary.items():
@@ -206,4 +215,3 @@ class Encryption:
                     fuzzy_search(text, name, password)
 
         return sort_keys(weighted_pass)
-        
