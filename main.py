@@ -252,12 +252,11 @@ class MainApp(MDApp):
             )
     
     def on_pause(self):
-        set_dark_mode(self.dark_mode)
+        set_dark_mode(app = self.dark_mode, system = self.system_dark_mode)
         return True
     
     def on_stop(self):
-        set_dark_mode(self.dark_mode)
-        set_dark_mode(self.system_dark_mode, system=True)
+        set_dark_mode(app = self.dark_mode, system = self.system_dark_mode)
 
 if __name__ == "__main__":
     MainApp().run()
