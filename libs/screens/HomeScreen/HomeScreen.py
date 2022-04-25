@@ -197,20 +197,20 @@ class Auto(ScrollView,MDTabsBase):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.generate_password(True, True, True)
-        menu_items = [
-            {
-                "viewclass": "OneLineListItem",
-                "text": f"Length = {i}",
-                "height": dp(40),
-                "on_release": lambda x=i: self.set_length(x),
-            } for i in range(6, 16)
-        ]
-        self.select_dropdown = MDDropdownMenu(
-            caller=self.screen.ids.drop_item,
-            items=menu_items,
-            position="center",
-            width_mult=4,
-        )
+        # menu_items = [
+        #     {
+        #         "viewclass": "OneLineListItem",
+        #         "text": f"Length = {i}",
+        #         "height": dp(40),
+        #         "on_release": lambda x=i: self.set_length(x),
+        #     } for i in range(6, 16)
+        # ]
+        # self.select_dropdown = MDDropdownMenu(
+        #     caller=self.screen.ids.drop_item,
+        #     items=menu_items,
+        #     position="center",
+        #     width_mult=4,
+        # )
     
     def set_length(self, length):
         self.password_length = length
