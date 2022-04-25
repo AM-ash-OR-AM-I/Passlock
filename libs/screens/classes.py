@@ -123,15 +123,19 @@ class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
 	size_hint_x:.8
 	pos_hint: {'center_x': .5}
 	spacing:'12dp'
-    active: False
+	on_active: None
+    active: True
 	radius:dp(5),dp(5)
 	text:''
 	MDCheckbox:
 		id: check
 		size_hint: None, None
 		size: "36dp", "36dp"
+        active: root.active
 		selected_color:app.theme_cls.primary_light
 		unselected_color: [.8,.8,.8,1]
+        on_active: 
+            root.active = check.active
 		pos_hint: {'center_x': .5}
 	ButtonLabel:
         theme_text_color:"Custom"

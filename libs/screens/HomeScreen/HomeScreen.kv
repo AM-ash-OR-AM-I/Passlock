@@ -3,6 +3,8 @@
 #:import Toolbar libs.modules.Toolbar.Toolbar
 #:import List libs.modules.List.List
 #:import sm kivy.uix.screenmanager
+#:import Clipboard kivy.core.clipboard.Clipboard
+#:import toast kivymd.toast.toast
 
 <MyLabel@MDLabel>
 	theme_text_color:"Custom"
@@ -42,7 +44,7 @@
 		on_release:
 			app.root.HomeScreen.create_password(name_field.text, password_field.text)
 
-<Auto@ScrollView+MDTabsBase>
+<Auto>
     always_overscroll: False
 	MDBoxLayout:
 		orientation:'vertical'
@@ -59,14 +61,16 @@
 				pos_hint:{'center_x':.5}
 				text_col:True
 				label_name:'Name of Password'
-				hint_text:'e.g. username@gmail.com'
+				hint_text:'e.g. www.website.com'
 			BorderCard:
 				id:password_field
 				pos_hint:{'center_x':.5}
 				text_col:True
 				label_name:'Password'
-				text:'adHKf@%123*n'
-				icon_right_action:[['content-copy'],['reload']]
+				text:root.auto_password
+				icon_right_action:
+					[['content-copy', lambda x: app.show_toast_copied(f"{self.text}")],
+					['reload', lambda x: root.generate_password()]]
 
 		RoundButton:
 			id: generate
@@ -76,18 +80,28 @@
 			size_hint_x:.8
 			font_size:'18sp'
 			pos_hint:{'center_x':.5}
+			on_release:
+				app.root.HomeScreen.create_password(email_field.text, password_field.text)
 
 		MDBoxLayout:
 			orientation:'vertical'
 			adaptive_height:True
 			center_x:password_field.center_x
 			CheckboxLabel:
-				id: ascii_checkbox
 				text:"Use letters (a, A, b, B,..)"
+				on_active: 
+					root.generate_password(ascii = self.active)
+					
 			CheckboxLabel:
 				text:"Use numbers (1, 2, 3,..)"
+				on_active: 
+					root.generate_password(digits = self.active)
+					
 			CheckboxLabel:
 				text:"Use Special Characters ($, #, % .)"
+				on_active: 
+					root.generate_password(special_chars = self.active)
+					
 
 <DarkAnimation@Widget>
 	rad : 80

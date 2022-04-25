@@ -1,6 +1,4 @@
-from os import system
-import re
-from kivy.clock import mainthread
+import imp
 import threading
 from time import time
 
@@ -12,6 +10,7 @@ from libs.screens.root import Root
 from libs.utils import is_dark_mode, set_dark_mode
 
 from kivy.config import Config
+from kivy.core.clipboard import Clipboard
 from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
@@ -22,6 +21,7 @@ from kivy.properties import (
     NumericProperty,
 )
 
+from kivymd.toast import toast
 from kivymd.app import MDApp
 from kivymd.material_resources import dp
 from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
@@ -102,6 +102,10 @@ class MainApp(MDApp):
     def build(self):
         self.root = Root()
         self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
+    
+    def show_toast_copied(self, item):
+        toast("Item copied")
+        Clipboard.copy(item)
 
     def animate_signup(self, instance):
 

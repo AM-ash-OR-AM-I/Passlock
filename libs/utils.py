@@ -55,7 +55,10 @@ def set_dark_mode(app: bool, system: bool) -> None:
     with open("data/dark_mode", "wb") as f:
         pickle.dump(_dict, f)
 
-def auto_password(len: str, ascii = True, digits = True, special_char = True) -> str:
-    sample = string.ascii_letters*ascii + string.digits*digits + string.punctuation*special_char
-    random_pass = "".join(random.sample(sample, int(len)))
+def auto_password(len: int, ascii = True, digits = True, special_chars = True) -> str:
+    sample = string.ascii_letters*ascii + string.digits*digits + string.punctuation*special_chars
+    if sample:
+        random_pass = "".join(random.sample(sample, len))
+    else:
+        random_pass = ""
     return random_pass

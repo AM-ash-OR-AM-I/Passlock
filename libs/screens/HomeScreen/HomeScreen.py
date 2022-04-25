@@ -1,16 +1,20 @@
 import threading
+from functools import partial
 
 from kivy.clock import Clock
-from kivy.core.clipboard import Clipboard
+from kivy.uix.scrollview import ScrollView
+from kivymd.uix.tab import MDTabsBase
 from kivy.factory import Factory
-from kivy.properties import ListProperty
+from kivy.properties import ListProperty, StringProperty
 
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
-from functools import partial
+from kivymd.material_resources import dp
+from kivymd.uix.menu import MDDropdownMenu
 
 from libs.screens.classes import Dialog, DialogButton, RoundIconButton, CustomSnackbar
+from libs.utils import auto_password
 
 app = MDApp.get_running_app()
 
@@ -49,10 +53,7 @@ class FindScreen(MDScreen):
                 "password": password,
                 "is_deleted": False,
                 "button_actions": {
-                    "copy": lambda: exec(
-                        f'Clipboard.copy("{password}"); toast("Item copied")',
-                        {"Clipboard": Clipboard, "toast": toast},
-                    ),
+                    "copy": lambda: app.show_toast_copied(password),
                     "update": lambda: self.open_update_dialog(name),
                     "delete": partial(self.delete_item, name),
                 },
@@ -186,6 +187,57 @@ class FindScreen(MDScreen):
             partial(self.delete_from_storage, name), self.snackbar_duration
         )
 
+class Auto(ScrollView,MDTabsBase):
+    auto_password = StringProperty()
+    use_ascii = True
+    use_digits = True
+    use_special_chars = True
+    password_length = 10
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.generate_password(True, True, True)
+        menu_items = [
+            {
+                "viewclass": "OneLineListItem",
+                "text": f"Length = {i}",
+                "height": dp(40),
+                "on_release": lambda x=i: self.set_length(x),
+            } for i in range(6, 16)
+        ]
+        self.select_dropdown = MDDropdownMenu(
+            caller=self.screen.ids.drop_item,
+            items=menu_items,
+            position="center",
+            width_mult=4,
+        )
+    
+    def set_length(self, length):
+        self.password_length = length
+        self.generate_password(True, True, True)
+    
+    def open_dropdown(self):
+        """
+        TODO: implement length of password
+        Opens the dropdown menu.
+        """
+        self.select_dropdown.open()
+        
+
+    def generate_password(self, ascii = None, digits = None, special_chars = None) -> None:
+        if ascii is not None:
+            self.use_ascii = ascii
+        if digits is not None:
+            self.use_digits = digits
+        if special_chars is not None:
+            self.use_special_chars = special_chars
+        self.auto_password = auto_password(
+            len = self.password_length,
+            ascii=self.use_ascii,
+            digits=self.use_digits,
+            special_chars=self.use_special_chars,
+        )
+        print(f"{self.auto_password = }")
 
 class HomeScreen(MDScreen):
     """
@@ -201,9 +253,6 @@ class HomeScreen(MDScreen):
         from libs.firebase import Firebase
 
         self.firebase = Firebase()
-    
-    def auto_create(self):
-        ...
 
     def open_sync_dialog(self):
         if not self.sync_dialog:
