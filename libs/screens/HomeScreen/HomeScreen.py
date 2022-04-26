@@ -87,27 +87,33 @@ class FindScreen(MDScreen):
                 target=find_password_thread, args=(text,), daemon=True
             ).start()
 
-    def update_password(self, original_name: str, name: str, password: str) -> None:
+    def update_password(self) -> None:
         """
         Updates the password in the file.
         TODO: Fix passwords not updating after changing key.
         """
-
+        name = self.update_content.ids.name.text
+        password = self.update_content.ids.password.text
         def update_thread():
-            if name == original_name:
-                app.passwords[name] = password
-                app.encryption_class.update(app.encrypted_keys[name], password)
-            else:
-                del app.passwords[original_name]
-                app.encryption_class.delete(app.encrypted_keys[original_name])
-                app.passwords[name] = password
-                app.encryption_class.add(name, password)
+            try:
+                if name == self.original_name:
+                    app.passwords[name] = password
+                    app.encryption_class.update(app.encrypted_keys[name], password)
+                else:
+                    del app.passwords[self.original_name]
+                    app.encryption_class.delete(app.encrypted_keys[self.original_name])
+                    app.passwords[name] = password
+                    app.encryption_class.add(name, password)
+                self.find_password(name)
+            except KeyError:
+                print("KeyError, occured while updating password.")
 
         threading.Thread(target=update_thread, daemon=True).start()
-
+        self.update_dialog.dismiss()
         toast(text=f"{name} is updated")
 
     def open_update_dialog(self, original_name):
+        self.original_name = original_name
         if not self.update_dialog:
             self.update_content = Factory.UpdateContent()
             self.update_dialog = Dialog(
@@ -122,11 +128,7 @@ class FindScreen(MDScreen):
                     RoundIconButton(
                         text="Update",
                         icon="update",
-                        on_release=lambda x: self.update_password(
-                            original_name,
-                            name=self.update_content.ids.name.text,
-                            password=self.update_content.ids.password.text,
-                        ),
+                        on_release=lambda x: self.update_password(),
                     ),
                 ],
             )
@@ -186,7 +188,8 @@ class FindScreen(MDScreen):
             partial(self.delete_from_storage, name), self.snackbar_duration
         )
 
-class Auto(ScrollView,MDTabsBase):
+
+class Auto(ScrollView, MDTabsBase):
     use_ascii = True
     use_digits = True
     use_special_chars = True
@@ -195,19 +198,18 @@ class Auto(ScrollView,MDTabsBase):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.initial_random = auto_password(10, True, True, True)
-    
+
     def set_length(self, length):
         self.password_length = length
         self.generate_password(True, True, True)
-    
+
     def open_slider(self):
         """
         TODO: implement length of password
         Opens the dropdown menu.
         """
-        
 
-    def generate_password(self, ascii = None, digits = None, special_chars = None) -> None:
+    def generate_password(self, ascii=None, digits=None, special_chars=None) -> None:
         if ascii is not None:
             self.use_ascii = ascii
         if digits is not None:
@@ -215,12 +217,12 @@ class Auto(ScrollView,MDTabsBase):
         if special_chars is not None:
             self.use_special_chars = special_chars
         self.ids.password_field.text = auto_password(
-            len = self.password_length,
+            len=self.password_length,
             ascii=self.use_ascii,
             digits=self.use_digits,
             special_chars=self.use_special_chars,
         )
-        
+
 
 class HomeScreen(MDScreen):
     """

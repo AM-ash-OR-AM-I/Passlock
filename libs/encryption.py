@@ -61,7 +61,7 @@ class Encryption:
         del data[name]
         write_passwords(data)
 
-    def update(self, name: str, password: str) -> None:
+    def update(self, name: "encrypt(str)", password: str) -> None:
         data = load_passwords()
         password = self.encrypt(password)
         data[name] = password
