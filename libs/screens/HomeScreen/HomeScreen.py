@@ -11,7 +11,6 @@ from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
 from kivymd.material_resources import dp
-from kivymd.uix.menu import MDDropdownMenu
 
 from libs.screens.classes import Dialog, DialogButton, RoundIconButton, CustomSnackbar
 from libs.utils import auto_password
@@ -188,7 +187,6 @@ class FindScreen(MDScreen):
         )
 
 class Auto(ScrollView,MDTabsBase):
-    auto_password = StringProperty()
     use_ascii = True
     use_digits = True
     use_special_chars = True
@@ -196,32 +194,17 @@ class Auto(ScrollView,MDTabsBase):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.generate_password(True, True, True)
-        # menu_items = [
-        #     {
-        #         "viewclass": "OneLineListItem",
-        #         "text": f"Length = {i}",
-        #         "height": dp(40),
-        #         "on_release": lambda x=i: self.set_length(x),
-        #     } for i in range(6, 16)
-        # ]
-        # self.select_dropdown = MDDropdownMenu(
-        #     caller=self.screen.ids.drop_item,
-        #     items=menu_items,
-        #     position="center",
-        #     width_mult=4,
-        # )
+        self.initial_random = auto_password(10, True, True, True)
     
     def set_length(self, length):
         self.password_length = length
         self.generate_password(True, True, True)
     
-    def open_dropdown(self):
+    def open_slider(self):
         """
         TODO: implement length of password
         Opens the dropdown menu.
         """
-        self.select_dropdown.open()
         
 
     def generate_password(self, ascii = None, digits = None, special_chars = None) -> None:
@@ -231,13 +214,13 @@ class Auto(ScrollView,MDTabsBase):
             self.use_digits = digits
         if special_chars is not None:
             self.use_special_chars = special_chars
-        self.auto_password = auto_password(
+        self.ids.password_field.text = auto_password(
             len = self.password_length,
             ascii=self.use_ascii,
             digits=self.use_digits,
             special_chars=self.use_special_chars,
         )
-        print(f"{self.auto_password = }")
+        
 
 class HomeScreen(MDScreen):
     """

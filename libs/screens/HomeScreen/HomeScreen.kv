@@ -46,6 +46,7 @@
 
 <Auto>
     always_overscroll: False
+	do_scroll_x: False
 	MDBoxLayout:
 		orientation:'vertical'
 		pos_hint:{'top':1}
@@ -67,10 +68,36 @@
 				pos_hint:{'center_x':.5}
 				text_col:True
 				label_name:'Password'
-				text:root.auto_password
+				text:root.initial_random
 				icon_right_action:
 					[['content-copy', lambda x: app.show_toast_copied(f"{self.text}")],
 					['reload', lambda x: root.generate_password()]]
+
+		
+		MDBoxLayout:
+			orientation:'horizontal'
+			size_hint_y: None
+			height:"40dp"
+			padding:dp(70),0,dp(70),0
+			MDLabel:
+				text: str(int(slider.value))
+				size_hint_x: None
+				theme_text_color:"Custom"
+				text_color: app.text_color
+				width: dp(30)
+				halign:"left"
+			MDSlider:
+				id:slider
+				min: 6
+				max: 16
+				value: 10
+				on_active:
+					root.set_length(int(slider.value))
+				show_off: False
+				size_hint_y: None
+				hint_bg_color: [1,1,1,1]
+				height:"40dp"
+				pos_hint:{"center_x":.5}
 
 		RoundButton:
 			id: generate

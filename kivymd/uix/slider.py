@@ -21,7 +21,7 @@ With value hint
     from kivymd.app import MDApp
 
     KV = '''
-    Screen
+    MDScreen
 
         MDSlider:
             min: 0
@@ -72,28 +72,31 @@ Without custom color
 
 __all__ = ("MDSlider",)
 
+import os
+
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     ListProperty,
-    NumericProperty,
+    VariableListProperty,
 )
 from kivy.uix.slider import Slider
 from kivy.utils import get_color_from_hex
-
 from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string(
-    """
+
+Builder.load_string("""
 #:import images_path kivymd.images_path
 #:import Thumb kivymd.uix.selectioncontrol.Thumb
 
 
+<HintBoxContainer@MDCard+FakeRectangularElevationBehavior>
+
+
 <MDSlider>
-    id: slider
     canvas:
         Clear
         Color:
@@ -134,8 +137,9 @@ Builder.load_string(
         Rectangle:
             size:
                 ((self.width - self.padding * 2) * self.value_normalized, sp(4)) \
-                if slider.orientation == "horizontal" else (sp(4), \
-                (self.height - self.padding * 2) * self.value_normalized)
+                if root.orientation == "horizontal" \
+                else \
+                (sp(4), (self.height - self.padding * 2) * self.value_normalized)
             pos:
                 (self.x + self.padding, self.center_y - dp(4)) \
                 if self.orientation == "horizontal" \
@@ -145,46 +149,63 @@ Builder.load_string(
         id: thumb
         size_hint: None, None
         size:
-            (dp(12), dp(12)) if root.disabled else ((dp(24), dp(24)) \
-            if root.active else (dp(16), dp(16)))
+            (dp(12), dp(12)) \
+            if root.disabled \
+            else \
+            ((dp(24), dp(24)) \
+            if root.active \
+            else \
+            (dp(16), dp(16)))
         pos:
-            (slider.value_pos[0] - dp(8), slider.center_y - thumb.height / 2 - dp(2)) \
-            if slider.orientation == "horizontal" \
-            else (slider.center_x - thumb.width / 2 - dp(2), \
-            slider.value_pos[1] - dp(8))
+            (root.value_pos[0] - dp(8), root.center_y - thumb.height / 2 - dp(2)) \
+            if root.orientation == "horizontal" \
+            else (root.center_x - thumb.width / 2 - dp(2), \
+            root.value_pos[1] - dp(8))
         color:
-            (0, 0, 0, 0) if slider._is_off else (root._track_color_disabled \
+            (0, 0, 0, 0) if root._is_off else (root._track_color_disabled \
             if root.disabled else root.color)
-        elevation:
-            0 if slider._is_off else (4 if root.active else 2)
+        elevation: 0 if root._is_off else (4 if root.active else 2)
 
-    MDCard:
+    HintBoxContainer:
         id: hint_box
         size_hint: None, None
-        md_bg_color: (1, 1, 1, 1) if not root.hint_bg_color else slider.hint_bg_color
-        elevation: 0
-        opacity: 1 if slider.active else 0
-        background: f"{images_path}transparent.png"
-        radius: [slider.hint_radius,]
+        md_bg_color: root.hint_bg_color
+        elevation: 5
+        opacity: 1 if root.active else 0
+        radius: root.hint_radius
+        padding: "6dp", "6dp", "6dp", "8dp"
         size:
-            (dp(12), dp(12)) if root.disabled else ((dp(28), dp(28)) \
-            if root.active else (dp(20), dp(20)))
+            lbl_value.width + self.padding[0] * 2, \
+            lbl_value.height + self.padding[0]
         pos:
-            (slider.value_pos[0] - dp(9), slider.center_y - hint_box.height / 2 + dp(30)) \
-            if slider.orientation == "horizontal" \
-            else (slider.center_x - hint_box.width / 2 + dp(30), \
-            slider.value_pos[1] - dp(8))
+            (root.value_pos[0] - dp(9), root.center_y - hint_box.height / 2 + dp(30)) \
+            if root.orientation == "horizontal" \
+            else \
+            (root.center_x - hint_box.width / 2 + dp(30), root.value_pos[1] - dp(8))
 
         MDLabel:
-            text: str(int(slider.value))
+            id: lbl_value
             font_style: "Caption"
             halign: "center"
             theme_text_color: "Custom"
+            -text_size: None, None
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .5}
             text_color:
-                (root.color if root.active else (0, 0, 0, 0)) \
-                if not slider.hint_text_color else slider.hint_text_color
-"""
-)
+                ( \
+                root.color \
+                if root.active \
+                else (0, 0, 0, 0) \
+                ) \
+                if not root.hint_text_color \
+                else \
+                root.hint_text_color
+            text:
+                str(root.value) \
+                if isinstance(root.step, float) \
+                else \
+                str(int(root.value))
+    """)
 
 
 class MDSlider(ThemableBehavior, Slider):
@@ -204,12 +225,12 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `True`.
     """
 
-    hint_bg_color = ColorProperty(None)
+    hint_bg_color = ColorProperty([0, 0, 0, 0])
     """
     Hint rectangle color in ``rgba`` format.
 
     :attr:`hint_bg_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     hint_text_color = ColorProperty(None)
@@ -220,12 +241,12 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `None`.
     """
 
-    hint_radius = NumericProperty(4)
+    hint_radius = VariableListProperty([dp(4), dp(4), dp(4), dp(4)])
     """
     Hint radius.
 
-    :attr:`hint_radius` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `4`.
+    :attr:`hint_radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[dp(4), dp(4), dp(4), dp(4)]`.
     """
 
     show_off = BooleanProperty(True)
@@ -270,7 +291,8 @@ class MDSlider(ThemableBehavior, Slider):
             self.remove_widget(self.ids.hint_box)
 
     def on_value_normalized(self, *args):
-        """When the ``value == min`` set it to `'off'` state and make slider
+        """
+        When the ``value == min`` set it to `'off'` state and make slider
         a ring.
         """
 
@@ -294,7 +316,8 @@ class MDSlider(ThemableBehavior, Slider):
             self.active = False
 
     def _update_offset(self):
-        """Offset is used to shift the sliders so the background color
+        """
+        Offset is used to shift the sliders so the background color
         shows through the off circle.
         """
 
