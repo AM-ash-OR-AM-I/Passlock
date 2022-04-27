@@ -8,8 +8,7 @@ from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 
-Builder.load_string(
-    """
+Builder.load_string("""
 <Toolbar>
     id: toolbox
     set_opacity: root.set_opacity
@@ -26,7 +25,6 @@ Builder.load_string(
         pos_hint: {'center_y': .5}  
     
     MDBoxLayout:
-        
         adaptive_height: True
         pos_hint: {'center_y': .5} 
         MDLabel:
