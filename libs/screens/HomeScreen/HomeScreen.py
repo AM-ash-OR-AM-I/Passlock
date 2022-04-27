@@ -27,18 +27,11 @@ class FindScreen(MDScreen):
     update_dialog = None
     snackbar = None
     snackbar_duration = 2.5
+    delete_dialog = None
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        """Replace demo passwords with the dictionary containing passwords."""
-
-        # self.add_passwords()
-        self.delete_dialog = None
-
-    def add_passwords(self):
-        """
-        Used to add password lists to the RecycleView.
+    def show_all_passwords(self):
+        """TODO: Add show all passwords button.
+        Used to add all passwords to the RecycleView.
         """
 
         for name, password in app.passwords.items():
@@ -233,11 +226,6 @@ class HomeScreen(MDScreen):
 
     sync_widget = None
     sync_dialog = None
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        # from libs.firebase import Firebase
-        # self.firebase = Firebase()
     
     def get_sync_widget(self):
         if self.sync_widget is None:

@@ -342,7 +342,7 @@ class MainApp(MDApp):
     def backup_on_pause(self):
         if self.auto_sync and self.password_changed:
             self.firebase.backup()
-            self.firebase.backup_success = lambda x: toast("Backed up!")
+            self.firebase.backup_success = lambda *args: toast("Backed up!")
             self.password_changed = False
 
     def on_pause(self):
