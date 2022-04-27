@@ -344,7 +344,7 @@ class MainApp(MDApp):
     def on_pause(self):
         set_dark_mode(app=self.dark_mode, system=self.system_dark_mode)
         set_auto_sync(self.auto_sync)
-        if self.password_changed:
+        if self.auto_sync and self.password_changed:
             self.firebase.backup()
             self.password_changed = False
         return True
