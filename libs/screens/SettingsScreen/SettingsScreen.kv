@@ -1,6 +1,4 @@
 #: import set_dark_mode libs.utils.set_dark_mode
-<ListItem@ThreeLineAvatarIconListItem>
-	_no_ripple_effect: True
 
 <RightSwitch@IRightBodyTouch+MDSwitch>
     widget_style: "ios"
@@ -37,7 +35,7 @@
                 text:"Sync Passwords"
                 icon:"sync"
                 on_release: app.root.HomeScreen.open_sync_dialog()
-            ListItem:
+            ThreeLineAvatarIconListItem:
                 id: auto_sync
                 text:"Auto sync"
                 secondary_text:"Passwords will be synced"
@@ -55,7 +53,7 @@
                     icon: "auto-upload"
                     theme_text_color:'Custom'
                     text_color:app.text_color
-            ListItem:
+            ThreeLineAvatarIconListItem:
                 id: system_dark_item
                 text:"Use system theme"
                 secondary_text:"Dark/Light mode of app will be"

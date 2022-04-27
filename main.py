@@ -5,15 +5,10 @@ from time import time
 initial = time()
 from colorsys import rgb_to_hls, hls_to_rgb
 import os.path
-from libs.screens.classes import Dialog, SyncWidget
+from libs.screens.classes import Dialog
 from libs.screens.root import Root
-from libs.utils import (
-    check_auto_sync,
-    is_dark_mode,
-    set_auto_sync,
-    set_dark_mode,
-    write_backup_failure,
-)
+from libs.firebase import Firebase
+from libs.utils import *
 
 from kivy.config import Config
 from kivy.core.clipboard import Clipboard
@@ -105,8 +100,7 @@ class MainApp(MDApp):
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
         self.auto_sync = check_auto_sync()
-        from libs.firebase import Firebase
-
+        Window.on_minimize = lambda : self.backup_on_pause()
         self.firebase = Firebase()
         threading.Thread(target=self.set_dark_mode, daemon=True).start()
 
@@ -122,7 +116,6 @@ class MainApp(MDApp):
             toast("Couldn't backup :(, Check your internet connection")
             sync_widget.stop()
 
-        # self.get_sync_widget()
         sync_widget.icon = "cloud-upload"
         sync_widget.text = "Backing up.."
         sync_widget.start()
@@ -135,7 +128,6 @@ class MainApp(MDApp):
             print(result)
             sync_widget.stop()
             from libs.utils import write_passwords
-
             write_passwords(result)
             if decrypt:
                 self.passwords = self.encryption_class.load_decrypted()
@@ -145,7 +137,6 @@ class MainApp(MDApp):
             sync_widget.stop()
             toast("Restore Failed")
 
-        # self.get_sync_widget()
         sync_widget.icon = "cloud-download"
         sync_widget.text = "Restoring.."
         sync_widget.start()
@@ -310,7 +301,7 @@ class MainApp(MDApp):
         print(val)
         signup = self.root.SignupScreen
         if self.root.current == "LoginScreen":
-            self.diff = (val - signup.ids.lock.y + dp(20)) / Window.height
+            self.diff = (val - signup.ids.lock.y + dp(30)) / Window.height
             if self.diff > 0:
                 if val > 0:
                     self.box_height = signup.ids.box.pos_hint["top"]
@@ -327,7 +318,7 @@ class MainApp(MDApp):
             if self.root.HomeScreen.ids.tab_manager.current == "CreateScreen":
                 generate = self.root.HomeScreen.ids.create.ids.manual.ids.add
                 self.root.HomeScreen.ids.create.ids.auto.scroll_y = 1
-                self.diff = val - generate.y + dp(20)
+                self.diff = val - generate.y + dp(30)
                 if self.diff > 0:
                     if val > 0:
                         Animation(y=self.diff, t="out_quad", d=0.2).start(
@@ -349,17 +340,23 @@ class MainApp(MDApp):
                 white_text=not self.dark_mode,
             )
 
+    def backup_on_pause(self):
+        if self.auto_sync and self.password_changed:
+            self.firebase.backup()
+            self.firebase.restore_success = lambda x: toast("Backed up!")
+            self.password_changed = False
+
     def on_pause(self):
         set_dark_mode(app=self.dark_mode, system=self.system_dark_mode)
         set_auto_sync(self.auto_sync)
-        if self.auto_sync and self.password_changed:
-            self.firebase.backup()
-            self.password_changed = False
+        self.backup_on_pause()
         return True
 
     def on_stop(self):
         set_dark_mode(app=self.dark_mode, system=self.system_dark_mode)
         set_auto_sync(self.auto_sync)
+    
+    
 
 
 if __name__ == "__main__":
