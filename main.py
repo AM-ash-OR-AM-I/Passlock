@@ -7,7 +7,13 @@ from colorsys import rgb_to_hls, hls_to_rgb
 import os.path
 from libs.screens.classes import Dialog, SyncWidget
 from libs.screens.root import Root
-from libs.utils import check_auto_sync, is_dark_mode, set_auto_sync, set_dark_mode, write_backup_failure
+from libs.utils import (
+    check_auto_sync,
+    is_dark_mode,
+    set_auto_sync,
+    set_dark_mode,
+    write_backup_failure,
+)
 
 from kivy.config import Config
 from kivy.core.clipboard import Clipboard
@@ -100,9 +106,10 @@ class MainApp(MDApp):
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
         self.auto_sync = check_auto_sync()
         from libs.firebase import Firebase
+
         self.firebase = Firebase()
         threading.Thread(target=self.set_dark_mode, daemon=True).start()
-    
+
     def backup(self, sync_widget):
         def backup_success():
             toast("Backup Successful")
@@ -112,7 +119,7 @@ class MainApp(MDApp):
 
         def backup_failure():
             write_backup_failure(True)
-            toast("Backup Failed")
+            toast("Couldn't backup :(, Check your internet connection")
             sync_widget.stop()
 
         # self.get_sync_widget()
@@ -123,16 +130,17 @@ class MainApp(MDApp):
         self.firebase.backup_failure = lambda *args: backup_failure()
         self.firebase.backup()
 
-    def restore(self, sync_widget, user_id = None, decrypt = True):
+    def restore(self, sync_widget, user_id=None, decrypt=True):
         def restore_success(req, result):
             print(result)
             sync_widget.stop()
             from libs.utils import write_passwords
+
             write_passwords(result)
             if decrypt:
                 self.passwords = self.encryption_class.load_decrypted()
             toast("Restored successfully")
-        
+
         def restore_failure(req, result):
             sync_widget.stop()
             toast("Restore Failed")
@@ -164,7 +172,7 @@ class MainApp(MDApp):
         # return Builder.load_string(KV)
         # if LIVE_UI:
         #     return Builder.load_string(KV)
-    
+
     def show_toast_copied(self, item):
         toast("Item copied")
         Clipboard.copy(item)
