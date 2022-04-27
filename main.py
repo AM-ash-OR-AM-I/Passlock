@@ -5,15 +5,16 @@ from time import time
 initial = time()
 from colorsys import rgb_to_hls, hls_to_rgb
 import os.path
-from libs.screens.classes import Dialog
+from libs.screens.classes import Dialog, SyncWidget
 from libs.screens.root import Root
-from libs.utils import is_dark_mode, set_dark_mode
+from libs.utils import check_auto_sync, is_dark_mode, set_auto_sync, set_dark_mode, write_backup_failure
 
 from kivy.config import Config
 from kivy.core.clipboard import Clipboard
 from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
+from kivy.lang.builder import Builder
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
@@ -39,7 +40,9 @@ def emulate_android_device(
 
 if platform != "android":
     emulate_android_device()
+    LIVE_UI = 0
 else:
+    LIVE_UI = 0
     from libs.modules.AndroidAPI import statusbar, android_dark_mode
 
 KV = """
@@ -59,16 +62,24 @@ class MainApp(MDApp):
     text_color = ColorProperty()
     primary_accent = ColorProperty()
     bg_color = ColorProperty()
+
+    password_changed = False
     system_dark_mode = False
+    auto_sync = False
+    entered_app = False
+    fps = True
+
     encryption_class = None
+    update_dialog = None
+    exit_dialog = None
+    sync_widget = None
+    anim_sync = None
+
     passwords = {}
     encrypted_keys = {}
     screen_history = []
-    LIVE_UI = 1
-    fps = True
-    path_to_live_ui = "OtherStuff/custom_dialog.kv"
-    entered_app = False
-    HomeScreen = LoginScreen = SettingScreen = update_dialog = exit_dialog = None
+
+    path_to_live_ui = "backup_design.kv"
 
     def __init__(self):
         super().__init__()
@@ -87,7 +98,55 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
+        self.auto_sync = check_auto_sync()
+        from libs.firebase import Firebase
+        self.firebase = Firebase()
         threading.Thread(target=self.set_dark_mode, daemon=True).start()
+    
+    def backup(self, sync_widget):
+        def backup_success():
+            toast("Backup Successful")
+            write_backup_failure(False)
+            sync_widget.stop()
+            self.password_changed = False
+
+        def backup_failure():
+            write_backup_failure(True)
+            toast("Backup Failed")
+            sync_widget.stop()
+
+        # self.get_sync_widget()
+        sync_widget.icon = "cloud-upload"
+        sync_widget.text = "Backing up.."
+        sync_widget.start()
+        self.firebase.backup_success = lambda *args: backup_success()
+        self.firebase.backup_failure = lambda *args: backup_failure()
+        self.firebase.backup()
+
+    def restore(self, sync_widget, user_id = None, decrypt = True):
+        def restore_success(req, result):
+            print(result)
+            sync_widget.stop()
+            from libs.utils import write_passwords
+            write_passwords(result)
+            if decrypt:
+                self.passwords = self.encryption_class.load_decrypted()
+            toast("Restored successfully")
+        
+        def restore_failure(req, result):
+            sync_widget.stop()
+            toast("Restore Failed")
+
+        # self.get_sync_widget()
+        sync_widget.icon = "cloud-download"
+        sync_widget.text = "Restoring.."
+        sync_widget.start()
+        self.firebase.restore_success = lambda req, result: restore_success(req, result)
+        self.firebase.restore_failure = lambda req, result: restore_failure(req, result)
+        if user_id:
+            self.firebase.restore(user_id)
+        else:
+            self.firebase.restore()
 
     def set_dark_mode(self):
         self.system_dark_mode = is_dark_mode(system=True)
@@ -102,6 +161,9 @@ class MainApp(MDApp):
     def build(self):
         self.root = Root()
         self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
+        # return Builder.load_string(KV)
+        # if LIVE_UI:
+        #     return Builder.load_string(KV)
     
     def show_toast_copied(self, item):
         toast("Item copied")
@@ -281,10 +343,15 @@ class MainApp(MDApp):
 
     def on_pause(self):
         set_dark_mode(app=self.dark_mode, system=self.system_dark_mode)
+        set_auto_sync(self.auto_sync)
+        if self.password_changed:
+            self.firebase.backup()
+            self.password_changed = False
         return True
 
     def on_stop(self):
         set_dark_mode(app=self.dark_mode, system=self.system_dark_mode)
+        set_auto_sync(self.auto_sync)
 
 
 if __name__ == "__main__":

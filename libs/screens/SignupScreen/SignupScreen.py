@@ -8,6 +8,7 @@ from kivy.properties import BooleanProperty
 from kivy.factory import Factory
 
 from libs.firebase import Firebase
+from libs.screens.classes import SyncWidget
 
 app = MDApp.get_running_app()
 
@@ -15,7 +16,6 @@ app = MDApp.get_running_app()
 class SignupScreen(MDScreen):
     loading_view = None
     show_signup = BooleanProperty(True)
-    offline_only = BooleanProperty(False)
     encryption = None
 
     def on_show_signup(self, *args):
@@ -65,8 +65,9 @@ class SignupScreen(MDScreen):
         def login_success(req, result):
             user_id = result["localId"]
             toast("Login successful")
+            self.dismiss_loading()
             app.encryption_class = self.encryption(self.password)
-            self.restore(user_id)
+            app.root.HomeScreen.restore(user_id = user_id)
             threading.Thread(target=self.save_uid_password, args=(user_id,)).start()
 
         def login_failure(req, result):
@@ -93,17 +94,16 @@ class SignupScreen(MDScreen):
                 toast("Restored successfully")
             else:
                 toast("No passwords to restore")
-            self.dismiss_loading()
+            
 
         def restore_failure(req, result):
             print(result)
             toast("Restore failed")
-            self.dismiss_loading()
+            
 
         self.firebase.restore_success = lambda req, result: restore_success(req, result)
         self.firebase.restore_failure = lambda req, result: restore_failure(req, result)
         self.firebase.restore(user_id)
-        self.loading_view.text = "Restoring Passwords..."
 
     def button_pressed(self, email, password):
         def import_encryption():

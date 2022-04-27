@@ -1,8 +1,9 @@
 #: import set_dark_mode libs.utils.set_dark_mode
-<ListItem@OneLineAvatarIconListItem>
+<ListItem@ThreeLineAvatarIconListItem>
 	_no_ripple_effect: True
 
 <RightSwitch@IRightBodyTouch+MDSwitch>
+    widget_style: "ios"
 
 <MyListItem@OneLineIconListItem>
     theme_text_color:'Custom'
@@ -33,21 +34,32 @@
             adaptive_height:True
             orientation:'vertical'
             MyListItem:
-                text:"Advanced Security"
-                icon:'shield-star'
-            MyListItem:
                 text:"Sync Passwords"
                 icon:"sync"
                 on_release: app.root.HomeScreen.open_sync_dialog()
-            MyListItem:
-                text:"Log out"
-                icon:"logout"
-                disabled: app.signup
-                on_release: 
-                    root.logout()
+            ListItem:
+                id: auto_sync
+                text:"Auto sync"
+                secondary_text:"Passwords will be synced"
+                tertiary_text:'automatically'
+                theme_text_color:'Custom'
+                text_color:app.text_color
+                on_release:
+                    auto_sync_switch.active = not auto_sync_switch.active
+                RightSwitch:
+                    id: auto_sync_switch
+                    active: app.auto_sync
+                    width: dp(44)
+                    on_active: app.auto_sync = auto_sync_switch.active
+                IconLeftWidget:
+                    icon: "auto-upload"
+                    theme_text_color:'Custom'
+                    text_color:app.text_color
             ListItem:
                 id: system_dark_item
                 text:"Use system theme"
+                secondary_text:"Dark/Light mode of app will be"
+                tertiary_text:"synchronised with system theme"
                 theme_text_color:'Custom'
                 text_color:app.text_color
                 on_release:
@@ -61,8 +73,18 @@
                     icon: "theme-light-dark"
                     theme_text_color:'Custom'
                     text_color:app.text_color
+            MyListItem:
+                text:"Advanced Security"
+                icon:'shield-star'
+            MyListItem:
+                text:"Log out"
+                icon:"logout"
+                disabled: app.signup
+                on_release: 
+                    root.logout()
 
         MDSeparator:
+
         MDBoxLayout:
             adaptive_height:True
             padding:0,dp(20),0,0

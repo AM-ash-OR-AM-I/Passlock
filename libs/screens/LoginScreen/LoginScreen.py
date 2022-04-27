@@ -4,6 +4,7 @@ from kivymd.uix.screen import MDScreen
 import os.path
 from time import time
 from kivy.factory import Factory
+from libs.screens.classes import SyncWidget
 from libs.utils import *
 
 app = MDApp.get_running_app()
@@ -11,6 +12,18 @@ app = MDApp.get_running_app()
 
 class LoginScreen(MDScreen):
     loading_view = None
+    sync_widget = None
+
+    def get_sync_widget(self):
+        if self.sync_widget is None:
+            self.sync_widget = SyncWidget(pos_hint={"center_x":.8,"center_y":.1})
+            self.add_widget(self.sync_widget)
+        return self.sync_widget
+
+    def on_enter(self,*args):
+        if app.auto_sync and not is_backup_failure():
+            self.sync_widget = self.get_sync_widget()
+            app.restore(self.sync_widget, decrypt = False)
 
     def login_button_pressed(self, password):
         def dismiss_spinner(*args):

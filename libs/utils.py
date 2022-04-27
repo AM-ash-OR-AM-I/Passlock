@@ -55,10 +55,41 @@ def set_dark_mode(app: bool, system: bool) -> None:
     with open("data/dark_mode", "wb") as f:
         pickle.dump(_dict, f)
 
-def auto_password(len: int, ascii = True, digits = True, special_chars = True) -> str:
-    sample = string.ascii_letters*ascii + string.digits*digits + string.punctuation*special_chars
+
+def check_auto_sync() -> bool:
+    if os.path.exists("data/auto_sync"):
+        with open("data/auto_sync", "rb") as f:
+            auto_sync = pickle.load(f)
+        return auto_sync
+    else:
+        return False
+
+
+def set_auto_sync(value: bool) -> None:
+    with open("data/auto_sync", "wb") as f:
+        pickle.dump(value, f)
+
+
+def auto_password(len: int, ascii=True, digits=True, special_chars=True) -> str:
+    sample = (
+        string.ascii_letters * ascii
+        + string.digits * digits
+        + string.punctuation * special_chars
+    )
     if sample:
         random_pass = "".join(random.sample(sample, len))
     else:
         random_pass = ""
     return random_pass
+
+def write_backup_failure(value: bool) -> None:
+    with open("data/backup_failure.txt", "w") as f:
+        f.write(str(value))
+
+def is_backup_failure() -> bool:
+    if os.path.exists("data/backup_failure.txt"):
+        with open("data/backup_failure.txt", "r") as f:
+            backup_failure = f.read()
+        return backup_failure == "True"
+    else:
+        return False

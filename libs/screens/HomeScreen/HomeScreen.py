@@ -5,14 +5,14 @@ from kivy.clock import Clock
 from kivy.uix.scrollview import ScrollView
 from kivymd.uix.tab import MDTabsBase
 from kivy.factory import Factory
-from kivy.properties import ListProperty, StringProperty
+from kivy.properties import ListProperty
 
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
 from kivymd.app import MDApp
 from kivymd.material_resources import dp
 
-from libs.screens.classes import Dialog, DialogButton, RoundIconButton, CustomSnackbar
+from libs.screens.classes import Dialog, DialogButton, RoundIconButton, CustomSnackbar, SyncWidget
 from libs.utils import auto_password
 
 app = MDApp.get_running_app()
@@ -185,7 +185,7 @@ class FindScreen(MDScreen):
         self.snackbar.duration = self.snackbar_duration
         self.snackbar.open()
         Clock.schedule_once(
-            partial(self.delete_from_storage, name), self.snackbar_duration
+            partial(self.delete_from_storage, name), self.snackbar_duration + .1
         )
 
 
@@ -231,13 +231,19 @@ class HomeScreen(MDScreen):
     * FindScreen
     """
 
+    sync_widget = None
     sync_dialog = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        from libs.firebase import Firebase
-
-        self.firebase = Firebase()
+        # from libs.firebase import Firebase
+        # self.firebase = Firebase()
+    
+    def get_sync_widget(self):
+        if self.sync_widget is None:
+            self.sync_widget = SyncWidget(pos_hint={"center_x":.8,"center_y":.1})
+            self.add_widget(self.sync_widget)
+        return self.sync_widget
 
     def open_sync_dialog(self):
         if not self.sync_dialog:
@@ -261,25 +267,14 @@ class HomeScreen(MDScreen):
 
     def backup(self):
         self.sync_dialog.dismiss()
-        self.firebase.backup_success = lambda *args: toast("Backup, Successful!")
-        self.firebase.backup_failure = lambda *args: toast("Backup, Failed!")
-        self.firebase.backup()
+        self.sync_widget = self.get_sync_widget()
+        app.backup(self.sync_widget)
 
-    def restore(self):
-        def restore_success(req, result):
-            print(result)
-            from libs.utils import write_passwords, get_uid
-
-            write_passwords(result)
-            app.passwords = app.encryption_class.load_decrypted()
-            toast("Restored successfully")
-
-        self.sync_dialog.dismiss()
-        self.firebase.restore_success = lambda req, result: restore_success(req, result)
-        self.firebase.restore_failure = lambda req, result: toast(
-            "Couldn't restore passwords, check your internet connection."
-        )
-        self.firebase.restore()
+    def restore(self, user_id = None):
+        if self.sync_dialog:
+            self.sync_dialog.dismiss()
+        self.sync_widget = self.get_sync_widget()
+        app.restore(self.sync_widget, user_id)
 
     def create_password(self, name, password):
         threading.Thread(

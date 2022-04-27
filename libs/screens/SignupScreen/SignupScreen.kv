@@ -63,7 +63,6 @@
 			padding:(0,dp(15),0,0)
 			BorderCard:
 				id: email
-                opacity: 0 if root.offline_only else 1
 				label_name:'Email Address'
 				hint_text:'username@mail.com' if root.show_signup else "Your mail name"
 				pos_hint:{'center_x':.5}
@@ -92,27 +91,16 @@
 						root.button_pressed(email.text, password.text)
 					pos_hint:{'center_x':.5}
 
-    # MDTextButton:
-	# 	id:forgot
-	# 	x: password.x+dp(25)
-	# 	y: password.y-dp(25)
-	# 	text:'Forgot Password?'
-	# 	font_name:'RobotoMedium'
-	# 	disabled: root.show_signup
-	# 	theme_text_color:'Custom' if self.disabled else "Secondary"
-	# 	text_color:[0,0,0,0] if self.disabled else [0,0,0,0]
-	# 	font_size:"12sp"
-
 	MDSeparator:
 		id: separator
-        opacity: 0 if root.offline_only else 1
+        opacity: 1
 		size_hint_x:.8
 		y:lock.y - dp(55)
 		pos_hint:{"center_x":.5}
 
 	MDTextButton:
         id: switch_signin
-        opacity: 0 if root.offline_only else 1
+        opacity: 1
 		text:'New user? [color=f67e55]Signup!'if not root.show_signup else "Existing user? [color=ff7a4f]Login."
 		markup:True
 		top:separator.y - dp(20)
@@ -123,18 +111,6 @@
 		halign:'center'
 		size_hint_x:1
 		on_release: root.show_signup = not root.show_signup
-		font_size:lbl_size
-    
-    MDTextButton:
-		text: f'Use Offline only [font=Icons]{md_icons["cloud-off-outline"]}[/font]' if not root.offline_only else f'Use email to sync [font=Icons]{md_icons["cloud-sync-outline"]}[/font]'
-		pos_hint:{'center_x':.5,"top":.1}
-        markup:True
-		font_name:'RobotoMedium'
-		theme_text_color:"Custom"
-		text_color:app.text_color
-		halign:'center'
-		size_hint_x:1
-		on_release: root.offline_only = not root.offline_only
 		font_size:lbl_size
 
 	

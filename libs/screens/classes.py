@@ -1,8 +1,10 @@
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty
+from kivy.properties import StringProperty
 from kivy.uix.modalview import ModalView
-from kivymd.uix.snackbar import Snackbar
+from kivy.animation import Animation
+from kivy.clock import Clock
 
+from kivymd.uix.snackbar import Snackbar
 from kivymd.app import MDApp
 from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior
@@ -15,6 +17,58 @@ from kivymd.uix.button import (
 )
 from kivymd.uix.dialog import MDDialog
 
+# ---- Sync Widget ----
+KV = """
+<SyncWidget>
+    padding:"14dp"
+    pos_hint:{"center_x":.8,"center_y":.1}
+    md_bg_color:app.primary_accent
+    orientation:"vertical"
+    size_hint_y:None
+    height: dp(100)
+    size_hint_x:None
+    width: self.height + dp(10)
+    radius:"25dp"
+    MDIcon:
+        id: sync_icon
+        icon: 'cloud-download' if not root.icon else root.icon
+        halign:"center"
+        theme_text_color:"Custom"
+        text_color:app.text_color
+        font_size: dp(30)
+    MDLabel: 
+        id: sync_text
+        theme_text_color:"Custom"
+        text_color:app.text_color
+        font_size: sp(15)
+        halign:"center"
+        text:"Restoring.." if not root.text else root.text
+    """
+
+class SyncWidget(MDBoxLayout):
+    Builder.load_string(KV)
+    start_anim = None
+    stop_anim = None
+    text = StringProperty()
+    icon = StringProperty()
+    def start(self):
+        self.opacity=1
+        self.interval = Clock.schedule_interval(self._start_animation, 1.2)
+    
+    def stop(self):
+        self._stop_animation()
+        self.interval.cancel()
+    
+    def _stop_animation(self):
+        if self.stop_anim is None:
+            self.stop_anim = Animation(opacity = 0, d= 0.3, t="in_quad")
+        self.stop_anim.start(self)
+        
+    def _start_animation(self, *args):
+        if self.start_anim is None:
+            self.start_anim = Animation(opacity=0, d=.5, t="in_quad")
+            self.start_anim += Animation(opacity=1, d=.5, t="out_quad")
+        self.start_anim.start(self.ids.sync_icon)
 
 class LoadingScreen(ModalView):
     is_open = False
@@ -72,7 +126,7 @@ class RoundIconButton(MDFillRoundFlatIconButton):
         self.theme_cls.bind(primary_hue=self.update_md_bg_color)
 
 
-# ------- The below string loads the update dialog box content --------
+# ---- The below string loads the update dialog box content ----
 Builder.load_string("""
 <UpdateContent@MDBoxLayout>
     adaptive_height: True

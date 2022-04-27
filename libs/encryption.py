@@ -55,11 +55,13 @@ class Encryption:
         app.encrypted_keys[name] = encrypted_name
         data[encrypted_name] = self.encrypt(password)
         write_passwords(data)
+        app.password_changed = True
 
     def delete(self, name: str) -> None:
         data = load_passwords()
         del data[name]
         write_passwords(data)
+        app.password_changed = True
 
     def update(self, name: "encrypt(str)", password: str) -> None:
         data = load_passwords()
@@ -67,6 +69,7 @@ class Encryption:
         data[name] = password
         app.encrypted_keys[self.decrypt(name)] = name
         write_passwords(data)
+        app.password_changed = True
 
     def find_key(
         self, dictionary: dict, text: str
