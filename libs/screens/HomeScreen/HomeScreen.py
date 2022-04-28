@@ -196,12 +196,6 @@ class Auto(ScrollView, MDTabsBase):
         self.password_length = length
         self.generate_password(True, True, True)
 
-    def open_slider(self):
-        """
-        TODO: implement length of password
-        Opens the dropdown menu.
-        """
-
     def generate_password(self, ascii=None, digits=None, special_chars=None) -> None:
         if ascii is not None:
             self.use_ascii = ascii
