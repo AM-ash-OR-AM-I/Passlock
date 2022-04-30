@@ -17,6 +17,25 @@ from kivymd.uix.button import (
 )
 from kivymd.uix.dialog import MDDialog
 
+
+# ---- FloatingButton ----
+Builder.load_string("""
+<FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
+	_no_ripple_effect: True
+    """
+)
+
+
+# ---- BorderCard (Child Class of CardTextField) ----
+Builder.load_string("""
+<BorderCard@CardTextField>
+	inactive_color:app.theme_cls.primary_light[:-1]+[.6]
+	icon_font_size:icon_size
+	thickness:dp(1) if platform == 'android' else dp(1.4)
+	icon_color:app.theme_cls.primary_light
+""")
+
+
 # ---- Sync Widget ----
 KV = """
 <SyncWidget>

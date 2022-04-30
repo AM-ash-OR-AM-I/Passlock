@@ -9,15 +9,6 @@
 #: import CardTextField libs.modules.CardTextField.CardTextField
 #: import Clock kivy.clock.Clock
 
-<BorderCard@CardTextField>
-	inactive_color:app.theme_cls.primary_light[:-1]+[.6]
-	icon_font_size:icon_size
-	thickness:dp(1) if platform == 'android' else dp(1.4)
-	icon_color:app.theme_cls.primary_light
-
-<FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
-	_no_ripple_effect: True
-
 <SignupScreen>:
 	md_bg_color: app.bg_color
     canvas:
