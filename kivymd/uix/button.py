@@ -1080,14 +1080,6 @@ class MDTextButton(ButtonBehavior, MDLabel):
     and defaults to `None`.
     """
 
-    color_disabled = ColorProperty(None)
-    """
-    Button color disabled in (r, g, b, a) format.
-
-    :attr:`color_disabled` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
     _color = ColorProperty(None)  # last current button text color
 
     def animation_label(self):
@@ -1105,14 +1097,6 @@ class MDTextButton(ButtonBehavior, MDLabel):
     def on_md_bg_color(self, instance, value):
         self.md_bg_color = [0.0, 0.0, 0.0, 0.0]
 
-    def on_disabled(self, instance, value):
-        if value:
-            if not self.color_disabled:
-                self.color_disabled = self.theme_cls.disabled_hint_text_color
-                self._color = self.color
-            self.text_color = self.color_disabled
-        else:
-            self.text_color = self._color
 
 
 # SpeedDial classes

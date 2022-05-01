@@ -146,6 +146,7 @@
 	md_bg_color: app.bg_color
 	on_enter:
 		app.running = True
+	
 	MDBoxLayout:
 		orientation:'vertical'
 		id: box
@@ -194,6 +195,16 @@
 			FindScreen:
 				id: find
 				x_pad: searchbar.x
+	MDTextButton:
+		y: searchbar.y + dp(15)
+		right: searchbar.right - dp(15)
+		text:"Show All"
+		font_name:"Poppins"
+		color: app.theme_cls.primary_color
+		disabled: not ("arrow-left" in searchbar.icon_left_action and not root.ids.find.rv_data if searchbar.icon_left_action else False)
+		disabled_color: [0,0,0,0]
+		on_release:
+			root.ids.find.show_all_passwords()
 
 
 <CreateScreen@MDScreen>

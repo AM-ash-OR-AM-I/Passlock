@@ -33,9 +33,10 @@ class FindScreen(MDScreen):
         """TODO: Add show all passwords button.
         Used to add all passwords to the RecycleView.
         """
-
-        for name, password in app.passwords.items():
-            self.append_item(name, password)
+        self.ids.find_label.opacity = 0
+        if not self.rv_data:
+            for name, password in app.passwords.items():
+                self.append_item(name, password)
 
     def append_item(self, name, password):
         self.rv_data.append(
