@@ -31,13 +31,13 @@ Builder.load_string("""
     radius: dp(30)
     set_elevation: 0
     label_name:'Hi there'
-    md_bg_color: [1,1,1,1] if app.theme_cls.theme_style=='Light' else get_color_from_hex("565656")
+    md_bg_color: [1,1,1,1] if app.theme_cls.theme_style=='Light' else get_color_from_hex(self.dark_bg_hex)
     label_size:'15sp'
     hint_text:''
     adaptive_height:True
     spacing:'20dp'
     orientation:'vertical'
-    start_anim: app.dark_mode
+    start_anim: app.dark_mode and app.entered_app
     
     MDLabel:
         text:root.label_name
@@ -108,7 +108,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
     multiline = BooleanProperty(False)
     icon_color = ColorProperty([0.5, 0.5, 0.5, 1])
     icon_right_action = ListProperty(None)
-    dark_bg_hex = ""
+    dark_bg_hex = "343434"
     icon_font_size = NumericProperty()
     win = True if platform == "win" else False
     start_anim = BooleanProperty(False)

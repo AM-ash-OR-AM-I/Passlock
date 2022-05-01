@@ -1072,28 +1072,6 @@ class MDFloatingActionButton(
 
 
 class MDTextButton(ButtonBehavior, MDLabel):
-    color = ColorProperty(None)
-    """
-    Button color in (r, g, b, a) format.
-
-    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    _color = ColorProperty(None)  # last current button text color
-
-    def animation_label(self):
-        def set_default_state_label(*args):
-            Animation(opacity=1, d=0.1, t="in_out_cubic").start(self)
-
-        anim = Animation(opacity=0.5, d=0.2, t="in_out_cubic")
-        anim.bind(on_complete=set_default_state_label)
-        anim.start(self)
-
-    def on_press(self, *args):
-        self.animation_label()
-        return super().on_press(*args)
-
     def on_md_bg_color(self, instance, value):
         self.md_bg_color = [0.0, 0.0, 0.0, 0.0]
 

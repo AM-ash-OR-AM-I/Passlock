@@ -21,6 +21,7 @@ from kivy.properties import (
     get_color_from_hex,
     NumericProperty,
 )
+from kivy.clock import Clock
 
 from kivymd.toast import toast
 from kivymd.app import MDApp
@@ -99,7 +100,7 @@ class MainApp(MDApp):
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
         self.auto_sync = check_auto_sync()
-        Window.on_minimize = lambda : self.backup_on_pause()
+        Window.on_minimize = lambda: self.backup_on_pause()
         self.firebase = Firebase()
         threading.Thread(target=self.set_dark_mode, daemon=True).start()
 
@@ -127,6 +128,7 @@ class MainApp(MDApp):
             print(result)
             sync_widget.stop()
             from libs.utils import write_passwords
+
             write_passwords(result)
             if decrypt:
                 self.passwords = self.encryption_class.load_decrypted()
@@ -154,7 +156,7 @@ class MainApp(MDApp):
             )
         else:
             self.dark_mode = is_dark_mode()
-        self.entered_app = True
+        Clock.schedule_once(lambda x: exec("self.entered_app = True",{"self":self}), 1)
 
     def build(self):
         self.root = Root()
@@ -268,8 +270,6 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         if self.entered_app:
             self.root.HomeScreen.ids.create.ids.dark_animation.rad = 0.1
-        else:
-            self.entered_app = True
 
         if self.dark_mode:
             self.theme_cls.theme_style = "Dark"
@@ -354,8 +354,6 @@ class MainApp(MDApp):
     def on_stop(self):
         set_dark_mode(app=self.dark_mode, system=self.system_dark_mode)
         set_auto_sync(self.auto_sync)
-    
-    
 
 
 if __name__ == "__main__":

@@ -31,6 +31,7 @@ Builder.load_string("""
 <BorderCard@CardTextField>
 	inactive_color:app.theme_cls.primary_light[:-1]+[.6]
 	icon_font_size:icon_size
+    dark_bg_hex: "262626"
 	thickness:dp(1) if platform == 'android' else dp(1.4)
 	icon_color:app.theme_cls.primary_light
 """)
