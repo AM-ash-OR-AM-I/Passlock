@@ -194,16 +194,16 @@
 			FindScreen:
 				id: find
 				x_pad: searchbar.x
-	MDTextButton:
-		y: searchbar.y + dp(15)
-		right: searchbar.right - dp(15)
-		text:"Show All"
-		font_name:"Poppins"
-		color: app.theme_cls.primary_color
-		opacity: 1*("arrow-left" in searchbar.icon_left_action and not root.ids.find.rv_data if searchbar.icon_left_action else False)
-		disabled: not self.opacity
-		on_release:
-			root.ids.find.show_all_passwords()
+	# MDTextButton:
+	# 	y: searchbar.y + dp(15)
+	# 	right: searchbar.right - dp(15)
+	# 	text:"Show All"
+	# 	font_name:"Poppins"
+	# 	color: app.theme_cls.primary_color
+	# 	opacity: 1*("arrow-left" in searchbar.icon_left_action and not root.ids.find.rv_data if searchbar.icon_left_action else False)
+	# 	disabled: not self.opacity
+	# 	on_release:
+	# 		root.ids.find.show_all_passwords()
 
 
 <CreateScreen@MDScreen>
