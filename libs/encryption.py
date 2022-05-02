@@ -43,7 +43,9 @@ class Encryption:
         decrypted_pass = {}
         encrypted_pass = load_passwords()
         for name in encrypted_pass:
-            decrypted_pass[self.decrypt(name)] = self.decrypt(encrypted_pass[name])
+            decrypted_key = self.decrypt(name)
+            app.encrypted_keys[decrypted_key] = name
+            decrypted_pass[decrypted_key] = self.decrypt(encrypted_pass[name])
         return decrypted_pass
 
     def add(self, name: str, password: str) -> None:

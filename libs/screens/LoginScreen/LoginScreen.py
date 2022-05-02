@@ -48,9 +48,6 @@ class LoginScreen(MDScreen):
                         print("'encrypted_file' not found, can't check password.")
 
                 dismiss_spinner()
-                encrypted_pass = load_passwords()
-                for keys in encrypted_pass:
-                    app.encrypted_keys[app.encryption_class.decrypt(keys)] = keys
                 # app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
             except UnicodeDecodeError:
                 self.loading_view.dismiss()
