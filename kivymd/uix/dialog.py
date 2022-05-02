@@ -27,7 +27,7 @@ Builder.load_string(
 
 <BaseDialog>
     background: '{}/transparent.png'.format(images_path)
-
+    overlay_color: [0,0,0,0.25]
     canvas.before:
         PushMatrix
         RoundedRectangle:
@@ -147,7 +147,7 @@ class MDDialog(BaseDialog):
         Window.bind(on_resize=self.update_width)
 
         if self.size_hint == [1, 1] and (
-                DEVICE_TYPE == "desktop" or DEVICE_TYPE == "tablet"
+            DEVICE_TYPE == "desktop" or DEVICE_TYPE == "tablet"
         ):
             self.size_hint = (None, None)
             self.width = min(dp(560), Window.width - self.width_offset)
@@ -200,12 +200,12 @@ class MDDialog(BaseDialog):
 
     def get_normal_height(self):
         return (
-                (Window.height * 80 / 100)
-                - self._spacer_top
-                - dp(52)
-                - self.ids.container.padding[1]
-                - self.ids.container.padding[-1]
-                - 100
+            (Window.height * 80 / 100)
+            - self._spacer_top
+            - dp(52)
+            - self.ids.container.padding[1]
+            - self.ids.container.padding[-1]
+            - 100
         )
 
     def edit_padding_for_item(self, instance_item):

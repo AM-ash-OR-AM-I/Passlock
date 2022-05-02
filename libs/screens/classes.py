@@ -169,6 +169,7 @@ Builder.load_string("""
 
 class Dialog(MDDialog):
     radius = [dp(30)] * 4
+    
 
     def update_bg_color(self, *args):
         self.md_bg_color = MDApp.get_running_app().primary_accent
