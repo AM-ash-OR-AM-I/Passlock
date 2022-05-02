@@ -1,6 +1,5 @@
 import threading
 from functools import partial
-from turtle import update
 
 from kivy.clock import Clock
 from kivy.uix.scrollview import ScrollView
