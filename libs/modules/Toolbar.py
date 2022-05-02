@@ -33,7 +33,7 @@ Builder.load_string("""
             theme_text_color:'Custom'
             # font_size: root.text_height  if root.text_height else 0
             font_style: "H6"
-            font_name:'Poppins' 
+            font_name:'Poppins'
             text_color:app.theme_cls.text_color if root.icon_color is None else root.icon_color
             shorten: True
             shorten_from: "right"

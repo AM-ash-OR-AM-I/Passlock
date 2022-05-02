@@ -61,7 +61,7 @@ class Root(ScreenManager):
                 and self.current_screen.ids.tab_manager.current == "FindScreen"
             ):
                 self.current_screen.ids.tab_manager.current = "CreateScreen"
-            elif self.current == "HomeScreen":
+            elif self.current == "HomeScreen" or self.current=="LoginScreen":
                 MDApp.get_running_app().open_exit_dialog()
             else:
                 self.goback()
