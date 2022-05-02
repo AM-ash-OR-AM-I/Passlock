@@ -34,6 +34,8 @@ Builder.load_string("""
     md_bg_color: [1,1,1,1] if app.theme_cls.theme_style=='Light' else get_color_from_hex(self.dark_bg_hex)
     label_size:'15sp'
     hint_text:''
+    password: False
+    password_mask: "●"
     adaptive_height:True
     spacing:'20dp'
     orientation:'vertical'
@@ -68,13 +70,19 @@ Builder.load_string("""
         id: card_box
         padding:(dp(20),0,0,0)if root.icon_left_action is None else (0,0,0,0)
         spacing:'5dp'
+        MDBoxLayout:
+            id: left_actions
+            adaptive_size: True
         TextInput:
             id: textfield
             size_hint_y:None
             hint_text:root.hint_text
             height: card.height
             background_color:[0,0,0,0]
-            font_size:root.text_font_size
+            font_name:"BigCircleFont" 
+            password: root.password
+            password_mask: root.password_mask
+            font_size:root.text_font_size 
             padding:[0,(self.height-self.font_size)/2,0,dp(0)] if not root.icon_left_action\
              else [0,(self.height-self.font_size)/2,0,dp(6)]
             foreground_color: app.theme_cls.primary_color if not app.dark_mode else app.theme_cls.primary_light
@@ -88,6 +96,9 @@ Builder.load_string("""
                 root.focus = self.focus
             y: card.y
             center_x: card.center_x
+        MDBoxLayout:
+            id: right_actions
+            adaptive_size: True
 """
 )
 
@@ -108,7 +119,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
     multiline = BooleanProperty(False)
     icon_color = ColorProperty([0.5, 0.5, 0.5, 1])
     icon_right_action = ListProperty(None)
-    dark_bg_hex = "343434"
+    dark_bg_hex = "262626"
     icon_font_size = NumericProperty()
     win = True if platform == "win" else False
     start_anim = BooleanProperty(False)
@@ -129,99 +140,57 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
         self.anim.start(instance)
 
     def on_icon_left_action(self, instance, icon_list):
-        box = self.ids.card_box
-        rm = 0
-        for inst in box.children:
-            if isinstance(inst, TextInput):
-                rm = 1
-            else:
-                if rm:
-                    box.remove_widget(inst)
-        # self.ids.card_box.remove_widget()
+        self.ids.left_actions.clear_widgets()
         if len(icon_list) and type(icon_list[0]) != list:
-            if len(icon_list) == 1:
-                self.icon_left = MDIconButton(
+            self.icon_left = MDIconButton(
                     icon=self.icon_left_action[0],
                     theme_text_color="Custom",
                     text_color=self.icon_color,
                     user_font_size=self.icon_font_size,
                     pos_hint={"center_y": 0.5},
                 )
-
-            else:
-                self.icon_left = MDIconButton(
-                    icon=self.icon_left_action[0],
-                    theme_text_color="Custom",
-                    text_color=self.icon_color,
-                    user_font_size=self.icon_font_size,
-                    pos_hint={"center_y": 0.5},
-                    on_release=self.icon_left_action[1],
-                )
-            self.ids.card_box.add_widget(self.icon_left, index=1)
+            if len(icon_list) != 1:
+                self.icon_left.on_release = self.icon_left_action[1]
+            self.ids.left_actions.add_widget(self.icon_left, index=1)
         elif type(icon_list[0]) == list:
             for icons in icon_list:
-                if len(icons) == 1:
-                    self.icon_left = MDIconButton(
+                self.icon_left = MDIconButton(
                         icon=icons[0],
                         theme_text_color="Custom",
                         text_color=self.icon_color,
                         user_font_size=self.icon_font_size,
                         pos_hint={"center_y": 0.5},
                     )
-
-                else:
-                    self.icon_left = MDIconButton(
-                        icon=icons[0],
-                        theme_text_color="Custom",
-                        text_color=self.icon_color,
-                        user_font_size=self.icon_font_size,
-                        pos_hint={"center_y": 0.5},
-                        on_release=icons[1],
-                    )
-                self.ids.card_box.add_widget(self.icon_left, index=1)
+                if len(icons) != 1:
+                    self.icon_left.on_release=icons[1]
+                    
+                self.ids.left_actions.add_widget(self.icon_left, index=1)
 
     def on_icon_right_action(self, instance, icon_list):
+        self.ids.right_actions.clear_widgets()
         if len(icon_list) and type(icon_list[0]) != list:
-            if len(icon_list) == 1:
-                self.icon_right = MDIconButton(
+            self.icon_right = MDIconButton(
                     icon=self.icon_right_action[0],
                     theme_text_color="Custom",
                     text_color=self.icon_color,
                     user_font_size=self.icon_font_size,
                     pos_hint={"center_y": 0.5},
                 )
-
-            else:
-                self.icon_right = MDIconButton(
-                    icon=self.icon_right_action[0],
-                    theme_text_color="Custom",
-                    text_color=self.icon_color,
-                    user_font_size=self.icon_font_size,
-                    pos_hint={"center_y": 0.5},
-                    on_release=self.icon_right_action[1],
-                )
-            self.ids.card_box.add_widget(self.icon_right)
+            if len(icon_list) != 1:
+                self.icon_right.on_release=self.icon_right_action[1]
+            self.ids.right_actions.add_widget(self.icon_right)
         elif type(icon_list[0]) == list:
             for icons in icon_list:
-                if len(icons) == 1:
-                    self.icon_right = MDIconButton(
+                self.icon_right = MDIconButton(
                         icon=icons[0],
                         theme_text_color="Custom",
                         text_color=self.icon_color,
                         user_font_size=self.icon_font_size,
                         pos_hint={"center_y": 0.5},
                     )
-
-                else:
-                    self.icon_right = MDIconButton(
-                        icon=icons[0],
-                        theme_text_color="Custom",
-                        text_color=self.icon_color,
-                        user_font_size=self.icon_font_size,
-                        pos_hint={"center_y": 0.5},
-                        on_release=icons[1],
-                    )
-                self.ids.card_box.add_widget(self.icon_right)
+                if len(icons) != 1:
+                    self.icon_right.on_release=icons[1]
+                self.ids.right_actions.add_widget(self.icon_right)
 
     def on_icon_color(self, instance, color):
         if self.icon_left_action is not None:

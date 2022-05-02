@@ -67,7 +67,7 @@ class SignupScreen(MDScreen):
             toast("Login successful")
             self.dismiss_loading()
             app.encryption_class = self.encryption(self.password)
-            app.root.HomeScreen.restore(user_id = user_id)
+            app.root.HomeScreen.restore(user_id=user_id)
             threading.Thread(target=self.save_uid_password, args=(user_id,)).start()
 
         def login_failure(req, result):
@@ -94,12 +94,10 @@ class SignupScreen(MDScreen):
                 toast("Restored successfully")
             else:
                 toast("No passwords to restore")
-            
 
         def restore_failure(req, result):
             print(result)
             toast("Restore failed")
-            
 
         self.firebase.restore_success = lambda req, result: restore_success(req, result)
         self.firebase.restore_failure = lambda req, result: restore_failure(req, result)
@@ -108,6 +106,7 @@ class SignupScreen(MDScreen):
     def button_pressed(self, email, password):
         def import_encryption():
             from libs.encryption import Encryption
+
             self.encryption = Encryption
             if not self.show_signup:
                 self.login(email, password)
@@ -118,9 +117,9 @@ class SignupScreen(MDScreen):
 
         if self.loading_view is None:
             self.loading_view = Factory.LoadingScreen()
-            self.loading_view.text = (
-                "Signing up..." if self.show_signup else "Logging in..."
-            )
+        self.loading_view.text = (
+            "Signing up..." if self.show_signup else "Logging in..."
+        )
         self.loading_view.open()
         self.loading_view.on_open = lambda *args: import_encryption()
         if self.show_signup:

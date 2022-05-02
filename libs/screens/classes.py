@@ -26,14 +26,18 @@ Builder.load_string("""
 )
 
 
-# ---- BorderCard (Child Class of CardTextField) ----
+# ---- BorderCard and PasswordCard (Child Classes of CardTextField) ----
 Builder.load_string("""
+#: import CardTextField libs.modules.CardTextField.CardTextField
 <BorderCard@CardTextField>
-	inactive_color:app.theme_cls.primary_light[:-1]+[.6]
+	inactive_color:app.theme_cls.primary_light[:-1]+[.4]
 	icon_font_size:icon_size
-    dark_bg_hex: "262626"
 	thickness:dp(1) if platform == 'android' else dp(1.4)
 	icon_color:app.theme_cls.primary_light
+
+<PasswordCard@BorderCard>
+    password: True
+    icon_right_action:['eye-off-outline' if self.password else "eye-outline", lambda : exec("self.password = not self.password")]
 """)
 
 

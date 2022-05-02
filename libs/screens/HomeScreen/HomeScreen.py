@@ -81,10 +81,6 @@ class FindScreen(MDScreen):
             ).start()
 
     def update_password(self) -> None:
-        """
-        Updates the password in the file.
-        TODO: Fix passwords not updating after changing key.
-        """
         name = self.update_content.ids.name.text
         password = self.update_content.ids.password.text
         def update_thread():
@@ -99,7 +95,6 @@ class FindScreen(MDScreen):
                     app.encryption_class.add(name, password)
                 self.find_password(name,from_update=True)
             except KeyError as e:
-                # TODO: fix key error list index error
                 print(f"KeyError, occured while updating password. {e}")
 
         threading.Thread(target=update_thread, daemon=True).start()

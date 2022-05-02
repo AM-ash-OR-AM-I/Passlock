@@ -1,10 +1,9 @@
-#:import window kivy.core.window.Window
-#:set height window.height
-#:set width window.width
+#: import window kivy.core.window.Window
+#: set height window.height
+#: set width window.width
 #: set rad width/2
 #: set icon_size 60
 #: import platform kivy.platform
-#: import CardTextField libs.modules.CardTextField.CardTextField
 #: import Clock kivy.clock.Clock
 
 <LoginScreen>:
@@ -50,13 +49,11 @@
 				adaptive_height:True
 				orientation:'vertical'
 				spacing:'35dp'
-				BorderCard:
+				PasswordCard:
 					id: password
 					label_name:'Password'
 					hint_text:"Enter Password"
 					pos_hint:{'center_x':.5}
-					icon_right_action:['eye-off-outline']
-
 				FloatingButton:
 					id: lock
 					elevation:10

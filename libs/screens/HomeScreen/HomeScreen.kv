@@ -26,12 +26,11 @@
 			label_name:'Name of Password'
 			hint_text:'e.g. username@gmail.com'
 			
-		BorderCard:
+		PasswordCard:
 			id:password_field
 			pos_hint:{'center_x':.5}
 			label_name:'Password'
 			hint_text:'Enter the password'
-			icon_right_action:['eye-off-outline']
 
 	RoundButton:
 		id: add
@@ -60,18 +59,16 @@
 			BorderCard:
 				id:email_field
 				pos_hint:{'center_x':.5}
-				text_col:True
 				label_name:'Name of Password'
 				hint_text:'e.g. www.website.com'
 			BorderCard:
 				id:password_field
 				pos_hint:{'center_x':.5}
-				text_col:True
 				label_name:'Password'
 				text:root.initial_random
 				icon_right_action:
-					[['content-copy', lambda x: app.show_toast_copied(f"{self.text}")],
-					['reload', lambda x: root.generate_password()]]
+					[['content-copy', lambda: app.show_toast_copied(f"{self.text}")],
+					['reload', lambda: root.generate_password()]]
 
 		
 		MDBoxLayout:
@@ -180,12 +177,14 @@
 				    find.find_password(self.text)
 				on_focus:
 					tab_manager.current = 'FindScreen'
-				icon_left_action:["magnify" if tab_manager.current == 'CreateScreen' else 'arrow-left',lambda x: exec("tab_manager.current='CreateScreen';self.text =''")]
+				icon_left_action:["magnify" if tab_manager.current == 'CreateScreen' else 'arrow-left',lambda: exec("tab_manager.current='CreateScreen';self.text =''")]
 				hint_text:'Search passwords'
 				hint_text_color:app.secondary_text_color
 				icon_color:app.theme_cls.primary_color
 				label_name:""
 				inactive_color:[.9,.9,.9,.1]
+                dark_bg_hex: "343434"
+                md_bg_color:get_color_from_hex("343434")
 		ScreenManager:
 			id: tab_manager
 			transition: sm.NoTransition()
