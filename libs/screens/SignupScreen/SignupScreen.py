@@ -107,7 +107,6 @@ class SignupScreen(MDScreen):
 
     def button_pressed(self, email, password):
         def import_encryption():
-            #TODO: fix app crashing as this gets called after encryption class is initialized
             from libs.encryption import Encryption
             self.encryption = Encryption
             if not self.show_signup:

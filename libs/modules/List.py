@@ -111,8 +111,11 @@ class List(
         return super().refresh_view_attrs(rv, index, data)
 
     def apply_selection(self, rv, index, is_selected):
-        self.selected = is_selected
-        rv.data[index]["selected"] = is_selected
+        try:
+            self.selected = is_selected
+            rv.data[index]["selected"] = is_selected
+        except IndexError:
+            print(index, self.selected, "Index error")
 
     def on_selected(self, instance, selected):
         if selected:

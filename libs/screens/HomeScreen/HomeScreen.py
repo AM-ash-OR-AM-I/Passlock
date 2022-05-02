@@ -1,5 +1,6 @@
 import threading
 from functools import partial
+from turtle import update
 
 from kivy.clock import Clock
 from kivy.uix.scrollview import ScrollView
@@ -30,13 +31,11 @@ class FindScreen(MDScreen):
     delete_dialog = None
 
     def show_all_passwords(self):
-        """TODO: Add show all passwords button.
-        Used to add all passwords to the RecycleView.
-        """
         self.ids.find_label.opacity = 0
-        if not self.rv_data:
-            for name, password in app.passwords.items():
-                self.append_item(name, password)
+        if self.rv_data:
+            self.rv_data = []
+        for name, password in app.passwords.items():
+            self.append_item(name, password)
 
     def append_item(self, name, password):
         self.rv_data.append(
@@ -53,7 +52,7 @@ class FindScreen(MDScreen):
             }
         )
 
-    def find_password(self, text):
+    def find_password(self, text, from_update = False):
         """
         Gets executed when text is entered in search bar.
         """
@@ -62,7 +61,8 @@ class FindScreen(MDScreen):
             self.ids.find_label.text = "Type to search"
             self.ids.find_label.opacity = 0.5
         else:
-            self.ids.box.clear_selection()
+            if not from_update:
+                self.ids.box.clear_selection()
 
             def find_password_thread(text):
                 self.find_dictionary = app.encryption_class.find_key(
@@ -98,9 +98,10 @@ class FindScreen(MDScreen):
                     app.encryption_class.delete(app.encrypted_keys[self.original_name])
                     app.passwords[name] = password
                     app.encryption_class.add(name, password)
-                self.find_password(name)
-            except KeyError:
-                print("KeyError, occured while updating password.")
+                self.find_password(name,from_update=True)
+            except KeyError as e:
+                # TODO: fix key error list index error
+                print(f"KeyError, occured while updating password. {e}")
 
         threading.Thread(target=update_thread, daemon=True).start()
         self.update_dialog.dismiss()
