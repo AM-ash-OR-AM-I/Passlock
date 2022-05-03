@@ -134,7 +134,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
             )
             if not self.dark_bg_hex
             else get_color_from_hex(self.dark_bg_hex if dark_mode else "ffffff"),
-            d=0.2,
+            d=0.3,
         )
 
         self.anim.start(instance)

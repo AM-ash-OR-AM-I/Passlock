@@ -21,25 +21,27 @@ from kivymd.uix.button import BaseButton
 from kivymd.uix.card import MDSeparator
 from kivymd.uix.list import BaseListItem
 
-Builder.load_string("""
+Builder.load_string(
+    """
 #:import images_path kivymd.images_path
 
 
 <BaseDialog>
-    background: '{}/transparent.png'.format(images_path)
+    # background: '{}/transparent.png'.format(images_path)
+    background_color: [0,0,0,0]
     overlay_color: [0,0,0,0.2]
-    canvas.before:
-        PushMatrix
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-            radius: root.radius
-        Scale:
-            origin: self.center
-            x: root._scale_x
-            y: root._scale_y
-    canvas.after:
-        PopMatrix
+    # canvas.before:
+    #     PushMatrix
+    #     RoundedRectangle:
+    #         pos: self.pos
+    #         size: self.size
+    #         radius: root.radius
+    #     Scale:
+    #         origin: self.center
+    #         x: root._scale_x
+    #         y: root._scale_y
+    # canvas.after:
+    #     PopMatrix
 
 
 <MDDialog>
@@ -139,7 +141,7 @@ class MDDialog(BaseDialog):
 
     md_bg_color = ColorProperty(None)
 
-    _anim_duration = NumericProperty(0.2)
+    _anim_duration = NumericProperty(0.25)
     _scroll_height = NumericProperty("28dp")
     _spacer_top = NumericProperty("24dp")
 
@@ -205,7 +207,7 @@ class MDDialog(BaseDialog):
 
     def on_dismiss(self):
         self._dismiss_animation()
-        return super().on_dismiss()
+        # return super().on_dismiss()
 
     def _opening_animation(self):
         self.opacity = 0

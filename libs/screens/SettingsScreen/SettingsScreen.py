@@ -1,9 +1,10 @@
+from turtle import bgcolor
 import webbrowser
 
 from kivy.core.clipboard import Clipboard
 from kivy.factory import Factory
 from kivy.clock import Clock
-from kivymd import toast
+from kivymd .toast import toast
 from kivymd.uix.screen import MDScreen
 from libs.utils import remove_user_data
 from kivymd.app import MDApp
@@ -30,6 +31,7 @@ class SettingsScreen(MDScreen):
             self.about_dialog = AKAlertDialog(header_icon='heart-circle')
             self.about_dialog.size_portrait = ['300dp', '380dp']
             self.about_dialog.content_cls = self.content
+        self.about_dialog.bg_color = app.primary_accent
         self.about_dialog.open()
 
     def open_web(self, github=False, youtube=False, email=False):

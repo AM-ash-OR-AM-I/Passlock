@@ -246,11 +246,9 @@ class MainApp(MDApp):
                 buttons=[
                     MDFillRoundFlatButton(
                         text="YES", on_release=lambda x: self.stop(), _radius=dp(20)
-                        ,size_hint_x = .3
                     ),
                     MDFlatButton(
                         text="NO",
-                        _radius=dp(20),
                         on_release=lambda x: self.exit_dialog.dismiss(),
                     ),
                 ],
@@ -266,13 +264,13 @@ class MainApp(MDApp):
                     primary_accent=self.dark_color
                     if self.dark_mode
                     else self.light_color,
-                    duration=0.2,
+                    duration=0.3,
                 )
                 primary_color.start(self)
                 if tab_manager.current == "CreateScreen":
                     self.anim = Animation(
                         md_bg_color=self.bg_color_dark if mode else self.bg_color_light,
-                        duration=0.2,
+                        duration=0.3,
                     )
                     self.anim.start(self.root.HomeScreen)
 

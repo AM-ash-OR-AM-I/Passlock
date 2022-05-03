@@ -14,8 +14,7 @@ from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.dialog import BaseDialog
 from kivymd.material_resources import dp
 
-Builder.load_string(
-    """
+Builder.load_string("""
 #: import md_icons kivymd.icon_definitions.md_icons
 #: import Window kivy.core.window.Window
 

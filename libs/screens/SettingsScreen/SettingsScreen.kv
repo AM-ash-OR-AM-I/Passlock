@@ -44,10 +44,10 @@
         size_hint_y:.5
         markup: True
         font_size:'16sp'
-        text:f"[color=#6666ff][font=Icons][size={int(self.font_size)+10}] {md_icons['github']}[/font][/size]   GitHub Code[/color]"
+        text:f"[font=Icons][size={int(self.font_size)+10}] {md_icons['github']}[/font][/size]   GitHub Code"
         pos_hint:{'center_x':.5,'center_y':1}
         on_release:
-            root.open_web(github=True)
+            app.root.SettingsScreen.open_web(github=True)
     MDSeparator:
     MDTextButton:
         size_hint_y:.5
@@ -56,7 +56,7 @@
         text:f"[color=#de6666][font=Icons][size={int(self.font_size)+10}] {md_icons['gmail']}[/font][/size]   Contact Me[/color]"
         pos_hint:{'center_x':.5,'center_y':1}
         on_release:
-            root.open_web(email=True)
+            app.root.SettingsScreen.open_web(email=True)
 
 <SettingsScreen>
     md_bg_color: app.bg_color_dark if app.dark_mode else app.bg_color_light
