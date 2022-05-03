@@ -80,29 +80,6 @@ class SignupScreen(MDScreen):
         self.firebase.login(email, password)
         app.root.load_screen("HomeScreen", set_current=False)
 
-    def restore(self, user_id):
-        """
-        Restore user's passwords from Database.
-        """
-
-        def restore_success(req, result):
-            from libs.utils import write_passwords
-
-            if result:
-                write_passwords(result)
-                app.passwords = app.encryption_class.load_decrypted()
-                toast("Restored successfully")
-            else:
-                toast("No passwords to restore")
-
-        def restore_failure(req, result):
-            print(result)
-            toast("Restore failed")
-
-        self.firebase.restore_success = lambda req, result: restore_success(req, result)
-        self.firebase.restore_failure = lambda req, result: restore_failure(req, result)
-        self.firebase.restore(user_id)
-
     def button_pressed(self, email, password):
         def import_encryption():
             from libs.encryption import Encryption

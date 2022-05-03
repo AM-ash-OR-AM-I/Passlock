@@ -124,14 +124,17 @@ class MainApp(MDApp):
         self.firebase.backup()
 
     def restore(self, sync_widget, user_id=None, decrypt=True):
+        """
+        Restore from backup
+        FIXME: When no passwords found it throws `TypeError` `'NoneType' object is not iterable`.
+        """
         def restore_success(req, result):
-            print(result)
             sync_widget.stop()
-            from libs.utils import write_passwords
-
-            write_passwords(result)
-            if decrypt:
-                self.passwords = self.encryption_class.load_decrypted()
+            if result is not None:
+                from libs.utils import write_passwords
+                write_passwords(result)
+                if decrypt:
+                    self.passwords = self.encryption_class.load_decrypted()
             toast("Restored successfully")
 
         def restore_failure(req, result):
