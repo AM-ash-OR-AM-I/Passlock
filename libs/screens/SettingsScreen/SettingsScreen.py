@@ -1,4 +1,3 @@
-from turtle import bgcolor
 import webbrowser
 
 from kivy.core.clipboard import Clipboard
