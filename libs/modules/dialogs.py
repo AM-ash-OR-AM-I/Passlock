@@ -19,7 +19,6 @@ Builder.load_string("""
 #: import Window kivy.core.window.Window
 
 <AKAlertDialog>:
-    overlay_color: [0,0,0,.2]
     size_hint: alert.width / Window.width, alert.height / Window.height
     MainAlertBox:   
         id: alert

@@ -365,8 +365,16 @@ class MainApp(MDApp):
             self.password_changed = False
 
     def on_pause(self):
+        """Saves data on pause."""
+        self.pause_start = time.time()
         self.save_config.save_settings()
         self.backup_on_pause()
+        return True
+
+    def on_resume(self):
+        """Asks user to login after pausing app for specific time period"""
+        if self.extra_security and (time.time() - self.pause_start) > 5:
+            self.root.load_screen("LoginScreen")
         return True
 
     def on_stop(self):

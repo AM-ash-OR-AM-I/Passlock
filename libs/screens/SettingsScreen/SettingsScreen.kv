@@ -123,20 +123,21 @@
                 icon_color:"#FF0000"
                 on_release: 
                     root.open_youtube_demo()
-
-            MyListItem:
-                text:"Log out"
-                icon:"logout"
-                disabled: app.signup
-                on_release: 
-                    root.logout()
-    
+            
             MyListItem:
                 text:"About the app"
                 icon:"information"
-                disabled: app.signup
                 on_release: 
                     root.open_about()
 
+        MyListItem:
+            text:"Log out"
+            icon:"logout"
+            disabled: app.signup
+            size_hint_x:.5
+            pos_hint:{'center_x':.5}
+            disabled_color:[0,0,0,0]
+            on_release: 
+                root.logout()
         
             

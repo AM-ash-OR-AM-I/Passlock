@@ -21,8 +21,7 @@ from kivymd.uix.button import BaseButton
 from kivymd.uix.card import MDSeparator
 from kivymd.uix.list import BaseListItem
 
-Builder.load_string(
-    """
+Builder.load_string("""
 #:import images_path kivymd.images_path
 
 
