@@ -13,6 +13,7 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.modalview import ModalView
+from kivy.animation import Animation
 
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
@@ -20,14 +21,13 @@ from kivymd.uix.button import BaseButton
 from kivymd.uix.card import MDSeparator
 from kivymd.uix.list import BaseListItem
 
-Builder.load_string(
-    """
+Builder.load_string("""
 #:import images_path kivymd.images_path
 
 
 <BaseDialog>
     background: '{}/transparent.png'.format(images_path)
-    overlay_color: [0,0,0,0.25]
+    overlay_color: [0,0,0,0.2]
     canvas.before:
         PushMatrix
         RoundedRectangle:
@@ -139,6 +139,7 @@ class MDDialog(BaseDialog):
 
     md_bg_color = ColorProperty(None)
 
+    _anim_duration = NumericProperty(0.2)
     _scroll_height = NumericProperty("28dp")
     _spacer_top = NumericProperty("24dp")
 
@@ -197,6 +198,23 @@ class MDDialog(BaseDialog):
     def on_open(self):
         # TODO: Add scrolling text.
         self.height = self.ids.container.height
+
+    def on_pre_open(self):
+        self._opening_animation()
+        return super().on_pre_open()
+
+    def on_dismiss(self):
+        self._dismiss_animation()
+        return super().on_dismiss()
+
+    def _opening_animation(self):
+        self.opacity = 0
+        anim = Animation(opacity=1, duration=self._anim_duration, t="out_quad")
+        anim.start(self)
+
+    def _dismiss_animation(self):
+        anim = Animation(opacity=0, duration=self._anim_duration, t="out_quad")
+        anim.start(self)
 
     def get_normal_height(self):
         return (

@@ -14,7 +14,6 @@ from kivy.core.clipboard import Clipboard
 from kivy import platform
 from kivy.animation import Animation
 from kivy.core.window import Window
-from kivy.lang.builder import Builder
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
@@ -59,6 +58,7 @@ HotReloadViewer:
 
 class MainApp(MDApp):
     dark_mode = BooleanProperty(False)
+    extra_security = BooleanProperty(False)
     key_height = NumericProperty(0)
     text_color = ColorProperty()
     primary_accent = ColorProperty()
@@ -67,6 +67,7 @@ class MainApp(MDApp):
     password_changed = False
     system_dark_mode = False
     auto_sync = False
+    backup_failure = False
     entered_app = False
     fps = True
 
@@ -84,6 +85,15 @@ class MainApp(MDApp):
 
     def __init__(self):
         super().__init__()
+        from libs.save_config import SaveConfig
+
+        self.save_config = SaveConfig(
+            "auto_sync",
+            "dark_mode",
+            "system_dark_mode",
+            "backup_failure",
+            "extra_security",
+        )
         self.theme_cls.primary_palette = "DeepOrange"
         self.text_color = get_color_from_hex("611c05")
         self.signup = False if os.path.exists("data/user_id.txt") else True
@@ -100,6 +110,7 @@ class MainApp(MDApp):
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
         self.auto_sync = check_auto_sync()
+        self.extra_security = is_extra_security()
         Window.on_minimize = lambda: self.backup_on_pause()
         self.firebase = Firebase()
         threading.Thread(target=self.set_dark_mode, daemon=True).start()
@@ -107,12 +118,12 @@ class MainApp(MDApp):
     def backup(self, sync_widget):
         def backup_success():
             toast("Backup Successful")
-            write_backup_failure(False)
+            self.backup_failure = False
             sync_widget.stop()
             self.password_changed = False
 
         def backup_failure():
-            write_backup_failure(True)
+            self.backup_failure = True
             toast("Couldn't backup :(, Check your internet connection")
             sync_widget.stop()
 
@@ -128,14 +139,18 @@ class MainApp(MDApp):
         Restore from backup
         FIXME: When no passwords found it throws `TypeError` `'NoneType' object is not iterable`.
         """
+
         def restore_success(req, result):
             sync_widget.stop()
             if result is not None:
                 from libs.utils import write_passwords
+
                 write_passwords(result)
                 if decrypt:
                     self.passwords = self.encryption_class.load_decrypted()
-            toast("Restored successfully")
+                toast("Restored successfully")
+            else:
+                toast("No passwords to restore.")
 
         def restore_failure(req, result):
             sync_widget.stop()
@@ -159,7 +174,9 @@ class MainApp(MDApp):
             )
         else:
             self.dark_mode = is_dark_mode()
-        Clock.schedule_once(lambda x: exec("self.entered_app = True",{"self":self}), 1)
+        Clock.schedule_once(
+            lambda x: exec("self.entered_app = True", {"self": self}), 1
+        )
 
     def build(self):
         self.root = Root()
@@ -229,6 +246,7 @@ class MainApp(MDApp):
                 buttons=[
                     MDFillRoundFlatButton(
                         text="YES", on_release=lambda x: self.stop(), _radius=dp(20)
+                        ,size_hint_x = .3
                     ),
                     MDFlatButton(
                         text="NO",
@@ -349,14 +367,12 @@ class MainApp(MDApp):
             self.password_changed = False
 
     def on_pause(self):
-        set_dark_mode(app=self.dark_mode, system=self.system_dark_mode)
-        set_auto_sync(self.auto_sync)
+        self.save_config.save_settings()
         self.backup_on_pause()
         return True
 
     def on_stop(self):
-        set_dark_mode(app=self.dark_mode, system=self.system_dark_mode)
-        set_auto_sync(self.auto_sync)
+        self.save_config.save_settings()
 
 
 if __name__ == "__main__":

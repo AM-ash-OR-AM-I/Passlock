@@ -1,16 +1,62 @@
-#: import set_dark_mode libs.utils.set_dark_mode
-
 <RightSwitch@IRightBodyTouch+MDSwitch>
     widget_style: "ios"
 
+<SwitchListItem@ThreeLineAvatarIconListItem>
+    text:"Auto sync"
+    icon:"auto-upload"
+    secondary_text:"Passwords will be synced"
+    tertiary_text:'automatically'
+    theme_text_color:'Custom'
+    active: False
+    text_color:app.text_color
+    on_release:
+        self.active = not self.active
+    RightSwitch:
+        id: switch
+        active: root.active
+        width: dp(44)
+    IconLeftWidget:
+        icon: root.icon
+        theme_text_color:'Custom'
+        text_color:app.text_color
+        
 <MyListItem@OneLineIconListItem>
     theme_text_color:'Custom'
     text_color:app.text_color
     icon:"android"
+    icon_color: ""
     IconLeftWidget:
         icon: root.icon
         theme_text_color:'Custom'
-        text_color:root.text_color
+        text_color:root.text_color if not root.icon_color else root.icon_color
+
+<AboutClass@BoxLayout>
+    orientation:'vertical'
+    MDLabel:
+        text:'Made by Ashutosh'
+        halign:'center'
+        font_size:'20sp'
+        theme_text_color:'Custom'
+        text_color: app.theme_cls.primary_color
+        font_name:'Poppins'
+    MDSeparator:
+    MDTextButton:
+        size_hint_y:.5
+        markup: True
+        font_size:'16sp'
+        text:f"[color=#6666ff][font=Icons][size={int(self.font_size)+10}] {md_icons['github']}[/font][/size]   GitHub Code[/color]"
+        pos_hint:{'center_x':.5,'center_y':1}
+        on_release:
+            root.open_web(github=True)
+    MDSeparator:
+    MDTextButton:
+        size_hint_y:.5
+        markup: True
+        font_size:'16sp'
+        text:f"[color=#de6666][font=Icons][size={int(self.font_size)+10}] {md_icons['gmail']}[/font][/size]   Contact Me[/color]"
+        pos_hint:{'center_x':.5,'center_y':1}
+        on_release:
+            root.open_web(email=True)
 
 <SettingsScreen>
     md_bg_color: app.bg_color_dark if app.dark_mode else app.bg_color_light
@@ -31,64 +77,66 @@
 	    MDBoxLayout:
             adaptive_height:True
             orientation:'vertical'
+            spacing:'5dp'
             MyListItem:
                 text:"Sync Passwords"
                 icon:"sync"
                 on_release: app.root.HomeScreen.open_sync_dialog()
-            ThreeLineAvatarIconListItem:
-                id: auto_sync
+                
+            SwitchListItem:
                 text:"Auto sync"
                 secondary_text:"Passwords will be synced"
                 tertiary_text:'automatically'
-                theme_text_color:'Custom'
-                text_color:app.text_color
-                on_release:
-                    auto_sync_switch.active = not auto_sync_switch.active
-                RightSwitch:
-                    id: auto_sync_switch
-                    active: app.auto_sync
-                    width: dp(44)
-                    on_active: app.auto_sync = auto_sync_switch.active
-                IconLeftWidget:
-                    icon: "auto-upload"
-                    theme_text_color:'Custom'
-                    text_color:app.text_color
-            ThreeLineAvatarIconListItem:
+                active: app.auto_sync
+                on_active: 
+                    app.auto_sync = self.active
+
+            SwitchListItem:
                 id: system_dark_item
                 text:"Use system theme"
+                icon:"theme-light-dark"
                 secondary_text:"Dark/Light mode of app will be"
                 tertiary_text:"synchronised with system theme"
-                theme_text_color:'Custom'
-                text_color:app.text_color
-                on_release:
-                    system_dark_switch.active = not system_dark_switch.active
-                RightSwitch:
-                    id: system_dark_switch
-                    active: app.system_dark_mode
-                    width: dp(44)
-                    on_active: app.system_dark_mode = system_dark_switch.active
-                IconLeftWidget:
-                    icon: "theme-light-dark"
-                    theme_text_color:'Custom'
-                    text_color:app.text_color
+                active: app.system_dark_mode
+                on_active: 
+                    app.system_dark_mode = self.active
+                
+            SwitchListItem:
+                text:"Extra Security"
+                icon:"shield-star" if self.active else "shield-off-outline"
+                secondary_text:"Login when you leave the app"
+                tertiary_text: "for more than 5 minutes."
+                active: app.extra_security
+                on_active: 
+                    app.extra_security = self.active
+            
+
+        MDSeparator:
+
+        MDBoxLayout:
+            adaptive_height:True
+            orientation:'vertical'
+            spacing:'5dp'
             MyListItem:
-                text:"Advanced Security"
-                icon:'shield-star'
+                text:"YouTube Demo"
+                icon:"youtube"
+                icon_color:"#FF0000"
+                on_release: 
+                    root.open_youtube_demo()
+
             MyListItem:
                 text:"Log out"
                 icon:"logout"
                 disabled: app.signup
                 on_release: 
                     root.logout()
+    
+            MyListItem:
+                text:"About the app"
+                icon:"information"
+                disabled: app.signup
+                on_release: 
+                    root.open_about()
 
-        MDSeparator:
-
-        MDBoxLayout:
-            adaptive_height:True
-            padding:0,dp(20),0,0
-            orientation:'vertical'
-            MDRoundFlatButton:
-                text:'[b]EXPLAIN FEATURES'
-                theme_text_color:"Custom"
-                text_color:app.theme_cls.primary_color
-                pos_hint:{'center_x':.5}
+        
+            
