@@ -13,6 +13,8 @@ app = MDApp.get_running_app()
 class LoginScreen(MDScreen):
     loading_view = None
     sync_widget = None
+    logged_in = False
+    password = None
 
     def get_sync_widget(self):
         if self.sync_widget is None:
@@ -26,6 +28,7 @@ class LoginScreen(MDScreen):
             app.restore(self.sync_widget, decrypt = False)
 
     def login_button_pressed(self, password):
+      
         def dismiss_spinner(*args):
             app.root.load_screen("HomeScreen")
             self.loading_view.dismiss()
@@ -48,14 +51,21 @@ class LoginScreen(MDScreen):
                         print("'encrypted_file' not found, can't check password.")
 
                 dismiss_spinner()
+                if not self.password:
+                    self.password = password
                 # app.root.HomeScreen.ids.create.ids.tab.switch_tab("[b]MANUAL")
             except UnicodeDecodeError:
                 self.loading_view.dismiss()
                 toast("Invalid password")
-            print(app.encrypted_keys)
+            # print(app.encrypted_keys)
             print(f"Time taken to load passwords = {time()-i}")
-
-        if self.loading_view is None:
-            self.loading_view = Factory.LoadingScreen()
-        self.loading_view.open()
-        self.loading_view.on_open = lambda *args: initialise_encryption()
+        if not self.password:
+            if self.loading_view is None:
+                self.loading_view = Factory.LoadingScreen()
+            self.loading_view.open()
+            self.loading_view.on_open = lambda *args: initialise_encryption()
+        else:
+            if self.password == password:
+                app.root.load_screen("HomeScreen")
+            else:
+                toast("Invalid password")

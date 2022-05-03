@@ -181,6 +181,10 @@ class MainApp(MDApp):
     def build(self):
         self.root = Root()
         self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
+        if not self.signup:
+            self.root.LoginScreen.ids.password.focus = True
+        else:
+            self.root.SignupScreen.ids.password.focus = True
         # return Builder.load_string(KV)
         # if LIVE_UI:
         #     return Builder.load_string(KV)
@@ -373,8 +377,11 @@ class MainApp(MDApp):
 
     def on_resume(self):
         """Asks user to login after pausing app for specific time period"""
-        if self.extra_security and (time() - self.pause_start) > 5:
+        if self.extra_security and not self.signup and (time() - self.pause_start) > 5:
             self.root.load_screen("LoginScreen")
+            self.root.LoginScreen.ids.password.focus = True
+            self.root.LoginScreen.ids.password.text = ""
+            
         return True
 
     def on_stop(self):

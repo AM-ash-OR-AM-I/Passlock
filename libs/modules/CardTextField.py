@@ -80,6 +80,7 @@ Builder.load_string("""
             height: card.height
             background_color:[0,0,0,0]
             font_name:"BigCircleFont" 
+            focus: root.focus
             password: root.password
             password_mask: root.password_mask
             font_size:root.text_font_size 
