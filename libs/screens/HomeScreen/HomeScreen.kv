@@ -31,6 +31,8 @@
 			pos_hint:{'center_x':.5}
 			label_name:'Password'
 			hint_text:'Enter the password'
+            on_text_validate:
+                app.root.HomeScreen.create_password(name_field.text, password_field.text)
 
 	RoundButton:
 		id: add
@@ -60,6 +62,9 @@
 				pos_hint:{'center_x':.5}
 				label_name:'Name of Password'
 				hint_text:'e.g. www.website.com'
+                on_text_validate:
+                    app.root.HomeScreen.create_password(email_field.text, password_field.text)
+                    
 			BorderCard:
 				id:password_field
 				pos_hint:{'center_x':.5}

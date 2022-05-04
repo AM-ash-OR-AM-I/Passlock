@@ -23,8 +23,7 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 if platform == "android":
     from libs.modules.AndroidAPI import fix_back_button, keyboard_height
 
-Builder.load_string(
-    """
+Builder.load_string("""
 <CardTextField>
     height: '60dp'
     size_hint_y:None
@@ -84,6 +83,8 @@ Builder.load_string(
             font_name:"BigCircleFont" 
             focus: root.focus
             password: root.password
+            on_text_validate: 
+                root.text_validate = not root.text_validate
             password_mask: root.password_mask
             font_size:root.text_font_size 
             padding:[0,(self.height-self.font_size)/2,0,dp(0)] if not root.icon_left_action\
@@ -116,6 +117,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
     text = StringProperty("")
     thickness = NumericProperty(dp(1) if platform == "android" else dp(1.4))
     hint_text = StringProperty("")
+    text_validate = BooleanProperty(False)
     label_size = StringProperty("20dp")
     label_name = StringProperty("")
     icon_left_action = ListProperty(None)

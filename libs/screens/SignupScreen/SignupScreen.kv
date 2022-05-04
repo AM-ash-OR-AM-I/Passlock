@@ -67,6 +67,8 @@
 					label_name:'Password'
 					hint_text:('Create' if root.show_signup else "Enter")+" Password"
 					pos_hint:{'center_x':.5}
+                    on_text_validate:
+                        root.button_pressed(email.text, password.text)
 				FloatingButton:
 					id: lock
 					elevation:10

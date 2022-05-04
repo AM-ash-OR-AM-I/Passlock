@@ -59,6 +59,8 @@
 					label_name:'Password'
 					hint_text:"Enter Password"
 					pos_hint:{'center_x':.5}
+                    on_text_validate:
+                        root.login_button_pressed(password.text)
 				FloatingButton:
 					id: lock
 					elevation:10
