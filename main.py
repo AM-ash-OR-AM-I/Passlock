@@ -364,6 +364,8 @@ class MainApp(MDApp):
         else:
             if self.root.HomeScreen.ids.tab_manager.current == "CreateScreen":
                Window.softinput_mode  = "pan"
+            else:
+                Window.softinput_mode = "below_target"
 
     def on_start(self):
         """Sets status bar color in android."""
