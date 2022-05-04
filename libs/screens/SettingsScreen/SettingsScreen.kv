@@ -25,7 +25,7 @@
     theme_text_color:'Custom'
     text_color:app.text_color
     icon:"android"
-    icon_color: ""
+    icon_color: []
     size_hint_x:.8
     ripple_alpha:.1
     IconLeftWidget:
@@ -62,12 +62,9 @@
             app.root.SettingsScreen.open_web(email=True)
 
 <SettingsScreen>
-    md_bg_color: app.bg_color_dark if app.dark_mode else app.bg_color_light
-    MDBoxLayout:
-        adaptive_height:True
-        pos_hint:{'top':1}
+    md_bg_color: app.bg_color
+    BoxLayout:
         orientation:'vertical'
-        spacing:'15dp'
         Toolbar:
             title:'Settings'
             height:'60dp'
@@ -76,80 +73,92 @@
             elevation:5
             icon_color:app.theme_cls.primary_color
             left_action_items:[['arrow-left',lambda x: app.root.goback()]]
-
-	    MDBoxLayout:
-            adaptive_height:True
-            orientation:'vertical'
-            spacing:'5dp'
+        ScrollView:
             MDBoxLayout:
                 adaptive_height:True
-                padding:dp(10),dp(5),dp(10),dp(10)
+                pos_hint:{"top":1}
+                padding:0, dp(15)
+                orientation:'vertical'
+                spacing:'15dp'
+                MDBoxLayout:
+                    adaptive_height:True
+                    orientation:'vertical'
+                    spacing:'5dp'
+                    MDBoxLayout:
+                        adaptive_height:True
+                        padding:dp(10),dp(5),dp(10),dp(10)
+                        MyListItem:
+                            icon:"account-circle"
+                            height: "58dp"
+                            bg_color: app.primary_accent
+                            text: app.email
+                            font_style:"H6"
+                    MyListItem:
+                        text:"Colors"
+                        icon:"circle"
+                        icon_color: app.theme_cls.primary_color
+                        on_release:
+                            app.theme_cls.primary_palette = "DeepOrange" if app.theme_cls.primary_palette == "Blue" else "Blue"
+                            app.initialise_colors()
+                    MyListItem:
+                        text:"Sync Passwords"
+                        icon:"sync"
+                        on_release: app.root.HomeScreen.open_sync_dialog()
+                        
+                    SwitchListItem:
+                        text:"Auto sync"
+                        secondary_text:"Passwords will be synced"
+                        tertiary_text:'automatically'
+                        active: app.auto_sync
+                        on_active: 
+                            app.auto_sync = self.active
+
+                    SwitchListItem:
+                        id: system_dark_item
+                        text:"Use system theme"
+                        icon:"theme-light-dark"
+                        secondary_text:"Dark/Light mode of app will be"
+                        tertiary_text:"synchronised with system theme"
+                        active: app.system_dark_mode
+                        on_active: 
+                            app.system_dark_mode = self.active
+                        
+                    SwitchListItem:
+                        text:"Extra Security"
+                        icon:"shield-star" if self.active else "shield-off-outline"
+                        secondary_text:"Login when you leave the app"
+                        tertiary_text: "for more than 5 minutes."
+                        active: app.extra_security
+                        on_active: 
+                            app.extra_security = self.active
+                    
+
+                MDSeparator:
+
+                MDBoxLayout:
+                    adaptive_height:True
+                    orientation:'vertical'
+                    spacing:'5dp'
+                    MyListItem:
+                        text:"About the app"
+                        icon:"information"
+                        on_release: 
+                            root.open_about()
+                    MyListItem:
+                        text:"YouTube Demo"
+                        icon:"youtube"
+                        icon_color:[1,0,0,1]
+                        on_release: 
+                            root.open_youtube_demo()
+
                 MyListItem:
-                    icon:"account-circle"
-                    height: "58dp"
-                    bg_color: app.primary_accent
-                    text: app.email
-                    font_style:"H6"
-            MyListItem:
-                text:"Sync Passwords"
-                icon:"sync"
-                on_release: app.root.HomeScreen.open_sync_dialog()
+                    text:"Log out"
+                    icon:"logout"
+                    disabled: app.signup
+                    size_hint_x:.5
+                    pos_hint:{'center_x':.5}
+                    opacity: 1 * (not self.disabled)
+                    on_release: 
+                        root.logout()
+            
                 
-            SwitchListItem:
-                text:"Auto sync"
-                secondary_text:"Passwords will be synced"
-                tertiary_text:'automatically'
-                active: app.auto_sync
-                on_active: 
-                    app.auto_sync = self.active
-
-            SwitchListItem:
-                id: system_dark_item
-                text:"Use system theme"
-                icon:"theme-light-dark"
-                secondary_text:"Dark/Light mode of app will be"
-                tertiary_text:"synchronised with system theme"
-                active: app.system_dark_mode
-                on_active: 
-                    app.system_dark_mode = self.active
-                
-            SwitchListItem:
-                text:"Extra Security"
-                icon:"shield-star" if self.active else "shield-off-outline"
-                secondary_text:"Login when you leave the app"
-                tertiary_text: "for more than 5 minutes."
-                active: app.extra_security
-                on_active: 
-                    app.extra_security = self.active
-            
-
-        MDSeparator:
-
-        MDBoxLayout:
-            adaptive_height:True
-            orientation:'vertical'
-            spacing:'5dp'
-            MyListItem:
-                text:"YouTube Demo"
-                icon:"youtube"
-                icon_color:"#FF0000"
-                on_release: 
-                    root.open_youtube_demo()
-            
-            MyListItem:
-                text:"About the app"
-                icon:"information"
-                on_release: 
-                    root.open_about()
-
-        MyListItem:
-            text:"Log out"
-            icon:"logout"
-            disabled: app.signup
-            size_hint_x:.5
-            pos_hint:{'center_x':.5}
-            opacity: 1 * (not self.disabled)
-            on_release: 
-                root.logout()
-        
-            

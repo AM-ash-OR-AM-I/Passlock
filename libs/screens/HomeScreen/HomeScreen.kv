@@ -91,6 +91,7 @@
 					root.set_length(int(slider.value))
 				show_off: False
 				size_hint_y: None
+                color: app.theme_cls.primary_color
 				hint_bg_color: [1,1,1,1]
 				height:"40dp"
 				pos_hint:{"center_x":.5}
@@ -177,7 +178,6 @@
 					tab_manager.current = 'FindScreen'
 				icon_left_action:["magnify" if tab_manager.current == 'CreateScreen' else 'arrow-left',lambda: exec("tab_manager.current='CreateScreen';self.text =''")]
 				hint_text:'Search passwords'
-				hint_text_color:app.secondary_text_color
 				icon_color:app.theme_cls.primary_color
 				label_name:""
 				inactive_color:[.9,.9,.9,.1]

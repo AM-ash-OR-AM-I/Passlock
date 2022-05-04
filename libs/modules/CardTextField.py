@@ -23,8 +23,7 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 if platform == "android":
     from libs.modules.AndroidAPI import fix_back_button, keyboard_height
 
-Builder.load_string(
-    """
+Builder.load_string("""
 <CardTextField>
     height: '60dp'
     size_hint_y:None
@@ -37,6 +36,7 @@ Builder.load_string(
     hint_text:''
     password: False
     password_mask: "●"
+    hint_text_color:app.secondary_text_color
     adaptive_height:True
     spacing:'20dp'
     orientation:'vertical'
@@ -195,10 +195,10 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
                 self.ids.right_actions.add_widget(self.icon_right)
 
     def on_icon_color(self, instance, color):
-        if self.icon_left_action is not None:
-            self.icon_left.text_color = color
-        if self.icon_right_action is not None:
-            self.icon_right.text_color = color
+        for child in self.ids.left_actions.children:
+            child.text_color = color
+        for child in self.ids.right_actions.children:
+            child.text_color = color
 
     def on_inactive_color(self, *args):
         self.border_color = self.inactive_color

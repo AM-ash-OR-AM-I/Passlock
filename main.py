@@ -120,12 +120,21 @@ class MainApp(MDApp):
                 "H6": [font_file, 20, False, 0.15],
             }
         )
-        self.theme_cls.primary_palette = "Blue"
+        self.theme_cls.primary_palette = "DeepOrange"
+        self.signup = False if os.path.exists("data/user_id.txt") else True
+        self.initialise_colors()
+        self.auto_sync = check_auto_sync()
+        self.extra_security = is_extra_security()
+        Window.on_minimize = lambda: self.backup_on_pause()
+        self.firebase = Firebase()
+        threading.Thread(target=self.set_dark_mode, daemon=True).start()
+        threading.Thread(target=self.set_user_mail, daemon=True).start()
+
+    def initialise_colors(self):
         self.text_color = self.generate_color(
             lightness=0.25
         )  # get_color_from_hex("611c05")
-        self.signup = False if os.path.exists("data/user_id.txt") else True
-        self.secondary_text_color = get_color_from_hex("a8928a")
+        self.secondary_text_color = self.generate_color(saturation=0.13, lightness=0.52)
         self.light_color = self.generate_color()
         self.bg_color_light = self.generate_color(lightness=0.98)
         self.bg_color_light_hex = self.generate_color(lightness=0.98, return_hex=True)
@@ -137,13 +146,7 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
-        self.auto_sync = check_auto_sync()
-        self.extra_security = is_extra_security()
-        Window.on_minimize = lambda: self.backup_on_pause()
-        self.firebase = Firebase()
-        threading.Thread(target=self.set_dark_mode, daemon=True).start()
-        threading.Thread(target=self.set_user_mail, daemon=True).start()
-
+    
     def set_user_mail(self, *args):
         self.email = get_email()
 
@@ -225,7 +228,13 @@ class MainApp(MDApp):
             )
 
     def generate_color(
-        self, hex_color=False, color=None, return_hex=False, lightness=0.92, darkness=0
+        self,
+        hex_color=False,
+        color=None,
+        return_hex=False,
+        lightness=0.92,
+        darkness=0,
+        saturation=None,
     ):
         """
         :param hex_color:  Instead of passing color as list hexadecimal value can be passed.
@@ -241,7 +250,10 @@ class MainApp(MDApp):
 
         h, l, s = rgb_to_hls(*color)
         l = lightness if not darkness else darkness
-        s = 0.7 if not darkness else 0.15
+        if saturation is None:
+            s = 0.7 if not darkness else 0.15
+        else:
+            s = saturation
         color = list(hls_to_rgb(h, l, s))
 
         if not return_hex:
@@ -309,7 +321,7 @@ class MainApp(MDApp):
         self.text_color = (
             self.generate_color(lightness=0.25)  # get_color_from_hex("611c05")
             if not self.dark_mode
-            else self.generate_color(lightness=0.93)  # get_color_from_hex("fde9e2")
+            else self.generate_color(lightness=0.91)  # get_color_from_hex("fde9e2")
         )
         self.bg_color = self.bg_color_dark if self.dark_mode else self.bg_color_light
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
