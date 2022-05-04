@@ -120,8 +120,10 @@ class MainApp(MDApp):
                 "H6": [font_file, 20, False, 0.15],
             }
         )
-        self.theme_cls.primary_palette = "DeepOrange"
-        self.text_color = get_color_from_hex("611c05")
+        self.theme_cls.primary_palette = "Blue"
+        self.text_color = self.generate_color(
+            lightness=0.25
+        )  # get_color_from_hex("611c05")
         self.signup = False if os.path.exists("data/user_id.txt") else True
         self.secondary_text_color = get_color_from_hex("a8928a")
         self.light_color = self.generate_color()
@@ -305,9 +307,9 @@ class MainApp(MDApp):
     def set_theme_style(self, *args):
         print("theme_style set")
         self.text_color = (
-            get_color_from_hex("611c05")
+            self.generate_color(lightness=0.25)  # get_color_from_hex("611c05")
             if not self.dark_mode
-            else get_color_from_hex("fde9e2")
+            else self.generate_color(lightness=0.93)  # get_color_from_hex("fde9e2")
         )
         self.bg_color = self.bg_color_dark if self.dark_mode else self.bg_color_light
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color

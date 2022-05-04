@@ -5,6 +5,7 @@
 #: set icon_size 60
 #: import platform kivy.platform
 #: import Clock kivy.clock.Clock
+#: import colors kivymd.color_definitions.colors
 
 <LoginScreen>:
 	md_bg_color: app.bg_color
@@ -34,7 +35,7 @@
 		spacing:'70dp'
 		MDLabel:
 			adaptive_height:True
-			text:"LOGIN\nTO [color=ff7a4f][u]PASS••[/u]"
+			text:"LOGIN\nTO [color=%s][u]PASS••[/u]"%(colors[self.theme_cls.primary_palette][self.theme_cls.primary_hue])
 			markup:True
             valign:"center"
 			theme_text_color:"Custom"
