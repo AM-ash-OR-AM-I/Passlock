@@ -6,7 +6,6 @@ from time import time
 from kivy.factory import Factory
 from libs.screens.classes import SyncWidget
 from libs.utils import *
-from kivy.core.window import Window
 
 app = MDApp.get_running_app()
 
@@ -29,7 +28,7 @@ class LoginScreen(MDScreen):
             app.restore(self.sync_widget, decrypt = False)
 
     def login_button_pressed(self, password):
-        Window.softinput_mode = "below_target"
+        
         def dismiss_spinner(*args):
             app.root.load_screen("HomeScreen")
             self.loading_view.dismiss()

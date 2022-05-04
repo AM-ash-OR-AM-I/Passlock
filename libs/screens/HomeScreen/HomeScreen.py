@@ -6,6 +6,7 @@ from kivy.uix.scrollview import ScrollView
 from kivymd.uix.tab import MDTabsBase
 from kivy.factory import Factory
 from kivy.properties import ListProperty
+from kivy.core.window import Window
 
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
@@ -216,6 +217,9 @@ class HomeScreen(MDScreen):
 
     sync_widget = None
     sync_dialog = None
+    
+    def on_enter(self, *args):
+        Window.softinput_mode = "below_target"
     
     def get_sync_widget(self):
         if self.sync_widget is None:
