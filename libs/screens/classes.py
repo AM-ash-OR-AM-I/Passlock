@@ -126,6 +126,7 @@ class LoadingScreen(ModalView):
 class RoundButton(MDFillRoundFlatButton):
     Builder.load_string("""
 <RoundButton>
+    size_hint_x: .85
 	canvas:
 		RoundedRectangle:
 			size: self.size
@@ -199,7 +200,7 @@ class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
 <ButtonLabel@ButtonBehavior+MDLabel>
 <CheckboxLabel>
 	adaptive_size:True
-	size_hint_x:.8
+	size_hint_x:.85
 	pos_hint: {'center_x': .5}
 	spacing:'12dp'
 	on_active: None

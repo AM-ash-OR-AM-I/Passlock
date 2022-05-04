@@ -23,11 +23,12 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 if platform == "android":
     from libs.modules.AndroidAPI import fix_back_button, keyboard_height
 
-Builder.load_string("""
+Builder.load_string(
+    """
 <CardTextField>
     height: '60dp'
     size_hint_y:None
-    size_hint_x:.8
+    size_hint_x:.85
     radius: dp(30)
     set_elevation: 0
     label_name:'Hi there'
@@ -144,53 +145,53 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
         self.ids.left_actions.clear_widgets()
         if len(icon_list) and type(icon_list[0]) != list:
             self.icon_left = MDIconButton(
-                    icon=self.icon_left_action[0],
-                    theme_text_color="Custom",
-                    text_color=self.icon_color,
-                    user_font_size=self.icon_font_size,
-                    pos_hint={"center_y": 0.5},
-                )
+                icon=self.icon_left_action[0],
+                theme_text_color="Custom",
+                text_color=self.icon_color,
+                user_font_size=self.icon_font_size,
+                pos_hint={"center_y": 0.5},
+            )
             if len(icon_list) != 1:
                 self.icon_left.on_release = self.icon_left_action[1]
             self.ids.left_actions.add_widget(self.icon_left, index=1)
         elif type(icon_list[0]) == list:
             for icons in icon_list:
                 self.icon_left = MDIconButton(
-                        icon=icons[0],
-                        theme_text_color="Custom",
-                        text_color=self.icon_color,
-                        user_font_size=self.icon_font_size,
-                        pos_hint={"center_y": 0.5},
-                    )
+                    icon=icons[0],
+                    theme_text_color="Custom",
+                    text_color=self.icon_color,
+                    user_font_size=self.icon_font_size,
+                    pos_hint={"center_y": 0.5},
+                )
                 if len(icons) != 1:
-                    self.icon_left.on_release=icons[1]
-                    
+                    self.icon_left.on_release = icons[1]
+
                 self.ids.left_actions.add_widget(self.icon_left, index=1)
 
     def on_icon_right_action(self, instance, icon_list):
         self.ids.right_actions.clear_widgets()
         if len(icon_list) and type(icon_list[0]) != list:
             self.icon_right = MDIconButton(
-                    icon=self.icon_right_action[0],
+                icon=self.icon_right_action[0],
+                theme_text_color="Custom",
+                text_color=self.icon_color,
+                user_font_size=self.icon_font_size,
+                pos_hint={"center_y": 0.5},
+            )
+            if len(icon_list) != 1:
+                self.icon_right.on_release = self.icon_right_action[1]
+            self.ids.right_actions.add_widget(self.icon_right)
+        elif type(icon_list[0]) == list:
+            for icons in icon_list:
+                self.icon_right = MDIconButton(
+                    icon=icons[0],
                     theme_text_color="Custom",
                     text_color=self.icon_color,
                     user_font_size=self.icon_font_size,
                     pos_hint={"center_y": 0.5},
                 )
-            if len(icon_list) != 1:
-                self.icon_right.on_release=self.icon_right_action[1]
-            self.ids.right_actions.add_widget(self.icon_right)
-        elif type(icon_list[0]) == list:
-            for icons in icon_list:
-                self.icon_right = MDIconButton(
-                        icon=icons[0],
-                        theme_text_color="Custom",
-                        text_color=self.icon_color,
-                        user_font_size=self.icon_font_size,
-                        pos_hint={"center_y": 0.5},
-                    )
                 if len(icons) != 1:
-                    self.icon_right.on_release=icons[1]
+                    self.icon_right.on_release = icons[1]
                 self.ids.right_actions.add_widget(self.icon_right)
 
     def on_icon_color(self, instance, color):
