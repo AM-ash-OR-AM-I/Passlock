@@ -223,7 +223,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
                 else:
                     self.app.key_height = 0
 
-            Clock.schedule_once(call, 0.2)
+            Clock.schedule_once(call, 0.4)
 
         if focus:
             self.border_color = self.active_color
