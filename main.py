@@ -143,9 +143,7 @@ class MainApp(MDApp):
         threading.Thread(target=self.set_user_mail, daemon=True).start()
 
     def set_user_mail(self, *args):
-        if os.path.exists("data/email.txt"):
-            with open("data/email.txt", "r") as f:
-                self.email = f.read()
+        self.email = get_email()
 
     def backup(self, sync_widget):
         def backup_success():

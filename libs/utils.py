@@ -58,9 +58,12 @@ def _get_config() -> dict:
 
 
 def get_email() -> str:
-    with open("data/email.txt", "r") as f:
-        email = f.read()
-    return email
+    if os.path.exists("data/email.txt"):
+        with open("data/email.txt", "r") as f:
+            email = f.read()
+        return email
+    else:
+        return "DemoMail"
 
 
 def is_dark_mode(system=False) -> bool:

@@ -39,6 +39,7 @@ class SignupScreen(MDScreen):
             f.write(uid)
         with open("data/email.txt", "w") as f:
             f.write(email)
+        app.email = email
         with open("data/encrypted_file.txt", "w") as f:
             f.write(app.encryption_class.encrypt("Test"))
 
