@@ -2,6 +2,7 @@
     widget_style: "ios"
 
 <SwitchListItem@ThreeLineAvatarIconListItem>
+    ripple_alpha:.1
     text:"Auto sync"
     icon:"auto-upload"
     secondary_text:"Passwords will be synced"
@@ -10,7 +11,7 @@
     active: False
     text_color:app.text_color
     on_release:
-        self.active = not self.active
+        if self.right - self.last_touch.x >= dp(80): self.active = not self.active
     RightSwitch:
         id: switch
         active: root.active
@@ -25,6 +26,8 @@
     text_color:app.text_color
     icon:"android"
     icon_color: ""
+    size_hint_x:.8
+    ripple_alpha:.1
     IconLeftWidget:
         icon: root.icon
         theme_text_color:'Custom'
@@ -80,7 +83,7 @@
             spacing:'5dp'
             MDBoxLayout:
                 adaptive_height:True
-                padding:dp(10),dp(5)
+                padding:dp(10),dp(5),dp(10),dp(10)
                 MyListItem:
                     icon:"account"
                     height: "60dp"
@@ -145,7 +148,7 @@
             disabled: app.signup
             size_hint_x:.5
             pos_hint:{'center_x':.5}
-            disabled_color:[0,0,0,0]
+            opacity: 1 * (not self.disabled)
             on_release: 
                 root.logout()
         
