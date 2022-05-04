@@ -32,8 +32,6 @@ from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 Config.set("kivy", "log_level", "info")
 Config.write()
 
-Window.softinput_mode = "below_target"
-
 def emulate_android_device(
     pixels_horizontal=1080,
     pixels_vertical=1920,

@@ -6,6 +6,7 @@ from time import time
 from kivy.factory import Factory
 from libs.screens.classes import SyncWidget
 from libs.utils import *
+from kivy.core.window import Window
 
 app = MDApp.get_running_app()
 
@@ -23,6 +24,7 @@ class LoginScreen(MDScreen):
         return self.sync_widget
 
     def on_enter(self,*args):
+        Window.softinput_mode = "below_target"
         if app.auto_sync and not is_backup_failure():
             self.sync_widget = self.get_sync_widget()
             app.restore(self.sync_widget, decrypt = False)
