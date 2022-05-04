@@ -77,6 +77,7 @@ class MainApp(MDApp):
     key_height = NumericProperty(0)
     text_color = ColorProperty()
     primary_accent = ColorProperty()
+    primary_palette = StringProperty()
     bg_color = ColorProperty()
     email = StringProperty("DemoMail")
 
@@ -109,6 +110,7 @@ class MainApp(MDApp):
             "system_dark_mode",
             "backup_failure",
             "extra_security",
+            "primary_palette",
         )
         self.theme_cls.font_styles.update(
             {
@@ -120,21 +122,25 @@ class MainApp(MDApp):
                 "H6": [font_file, 20, False, 0.15],
             }
         )
-        self.theme_cls.primary_palette = "DeepOrange"
+        self.primary_palette = get_primary_palette()
         self.signup = False if os.path.exists("data/user_id.txt") else True
-        self.initialise_colors()
         self.auto_sync = check_auto_sync()
         self.extra_security = is_extra_security()
         Window.on_minimize = lambda: self.backup_on_pause()
         self.firebase = Firebase()
         threading.Thread(target=self.set_dark_mode, daemon=True).start()
         threading.Thread(target=self.set_user_mail, daemon=True).start()
+    
+    def on_primary_palette(self, instance, value):
+        self.theme_cls.primary_palette = value
+        self.set_theme_colors()
 
-    def initialise_colors(self):
-        self.text_color = self.generate_color(
-            lightness=0.25
+    def set_theme_colors(self):
+        self.text_color = (
+            self.generate_color(lightness=0.25)  # get_color_from_hex("611c05")
+            if not self.dark_mode
+            else self.generate_color(lightness=0.91)  # get_color_from_hex("fde9e2")
         )  # get_color_from_hex("611c05")
-        self.secondary_text_color = self.generate_color(saturation=0.13, lightness=0.52)
         self.light_color = self.generate_color()
         self.bg_color_light = self.generate_color(lightness=0.98)
         self.bg_color_light_hex = self.generate_color(lightness=0.98, return_hex=True)
@@ -146,7 +152,7 @@ class MainApp(MDApp):
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
         self.light_hex = self.generate_color(return_hex=True)
         self.dark_hex = self.generate_color(darkness=0.18, return_hex=True)
-    
+
     def set_user_mail(self, *args):
         self.email = get_email()
 

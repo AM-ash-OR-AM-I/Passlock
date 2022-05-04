@@ -98,8 +98,7 @@
                         icon:"circle"
                         icon_color: app.theme_cls.primary_color
                         on_release:
-                            app.theme_cls.primary_palette = "DeepOrange" if app.theme_cls.primary_palette == "Blue" else "Blue"
-                            app.initialise_colors()
+                            root.change_colors()
                     MyListItem:
                         text:"Sync Passwords"
                         icon:"sync"

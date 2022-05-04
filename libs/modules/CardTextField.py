@@ -23,7 +23,8 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 if platform == "android":
     from libs.modules.AndroidAPI import fix_back_button, keyboard_height
 
-Builder.load_string("""
+Builder.load_string(
+    """
 <CardTextField>
     height: '60dp'
     size_hint_y:None
@@ -36,7 +37,7 @@ Builder.load_string("""
     hint_text:''
     password: False
     password_mask: "●"
-    hint_text_color:app.secondary_text_color
+    hint_text_color: app.text_color[:-1] + [.6]
     adaptive_height:True
     spacing:'20dp'
     orientation:'vertical'

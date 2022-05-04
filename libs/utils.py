@@ -66,6 +66,13 @@ def get_email() -> str:
         return "DemoMail"
 
 
+def get_primary_palette() -> str:
+    if os.path.exists("data/config.json"):
+        with open("data/config.json", "r") as f:
+            config = json.load(f)
+        return config.get("primary_palette", "DeepOrange")
+
+
 def is_dark_mode(system=False) -> bool:
     json_data = _get_config()
     return json_data.get("system_dark_mode" if system else "dark_mode", False)

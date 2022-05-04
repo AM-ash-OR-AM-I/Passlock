@@ -1,3 +1,4 @@
+from re import L
 import webbrowser
 
 from kivy.core.clipboard import Clipboard
@@ -23,6 +24,10 @@ class SettingsScreen(MDScreen):
             lambda x: app.animate_signup(app.root.SignupScreen.ids.box), 0
         )
         remove_user_data()
+
+    def change_colors(self):
+        app.primary_palette = "DeepOrange" if app.theme_cls.primary_palette == "Blue" else "Blue"
+        app.set_theme_style() # Update theme style
     
     def open_about(self):
         if self.content is None:
