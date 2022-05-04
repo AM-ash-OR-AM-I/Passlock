@@ -216,8 +216,9 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
 
             def call(*args):
                 if focus:
+                    print(f"{keyboard_height() = }")
                     if (height := keyboard_height()) > 0:
-                        print(f"{height = }")
+                        
                         self.app.key_height = height
                 else:
                     self.app.key_height = 0
