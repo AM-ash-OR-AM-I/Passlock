@@ -57,6 +57,12 @@ def _get_config() -> dict:
         return {}
 
 
+def get_email() -> str:
+    with open("data/email.txt", "r") as f:
+        email = f.read()
+    return email
+
+
 def is_dark_mode(system=False) -> bool:
     json_data = _get_config()
     return json_data.get("system_dark_mode" if system else "dark_mode", False)

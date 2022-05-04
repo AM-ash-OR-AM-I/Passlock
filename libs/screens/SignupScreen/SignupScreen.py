@@ -1,3 +1,4 @@
+from email import message
 from typing import Dict
 from kivymd.app import MDApp
 from kivymd.toast import toast
@@ -27,7 +28,7 @@ class SignupScreen(MDScreen):
         box.opacity = 0
         app.animate_signup(box)
 
-    def save_uid_password(self, uid):
+    def save_uid_password(self, uid, email):
         """
         Saves user_id and a file that has been encrypted with master password.
         This makes sure that even when user hasn't created any passwords,
@@ -36,6 +37,8 @@ class SignupScreen(MDScreen):
 
         with open("data/user_id.txt", "w") as f:
             f.write(uid)
+        with open("data/email.txt", "w") as f:
+            f.write(email)
         with open("data/encrypted_file.txt", "w") as f:
             f.write(app.encryption_class.encrypt("Test"))
 
@@ -49,11 +52,13 @@ class SignupScreen(MDScreen):
             toast("Signup successful")
             app.encryption_class = self.encryption(self.password)
             self.dismiss_loading()
-            threading.Thread(target=self.save_uid_password, args=(user_id,)).start()
+            threading.Thread(target=self.save_uid_password, args=(user_id, email)).start()
 
         def signup_failure(req, result):
-            print(result["error"]["message"])
-            toast(result["error"]["message"])
+            message = result["error"]["message"]
+            print(message)
+            if message == "EMAIL_EXISTS":
+                toast("Email exists, login Instead.")
             self.loading_view.dismiss()
 
         self.firebase.signup_success = lambda req, result: signup_success(req, result)
@@ -68,11 +73,12 @@ class SignupScreen(MDScreen):
             self.dismiss_loading()
             app.encryption_class = self.encryption(self.password)
             app.root.HomeScreen.restore(user_id=user_id)
-            threading.Thread(target=self.save_uid_password, args=(user_id,)).start()
+            threading.Thread(target=self.save_uid_password, args=(user_id,email)).start()
 
         def login_failure(req, result):
-            print(result["error"]["message"])
-            toast(result["error"]["message"])
+            message = result["error"]["message"]
+            if message == "EMAIL_NOT_FOUND":
+                toast("Email not found, signup instead.")
             self.loading_view.dismiss()
 
         self.firebase.login_success = lambda req, result: login_success(req, result)
@@ -81,6 +87,7 @@ class SignupScreen(MDScreen):
         app.root.load_screen("HomeScreen", set_current=False)
 
     def button_pressed(self, email, password):
+        # TODO: Save user email and show in settings screen.
         def import_encryption():
             from libs.encryption import Encryption
 

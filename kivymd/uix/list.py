@@ -453,8 +453,7 @@ from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.utils.fitimage import FitImage
 
-Builder.load_string(
-    """
+Builder.load_string("""
 #:import m_res kivymd.material_resources
 
 
@@ -473,9 +472,10 @@ Builder.load_string(
                 else (0, 0, 0, 0)
         Color:
             rgba: root.bg_color if root.bg_color else (0, 0, 0, 0)
-        Rectangle:
+        RoundedRectangle:
             pos: self.pos
             size: self.size
+            radius: dp(10),dp(10),dp(10),dp(10)
 
     BoxLayout:
         id: _text_container

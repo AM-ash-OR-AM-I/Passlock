@@ -1,13 +1,15 @@
 #: import window kivy.core.window.Window
 #: set height window.height
 #: set width window.width
-#: set rad width/2
+#: set rad width/2.4
 #: set icon_size 60
 #: import platform kivy.platform
 #: import Clock kivy.clock.Clock
 
 <LoginScreen>:
 	md_bg_color: app.bg_color
+    on_enter:
+        app.animate_signup('')
     canvas:
 		Color:
 			rgba:app.theme_cls.primary_color[:-1]+[.9]

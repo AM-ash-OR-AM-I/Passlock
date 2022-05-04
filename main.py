@@ -1,3 +1,4 @@
+import math
 import threading
 from time import time
 
@@ -19,6 +20,7 @@ from kivy.properties import (
     ColorProperty,
     get_color_from_hex,
     NumericProperty,
+    StringProperty,
 )
 from kivy.clock import Clock
 
@@ -32,8 +34,18 @@ Config.write()
 
 
 def emulate_android_device(
-    pixels_horizontal=1080, pixels_vertical=2240, android_dpi=394, monitor_dpi=157
+    pixels_horizontal=1080,
+    pixels_vertical=1920,
+    android_dpi=None,
+    monitor_dpi=157,
+    display_size_mobile=5.2,
 ):
+    if android_dpi is None:
+        android_dpi = int(
+            math.sqrt(pixels_horizontal**2 + pixels_vertical**2)
+            / display_size_mobile
+        )
+
     scale_factor = monitor_dpi / android_dpi
     Window.size = (scale_factor * pixels_horizontal, scale_factor * pixels_vertical)
 
@@ -56,6 +68,9 @@ HotReloadViewer:
 """
 
 
+font_file = "kivymd/fonts/Poppins-Regular.ttf"
+
+
 class MainApp(MDApp):
     dark_mode = BooleanProperty(False)
     extra_security = BooleanProperty(False)
@@ -63,6 +78,7 @@ class MainApp(MDApp):
     text_color = ColorProperty()
     primary_accent = ColorProperty()
     bg_color = ColorProperty()
+    email = StringProperty("DemoMail")
 
     password_changed = False
     system_dark_mode = False
@@ -94,6 +110,16 @@ class MainApp(MDApp):
             "backup_failure",
             "extra_security",
         )
+        self.theme_cls.font_styles.update(
+            {
+                "H1": [font_file, 96, False, -1.5],
+                "H2": [font_file, 60, False, -0.5],
+                "H3": [font_file, 48, False, 0],
+                "H4": [font_file, 34, False, 0.25],
+                "H5": [font_file, 24, False, 0],
+                "H6": [font_file, 20, False, 0.15],
+            }
+        )
         self.theme_cls.primary_palette = "DeepOrange"
         self.text_color = get_color_from_hex("611c05")
         self.signup = False if os.path.exists("data/user_id.txt") else True
@@ -114,6 +140,12 @@ class MainApp(MDApp):
         Window.on_minimize = lambda: self.backup_on_pause()
         self.firebase = Firebase()
         threading.Thread(target=self.set_dark_mode, daemon=True).start()
+        threading.Thread(target=self.set_user_mail, daemon=True).start()
+
+    def set_user_mail(self, *args):
+        if os.path.exists("data/email.txt"):
+            with open("data/email.txt", "r") as f:
+                self.email = f.read()
 
     def backup(self, sync_widget):
         def backup_success():
@@ -135,11 +167,6 @@ class MainApp(MDApp):
         self.firebase.backup()
 
     def restore(self, sync_widget, user_id=None, decrypt=True):
-        """
-        Restore from backup
-        FIXME: When no passwords found it throws `TypeError` `'NoneType' object is not iterable`.
-        """
-
         def restore_success(req, result):
             sync_widget.stop()
             if result is not None:
@@ -183,11 +210,6 @@ class MainApp(MDApp):
         self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
         if not self.signup:
             self.root.LoginScreen.ids.password.focus = True
-        else:
-            self.root.SignupScreen.ids.password.focus = True
-        # return Builder.load_string(KV)
-        # if LIVE_UI:
-        #     return Builder.load_string(KV)
 
     def show_toast_copied(self, item):
         toast("Item copied")
@@ -377,11 +399,15 @@ class MainApp(MDApp):
 
     def on_resume(self):
         """Asks user to login after pausing app for specific time period"""
-        if self.extra_security and not self.signup and (time() - self.pause_start) > 5:
+        if (
+            self.extra_security
+            and not self.signup
+            and (time() - self.pause_start) > 300
+        ):
             self.root.load_screen("LoginScreen")
             self.root.LoginScreen.ids.password.focus = True
             self.root.LoginScreen.ids.password.text = ""
-            
+
         return True
 
     def on_stop(self):
