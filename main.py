@@ -134,7 +134,6 @@ class MainApp(MDApp):
     def on_primary_palette(self, instance, value):
         self.theme_cls.primary_palette = value
         self.set_theme_colors()
-        self.set_theme_style()
 
     def set_theme_colors(self):
         self.text_color = (

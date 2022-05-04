@@ -27,7 +27,7 @@ class SettingsScreen(MDScreen):
 
     def change_colors(self):
         app.primary_palette = "DeepOrange" if app.theme_cls.primary_palette == "Blue" else "Blue"
-        # app.set_theme_style() # Update theme style
+        app.set_theme_style() # Update theme style
     
     def open_about(self):
         if self.content is None:
