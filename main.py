@@ -32,6 +32,7 @@ from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 Config.set("kivy", "log_level", "info")
 Config.write()
 
+Window.softinput_mode = "below_target"
 
 def emulate_android_device(
     pixels_horizontal=1080,
@@ -354,18 +355,6 @@ class MainApp(MDApp):
 
     def toggle_mode(self, *args):
         self.dark_mode = not self.dark_mode
-
-    def set_soft_input(self):
-
-        """Used to move screen up/down so that UI elements are visible when keyboard is shown."""
-
-        if self.root.current == "SignupScreen":
-            Window.softinput_mode = "below_target"
-        else:
-            if self.root.HomeScreen.ids.tab_manager.current == "CreateScreen":
-               Window.softinput_mode  = "pan"
-            else:
-                Window.softinput_mode = "below_target"
 
     def on_start(self):
         """Sets status bar color in android."""

@@ -213,7 +213,6 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
         if platform == "android":
             if not focus:
                 fix_back_button()
-                self.app.set_soft_input()
 
         if focus:
             self.border_color = self.active_color
