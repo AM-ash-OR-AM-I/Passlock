@@ -71,6 +71,8 @@ def get_primary_palette() -> str:
         with open("data/config.json", "r") as f:
             config = json.load(f)
         return config.get("primary_palette", "DeepOrange")
+    else:
+        return "DeepOrange"
 
 
 def is_dark_mode(system=False) -> bool:
