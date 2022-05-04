@@ -213,17 +213,7 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
         if platform == "android":
             if not focus:
                 fix_back_button()
-
-            def call(*args):
-                if focus:
-                    print(f"{keyboard_height() = }")
-                    if (height := keyboard_height()) > 0:
-                        
-                        self.app.key_height = height
-                else:
-                    self.app.key_height = 0
-
-            Clock.schedule_once(call, 0.4)
+                self.app.set_soft_input()
 
         if focus:
             self.border_color = self.active_color

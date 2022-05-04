@@ -74,7 +74,6 @@ font_file = "kivymd/fonts/Poppins-Regular.ttf"
 class MainApp(MDApp):
     dark_mode = BooleanProperty(False)
     extra_security = BooleanProperty(False)
-    key_height = NumericProperty(0)
     text_color = ColorProperty()
     primary_accent = ColorProperty()
     primary_palette = StringProperty()
@@ -356,40 +355,15 @@ class MainApp(MDApp):
     def toggle_mode(self, *args):
         self.dark_mode = not self.dark_mode
 
-    def on_key_height(self, instance, val):
+    def set_soft_input(self):
 
         """Used to move screen up/down so that UI elements are visible when keyboard is shown."""
 
-        print(val)
-        signup = self.root.SignupScreen
-        if self.root.current == "LoginScreen":
-            self.diff = (val - signup.ids.lock.y + dp(30)) / Window.height
-            if self.diff > 0:
-                if val > 0:
-                    self.box_height = signup.ids.box.pos_hint["top"]
-                    Animation(
-                        pos_hint={"top": self.box_height + self.diff},
-                        t="out_quad",
-                        d=0.2,
-                    ).start(signup.ids.box)
-                else:
-                    Animation(
-                        pos_hint={"top": self.box_height}, t="in_quad", d=0.2
-                    ).start(signup.ids.box)
+        if self.root.current == "SignupScreen":
+            Window.softinput_mode = "below_target"
         else:
             if self.root.HomeScreen.ids.tab_manager.current == "CreateScreen":
-                generate = self.root.HomeScreen.ids.create.ids.auto.ids.generate
-                self.root.HomeScreen.ids.create.ids.auto.scroll_y = 1
-                self.diff = val - generate.y + dp(30)
-                if self.diff > 0:
-                    if val > 0:
-                        Animation(y=self.diff, t="out_quad", d=0.2).start(
-                            self.root.HomeScreen
-                        )
-                    else:
-                        Animation(y=0, t="in_quad", d=0.2).start(self.root.HomeScreen)
-            else:
-                Window.softinput_mode = "below_target"
+               Window.softinput_mode  = "pan"
 
     def on_start(self):
         """Sets status bar color in android."""
