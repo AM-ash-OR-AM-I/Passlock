@@ -378,7 +378,7 @@ class MainApp(MDApp):
                     ).start(signup.ids.box)
         else:
             if self.root.HomeScreen.ids.tab_manager.current == "CreateScreen":
-                generate = self.root.HomeScreen.ids.create.ids.manual.ids.add
+                generate = self.root.HomeScreen.ids.create.ids.auto.ids.generate
                 self.root.HomeScreen.ids.create.ids.auto.scroll_y = 1
                 self.diff = val - generate.y + dp(30)
                 if self.diff > 0:
