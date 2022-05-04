@@ -6,6 +6,8 @@
 #: set icon_size 60
 #: import platform kivy.platform
 #: import Clock kivy.clock.Clock
+#: import colors kivymd.color_definitions.colors
+#: set primary_color_hex colors[app.theme_cls.primary_palette][app.theme_cls.primary_hue]
 
 <SignupScreen>:
 	md_bg_color: app.bg_color
@@ -37,7 +39,7 @@
 		spacing:'50dp'
 		MDLabel:
 			adaptive_height:True
-			text:"SIGN UP\nTO [color=ff7a4f][u]PASS[/u]" if root.show_signup else "LOGIN\nTO [color=ff7a4f][u]PASS[/u]"
+			text:("SIGN UP\n" if root.show_signup else "LOGIN\n") + f"TO [color={primary_color_hex}][u]PASS[/u]"
 			markup:True
 			theme_text_color:"Custom"
 			text_color:app.text_color
@@ -88,7 +90,7 @@
 	MDTextButton:
         id: switch_signin
         opacity: 1
-		text:'New user? [color=f67e55]Signup!'if not root.show_signup else "Existing user? [color=ff7a4f]Login."
+		text:f'New user? [color={primary_color_hex}]Signup!'if not root.show_signup else f"Existing user? [color={primary_color_hex}]Login."
 		markup:True
 		top:separator.y - dp(20)
 		pos_hint:{'center_x':.5}
