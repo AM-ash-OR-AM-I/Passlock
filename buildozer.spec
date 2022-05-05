@@ -44,10 +44,10 @@ requirements = python3,kivy==2.0.0,pillow,pycryptodome
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = ./assets/pass_presplash.png
+presplash.filename = ./assets/PassPresplash.png
 
 # (str) Icon of the application
-icon.filename = ./assets/pass.png
+icon.filename = ./assets/Pass.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
