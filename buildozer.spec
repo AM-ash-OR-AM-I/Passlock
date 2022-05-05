@@ -44,7 +44,7 @@ requirements = python3,kivy==2.0.0,pillow,pycryptodome
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = ./assets/pass_presplash.png
+# presplash.filename = ./assets/pass_presplash.png
 
 # (str) Icon of the application
 icon.filename = ./assets/pass.png
@@ -86,7 +86,7 @@ fullscreen = 0
 # see https://lottiefiles.com/ for examples and https://airbnb.design/lottie/
 # for general documentation.
 # Lottie files can be created using various tools, like Adobe After Effect or Synfig.
-#android.presplash_lottie = "path/to/lottie/file.json"
+android.presplash_lottie = "./assets/lottie.json"
 
 # (str) Adaptive icon of the application (used if Android API level is 26+ at runtime)
 #icon.adaptive_foreground.filename = %(source.dir)s/data/icon_fg.png
