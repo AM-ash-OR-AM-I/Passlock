@@ -222,6 +222,15 @@ class MainApp(MDApp):
         toast("Item copied")
         Clipboard.copy(item)
 
+    def animate_signup(self, instance):
+
+        """Animation to be shown when user enters the signup screen"""
+        print(f"Time taken = {time() - initial}")
+        if instance:
+            Animation(pos_hint={"top": 0.95}, opacity=1, d=0.5, t="out_back").start(
+                instance
+            )
+
     def generate_color(
         self,
         hex_color=False,
