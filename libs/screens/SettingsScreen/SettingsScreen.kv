@@ -11,7 +11,7 @@
     active: False
     text_color:app.text_color
     on_release:
-        if self.right - self.last_touch.x >= dp(80): self.active = not self.active
+        if self.right - self.last_touch.x >= dp(75): self.active = not self.active
     RightSwitch:
         id: switch
         active: root.active
@@ -26,7 +26,7 @@
     text_color:app.text_color
     icon:"android"
     icon_color: []
-    size_hint_x:.8
+    size_hint_x:.85
     ripple_alpha:.1
     IconLeftWidget:
         icon: root.icon

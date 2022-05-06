@@ -872,7 +872,6 @@ class OneLineListItem(BaseListItem):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.height = dp(48) if not self._height else self._height
-        self.theme_cls.ripple_color = self.theme_cls.primary_light
 
 
 class TwoLineListItem(BaseListItem):
