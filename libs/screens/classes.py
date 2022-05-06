@@ -173,14 +173,14 @@ class Dialog(MDDialog):
     
 
     def update_bg_color(self, *args):
-        self.md_bg_color = MDApp.get_running_app().primary_accent
+        self.md_bg_color = self.app.primary_accent
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.update_title_color()
-        self.md_bg_color = MDApp.get_running_app().primary_accent
+        self.app = MDApp.get_running_app()
+        self.md_bg_color = self.app.primary_accent
         self.theme_cls.bind(theme_style=self.update_bg_color)
-        self.theme_cls.bind(primary_palette=self.update_bg_color)
+        self.app.bind(primary_accent=self.update_bg_color)
 
 
 class DialogButton(MDFlatButton):
