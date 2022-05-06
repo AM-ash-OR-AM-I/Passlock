@@ -214,7 +214,7 @@ class MDDialog(BaseDialog):
         anim.start(self)
 
     def _dismiss_animation(self):
-        anim = Animation(opacity=0, duration=self._anim_duration, t="out_quad")
+        anim = Animation(opacity=0, duration=self._anim_duration - 0.05, t="out_quad")
         anim.start(self)
 
     def get_normal_height(self):
