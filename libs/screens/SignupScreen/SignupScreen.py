@@ -58,8 +58,8 @@ class SignupScreen(MDScreen):
         def signup_failure(req, result):
             message = result["error"]["message"]
             print(message)
-            if message == "EMAIL_EXISTS":
-                toast("Email exists, login Instead.")
+            message = message.replace("_", " ").capitalize()
+            toast(message)
             self.loading_view.dismiss()
 
         self.firebase.signup_success = lambda req, result: signup_success(req, result)
@@ -78,8 +78,8 @@ class SignupScreen(MDScreen):
 
         def login_failure(req, result):
             message = result["error"]["message"]
-            if message == "EMAIL_NOT_FOUND":
-                toast("Email not found, signup instead.")
+            message = message.replace("_", " ").capitalize()
+            toast(message)
             self.loading_view.dismiss()
 
         self.firebase.login_success = lambda req, result: login_success(req, result)
