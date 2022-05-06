@@ -56,20 +56,23 @@ class Root(ScreenManager):
             self.current = screen_name
         if empty_history:
             self.history = []
-    
+
     def check_press_back_twice(self):
+        def show_toast():
+            if platform == "android":
+                toast("Press back again to close the app", length_long=False)
+            else:
+                toast("Press back again to close the app", duration=1)
+
         self._press_again = time()
         if self._prev_press:
-            print(self._prev_press)
             if (self._press_again - self._prev_press) < 3:
                 MDApp.get_running_app().stop()
-        else:
-            if platform == "android":
-                toast("Press back again to close the app",length_long=False)
             else:
-                toast("Press back again to close the app",duration=1)
+                show_toast()
+        else:
+            show_toast()
         self._prev_press = time()
-        
 
     def _handle_keyboard(self, instance, key, *args):
         if key == 27:
