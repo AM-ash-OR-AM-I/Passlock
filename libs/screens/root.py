@@ -1,12 +1,14 @@
+from time import time
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ListProperty
 from kivy.uix.screenmanager import ScreenManager, CardTransition
+from kivymd.toast import toast
 from kivymd.app import MDApp
 
 
 class Root(ScreenManager):
-
+    _prev_press = None
     history = ListProperty()
 
     def __init__(self, **kwargs):
@@ -53,6 +55,17 @@ class Root(ScreenManager):
             self.current = screen_name
         if empty_history:
             self.history = []
+    
+    def check_press_back_twice(self):
+        self._press_again = time()
+        if self._prev_press:
+            print(self._prev_press)
+            if (self._press_again - self._prev_press) < 3:
+                MDApp.get_running_app().stop()
+        else:
+            toast("Press back again to close the app",duration=1)
+        self._prev_press = time()
+        
 
     def _handle_keyboard(self, instance, key, *args):
         if key == 27:
@@ -61,10 +74,10 @@ class Root(ScreenManager):
                 and self.current_screen.ids.tab_manager.current == "FindScreen"
             ):
                 self.current_screen.ids.tab_manager.current = "CreateScreen"
-            elif self.current == "HomeScreen" or self.current=="LoginScreen":
-                MDApp.get_running_app().open_exit_dialog()
-            else:
+            elif self.current == "SettingsScreen":
                 self.goback()
+            else:
+                self.check_press_back_twice()
             return True
 
     def goback(self):
