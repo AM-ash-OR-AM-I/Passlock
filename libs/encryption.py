@@ -48,16 +48,20 @@ class Encryption:
             decrypted_pass[decrypted_key] = self.decrypt(encrypted_pass[name])
         return decrypted_pass
 
-    def add(self, name: str, password: str) -> None:
+    def add(self, name: str, password: str) -> bool:
         """
         Add a new password to the dictionary.
         """
         data = load_passwords()
-        encrypted_name = self.encrypt(name)
-        app.encrypted_keys[name] = encrypted_name
-        data[encrypted_name] = self.encrypt(password)
-        write_passwords(data)
-        app.password_changed = True
+        if name not in app.encrypted_keys:
+            encrypted_name = self.encrypt(name)
+            app.encrypted_keys[name] = encrypted_name
+            data[encrypted_name] = self.encrypt(password)
+            write_passwords(data)
+            app.password_changed = True
+            return True
+        else:
+            return False
 
     def delete(self, name: str) -> None:
         data = load_passwords()
