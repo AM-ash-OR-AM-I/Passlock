@@ -1,4 +1,5 @@
 from time import time
+from kivy import platform
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ListProperty
@@ -63,7 +64,10 @@ class Root(ScreenManager):
             if (self._press_again - self._prev_press) < 3:
                 MDApp.get_running_app().stop()
         else:
-            toast("Press back again to close the app",duration=1)
+            if platform == "android":
+                toast("Press back again to close the app",length_long=False)
+            else:
+                toast("Press back again to close the app",duration=1)
         self._prev_press = time()
         
 
