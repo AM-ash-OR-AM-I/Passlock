@@ -1,8 +1,6 @@
 import math
 import threading
 from time import time
-
-initial = time()
 from colorsys import rgb_to_hls, hls_to_rgb
 import os.path
 from libs.screens.classes import Dialog
@@ -225,7 +223,6 @@ class MainApp(MDApp):
     def animate_signup(self, instance):
 
         """Animation to be shown when user enters the signup screen"""
-        print(f"Time taken = {time() - initial}")
         if instance:
             Animation(pos_hint={"top": 0.95}, opacity=1, d=0.5, t="out_back").start(
                 instance
