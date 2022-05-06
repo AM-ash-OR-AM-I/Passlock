@@ -59,10 +59,11 @@ class SignupScreen(MDScreen):
             message = result["error"]["message"]
             print(message)
             if message == "EMAIL_EXISTS":
-                toast("Email already exists, trying login instead.")
+                toast("Email already exists, attempting to login instead.")
                 self.login(email, password)
-            message = message.replace("_", " ").capitalize()
-            toast(message)
+            else:
+                message = message.replace("_", " ").capitalize()
+                toast(message)
             self.loading_view.dismiss()
 
         self.firebase.signup_success = lambda req, result: signup_success(req, result)
