@@ -128,18 +128,6 @@ class LoadingScreen(ModalView):
 
 
 class RoundButton(MDFillRoundFlatButton):
-    Builder.load_string(
-        """
-<RoundButton>
-    size_hint_x: .85
-	canvas:
-		RoundedRectangle:
-			size: self.size
-			pos: self.pos
-			radius:self._radius
-			texture: Gradient.horizontal([1,1,1,0], [1,1,1,.2])
-"""
-    )
     padding = [0, dp(20), 0, dp(20)]
     _radius = dp(25), dp(25)
 
@@ -182,7 +170,7 @@ class Dialog(MDDialog):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.app = MDApp.get_running_app()
-        self.size_hint_x = 0.8
+        self.size_hint_x = 0.85
         self.md_bg_color = self.app.primary_accent
         self.theme_cls.bind(theme_style=self.update_bg_color)
         self.app.bind(primary_accent=self.update_bg_color)

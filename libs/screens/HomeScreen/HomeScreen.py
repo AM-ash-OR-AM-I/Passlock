@@ -259,8 +259,8 @@ class HomeScreen(MDScreen):
         app.restore(self.sync_widget, user_id)
 
     def create_password(self, name, password):
-        def add_pass(name, password):
-            if name and password:
+        def add_pass(name: str, password: str):
+            if name.strip() and password.strip():
                 success = app.encryption_class.add(name, password)
                 if success:
                     # Updates passwords dictionary.
@@ -268,11 +268,10 @@ class HomeScreen(MDScreen):
                     toast("Password Created Successfully.")
                 else:
                     toast("Password already exists.")
+            elif not name.strip():
+                toast("Name can't be empty")
             else:
-                if not name:
-                    toast("Name can't be empty")
-                else:
-                    toast("Password can't be empty")
+                toast("Password can't be empty")
         threading.Thread(
             target=add_pass,
             args=(name, password),

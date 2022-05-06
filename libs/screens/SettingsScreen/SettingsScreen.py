@@ -1,4 +1,3 @@
-from re import L
 import webbrowser
 
 from kivy.core.clipboard import Clipboard
@@ -6,6 +5,7 @@ from kivy.factory import Factory
 from kivy.clock import Clock
 from kivymd .toast import toast
 from kivymd.uix.screen import MDScreen
+from libs.modules.picker import MDThemePicker
 from libs.utils import remove_user_data
 from kivymd.app import MDApp
 from libs.modules.dialogs import AKAlertDialog
@@ -15,6 +15,7 @@ app = MDApp.get_running_app()
 
 class SettingsScreen(MDScreen):
     content = None
+    theme_picker = None
     YOUTUBE_VIDEO_LINK = ""
     GITHUB_REPO_LINK = "https://github.com/AM-ash-OR-AM-I/Passlock"
 
@@ -26,14 +27,17 @@ class SettingsScreen(MDScreen):
         remove_user_data()
 
     def change_colors(self):
-        app.primary_palette = "DeepOrange" if app.theme_cls.primary_palette == "Blue" else "Blue"
+        if self.theme_picker is None:
+            self.theme_picker = MDThemePicker()
+        self.theme_picker.open()
         app.set_theme_style() # Update theme style
     
     def open_about(self):
         if self.content is None:
             self.content = Factory.AboutClass()
             self.about_dialog = AKAlertDialog(header_icon='heart-circle')
-            self.about_dialog.size_portrait = ['300dp', '380dp']
+            self.about_dialog.header_height_portrait = "90dp"
+            self.about_dialog.size_portrait = ['300dp', '340dp']
             self.about_dialog.content_cls = self.content
         self.about_dialog.bg_color = app.primary_accent
         self.about_dialog.open()

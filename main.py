@@ -17,7 +17,6 @@ from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     get_color_from_hex,
-    NumericProperty,
     StringProperty,
 )
 from kivy.clock import Clock
