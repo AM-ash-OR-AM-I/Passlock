@@ -58,6 +58,9 @@ class SignupScreen(MDScreen):
         def signup_failure(req, result):
             message = result["error"]["message"]
             print(message)
+            if message == "EMAIL_EXISTS":
+                toast("Email already exists, trying login instead.")
+                self.login(email, password)
             message = message.replace("_", " ").capitalize()
             toast(message)
             self.loading_view.dismiss()
