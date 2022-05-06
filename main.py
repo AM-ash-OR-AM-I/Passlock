@@ -81,7 +81,6 @@ class MainApp(MDApp):
     auto_sync = False
     backup_failure = False
     entered_app = False
-    fps = True
 
     encryption_class = None
     update_dialog = None

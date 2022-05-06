@@ -38,8 +38,6 @@ class LoginScreen(MDScreen):
             from libs.encryption import Encryption
 
             try:
-                if app.fps:
-                    app.fps_monitor_start()
                 app.encryption_class = Encryption(password)
                 if os.path.exists("data/passwords"):
                     app.passwords = app.encryption_class.load_decrypted()
