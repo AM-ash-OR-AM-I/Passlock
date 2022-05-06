@@ -62,7 +62,7 @@ class Root(ScreenManager):
             if platform == "android":
                 toast("Press back again to close the app", length_long=False)
             else:
-                toast("Press back again to close the app", duration=1)
+                toast("Press back again to close the app", duration=.6)
 
         self._press_again = time()
         if self._prev_press:

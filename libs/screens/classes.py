@@ -38,7 +38,8 @@ Builder.load_string("""
 <PasswordCard@BorderCard>
     password: True
     icon_right_action:['eye-off-outline' if self.password else "eye-outline", lambda : exec("self.password = not self.password")]
-""")
+"""
+)
 
 
 # ---- Sync Widget ----
@@ -69,30 +70,33 @@ KV = """
         text:"Restoring.." if not root.text else root.text
     """
 
+
 class SyncWidget(MDBoxLayout):
     Builder.load_string(KV)
     start_anim = None
     stop_anim = None
     text = StringProperty()
     icon = StringProperty()
+
     def start(self):
-        self.opacity=1
+        self.opacity = 1
         self.interval = Clock.schedule_interval(self._start_animation, 1.2)
-    
+
     def stop(self):
         self._stop_animation()
         self.interval.cancel()
-    
+
     def _stop_animation(self):
         if self.stop_anim is None:
-            self.stop_anim = Animation(opacity = 0, d= 0.3, t="in_quad")
+            self.stop_anim = Animation(opacity=0, d=0.3, t="in_quad")
         self.stop_anim.start(self)
-        
+
     def _start_animation(self, *args):
         if self.start_anim is None:
-            self.start_anim = Animation(opacity=0, d=.5, t="in_quad")
-            self.start_anim += Animation(opacity=1, d=.5, t="out_quad")
+            self.start_anim = Animation(opacity=0, d=0.5, t="in_quad")
+            self.start_anim += Animation(opacity=1, d=0.5, t="out_quad")
         self.start_anim.start(self.ids.sync_icon)
+
 
 class LoadingScreen(ModalView):
     is_open = False
@@ -124,7 +128,8 @@ class LoadingScreen(ModalView):
 
 
 class RoundButton(MDFillRoundFlatButton):
-    Builder.load_string("""
+    Builder.load_string(
+        """
 <RoundButton>
     size_hint_x: .85
 	canvas:
@@ -170,7 +175,6 @@ Builder.load_string("""
 
 class Dialog(MDDialog):
     radius = [dp(30)] * 4
-    
 
     def update_bg_color(self, *args):
         self.md_bg_color = self.app.primary_accent
@@ -178,6 +182,7 @@ class Dialog(MDDialog):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.app = MDApp.get_running_app()
+        self.size_hint_x = 0.8
         self.md_bg_color = self.app.primary_accent
         self.theme_cls.bind(theme_style=self.update_bg_color)
         self.app.bind(primary_accent=self.update_bg_color)

@@ -108,7 +108,7 @@ class AKAlertDialog(BaseDialog):
     progress_color = ListProperty()
     elevation = NumericProperty(5)
     content_cls = ObjectProperty()
-    _anim_duration = 0.3
+    _anim_duration = 0.25
     _orientation = StringProperty()
     _progress_value = NumericProperty()
 
@@ -154,7 +154,7 @@ class AKAlertDialog(BaseDialog):
         anim.start(self)
 
     def _dismiss_animation(self):
-        anim = Animation(opacity=0, duration=self._anim_duration, t="out_quad")
+        anim = Animation(opacity=0, duration=self._anim_duration - .05, t="out_quad")
         anim.start(self)
 
     def _start_progress(self):
