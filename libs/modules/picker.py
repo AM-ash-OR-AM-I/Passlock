@@ -30,7 +30,7 @@ KV = """
     rows: 4
     adaptive_size: True
     spacing: "8dp"
-    padding: (dp(20),20,dp(20),20)
+    padding: dp(20)
     pos_hint: {"center_x": .5, "top": 1}
 
 """
