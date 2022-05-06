@@ -218,8 +218,7 @@ class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.ripple_color = self.theme_cls.primary_light
-        self.ripple_alpha = 0.2
+        self.ripple_alpha = 0.15
 
 
 class CustomSnackbar(Snackbar):
