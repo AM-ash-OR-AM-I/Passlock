@@ -30,7 +30,6 @@ class SettingsScreen(MDScreen):
         if self.theme_picker is None:
             self.theme_picker = MDThemePicker()
         self.theme_picker.open()
-        app.set_theme_style() # Update theme style
     
     def open_about(self):
         if self.content is None:

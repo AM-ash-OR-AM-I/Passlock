@@ -23,6 +23,7 @@ KV = """
 <PrimaryColorSelector@ColorSelector>
     on_release: 
         app.primary_palette = root.color_name
+        app.set_theme_style()
     
 <ColorGrid@MDGridLayout>
     cols: 5
@@ -61,6 +62,7 @@ class MDThemePicker(AKAlertDialog):
 
     def update_selector(self, *args):
         self.content_cls.clear_widgets()
+        self.bg_color = MDApp.get_running_app().primary_accent
 
     def on_open(self):
         if not self.content_cls.children:
