@@ -139,6 +139,7 @@ class FindScreen(MDScreen):
             del app.passwords[name]
             if name in app.encrypted_keys:
                 encrypted_key = app.encrypted_keys[name]
+                del app.encrypted_keys[name]
                 threading.Thread(
                     target=remove_permanently, args=(encrypted_key,), daemon=True
                 ).start()
