@@ -66,7 +66,7 @@ class Root(ScreenManager):
 
         self._press_again = time()
         if self._prev_press:
-            if (self._press_again - self._prev_press) < 3:
+            if (self._press_again - self._prev_press) < 2:
                 MDApp.get_running_app().stop()
             else:
                 show_toast()
