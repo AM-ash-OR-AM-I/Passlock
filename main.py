@@ -26,15 +26,13 @@ from kivymd.app import MDApp
 from kivymd.material_resources import dp
 from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 
-Config.set("kivy", "log_level", "info")
-Config.write()
 
 def emulate_android_device(
     pixels_horizontal=1080,
-    pixels_vertical=1920,
+    pixels_vertical=2240,
     android_dpi=None,
     monitor_dpi=157,
-    display_size_mobile=5.2,
+    display_size_mobile=6.5,
 ):
     if android_dpi is None:
         android_dpi = int(
@@ -48,20 +46,8 @@ def emulate_android_device(
 
 if platform != "android":
     emulate_android_device()
-    LIVE_UI = 0
 else:
-    LIVE_UI = 0
     from libs.modules.AndroidAPI import statusbar, android_dark_mode
-
-KV = """
-#: import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
-#: import Window kivy.core.window.Window
-HotReloadViewer:
-    path: app.path_to_live_ui
-    errors: True
-    errors_text_color: 0.5, 0.5, 0.5, 1
-    errors_background_color: app.theme_cls.bg_dark
-"""
 
 
 font_file = "kivymd/fonts/Poppins-Regular.ttf"
@@ -124,17 +110,23 @@ class MainApp(MDApp):
         self.firebase = Firebase()
         threading.Thread(target=self.set_dark_mode, daemon=True).start()
         threading.Thread(target=self.set_user_mail, daemon=True).start()
-    
+
+    def build(self):
+        self.root = Root()
+        self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
+        if not self.signup:
+            self.root.LoginScreen.ids.password.focus = True
+
     def on_primary_palette(self, instance, value):
         self.theme_cls.primary_palette = value
         self.set_theme_colors()
 
     def set_theme_colors(self):
         self.text_color = (
-            self.generate_color(lightness=0.25)  # get_color_from_hex("611c05")
+            self.generate_color(lightness=0.25)
             if not self.dark_mode
-            else self.generate_color(lightness=0.91)  # get_color_from_hex("fde9e2")
-        )  # get_color_from_hex("611c05")
+            else self.generate_color(lightness=0.91)
+        )
         self.light_color = self.generate_color()
         self.bg_color_light = self.generate_color(lightness=0.98)
         self.bg_color_light_hex = self.generate_color(lightness=0.98, return_hex=True)
@@ -207,12 +199,6 @@ class MainApp(MDApp):
         Clock.schedule_once(
             lambda x: exec("self.entered_app = True", {"self": self}), 1
         )
-
-    def build(self):
-        self.root = Root()
-        self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
-        if not self.signup:
-            self.root.LoginScreen.ids.password.focus = True
 
     def show_toast_copied(self, item):
         toast("Item copied")
