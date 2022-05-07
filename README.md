@@ -1,11 +1,15 @@
 # Passlock
-Password Manager for android (Soon coming out for Windows.)
+<p align="center">
+    <img src="./assets/pass.png" height="150px" width="150px" />
+</p>
+
 
 <h3 align="center">
     <a href="https://www.youtube.com/watch?v=EOkMDc5mZWI">
         View presentaton
     </a>
 </h3>
+Password Manager for android (Soon coming out for Windows.)
 
 ## Features
 * Backup and sync passwords across devices.
