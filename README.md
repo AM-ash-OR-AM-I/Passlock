@@ -2,7 +2,7 @@
 Password Manager for android (Soon coming out for Windows.)
 
 <h3 align="center">
-    <a href="https://youtu.be/5-oYyPHZjAY">
+    <a href="https://www.youtube.com/watch?v=EOkMDc5mZWI">
         View presentaton
     </a>
 </h3>
