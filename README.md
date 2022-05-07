@@ -21,18 +21,12 @@ Password Manager for android (Soon coming out for Windows.)
 ## Screenshots
 
 <p align="center">
-    <img src="./screenshots/1.png" 
-    height = "380px"/>
-    <img src="./screenshots/2.png"
-    height = "380px"/>
-    <img src="./screenshots/4.png"
-    height = "380px"/>
+    <img src="./screenshots/1.png"/>
+    <img src="./screenshots/2.png"/>
+    <img src="./screenshots/4.png"/>
 </p>
 <p align="center">
-    <img src="./screenshots/5.png"
-    height = "380px"/>
-    <img src="./screenshots/6.png"
-    height = "380px"/>
-    <img src="./screenshots/7.png"
-    height = "380px"/>
+    <img src="./screenshots/5.png"/>
+    <img src="./screenshots/6.png"/>
+    <img src="./screenshots/7.png"/>
 </p>
