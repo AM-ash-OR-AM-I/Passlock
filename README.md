@@ -17,3 +17,16 @@ Password Manager for android (Soon coming out for Windows.)
 * Mimics Material v3 Monet engine, to use different color themes. (Self-made)
 * Make strong passwords through built in password generator.
 * Advanced finding algorithm to search for passwords easily.
+
+## Screenshots
+
+<p align="center">
+    <img src="./screenshots/1.png"/>
+    <img src="./screenshots/2.png"/>
+    <img src="./screenshots/4.png"/>
+</p>
+<p align="center">
+    <img src="./screenshots/5.png"/>
+    <img src="./screenshots/6.png"/>
+    <img src="./screenshots/7.png"/>
+</p>

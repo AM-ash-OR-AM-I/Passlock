@@ -22,7 +22,7 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,json
 #source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = bin, __pycache__, OtherStuff, PassLOCK_old, data
+source.exclude_dirs = bin, __pycache__, OtherStuff, PassLOCK_old, data, screenshots, screenshot_original
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
