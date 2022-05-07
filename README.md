@@ -22,17 +22,17 @@ Password Manager for android (Soon coming out for Windows.)
 
 <p align="center">
     <img src="./screenshots/1.png" 
-    height = "350px"/>
+    height = "380px"/>
     <img src="./screenshots/2.png"
-    height = "350px"/>
+    height = "380px"/>
     <img src="./screenshots/4.png"
-    height = "350px"/>
+    height = "380px"/>
 </p>
 <p align="center">
     <img src="./screenshots/5.png"
-    height = "350px"/>
+    height = "380px"/>
     <img src="./screenshots/6.png"
-    height = "350px"/>
+    height = "380px"/>
     <img src="./screenshots/7.png"
-    height = "350px"/>
+    height = "380px"/>
 </p>
