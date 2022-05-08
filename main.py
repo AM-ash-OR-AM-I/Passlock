@@ -8,7 +8,6 @@ from libs.screens.root import Root
 from libs.firebase import Firebase
 from libs.utils import *
 
-from kivy.config import Config
 from kivy.core.clipboard import Clipboard
 from kivy import platform
 from kivy.animation import Animation
@@ -262,23 +261,6 @@ class MainApp(MDApp):
         self.root.transition.mode = "pop"
         self.root.transition.direction = "right"
         self.root.current = self.screen_history[-1]
-
-    def open_exit_dialog(self):
-        if not self.exit_dialog:
-            self.exit_dialog = Dialog(
-                title="Exit",
-                text="Do you want to exit?",
-                buttons=[
-                    MDFillRoundFlatButton(
-                        text="YES", on_release=lambda x: self.stop(), _radius=dp(20)
-                    ),
-                    MDFlatButton(
-                        text="NO",
-                        on_release=lambda x: self.exit_dialog.dismiss(),
-                    ),
-                ],
-            )
-        self.exit_dialog.open()
 
     def on_dark_mode(self, instance, mode):
         if self.entered_app:
