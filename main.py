@@ -149,7 +149,8 @@ class MainApp(MDApp):
             sync_widget.stop()
             self.password_changed = False
 
-        def backup_failure():
+        def backup_failure(*args):
+            print(*args)
             self.backup_failure = True
             toast("Couldn't backup :(, Check your internet connection")
             sync_widget.stop()
@@ -158,7 +159,7 @@ class MainApp(MDApp):
         sync_widget.text = "Backing up.."
         sync_widget.start()
         self.firebase.backup_success = lambda *args: backup_success()
-        self.firebase.backup_failure = lambda *args: backup_failure()
+        self.firebase.backup_failure = lambda *args: backup_failure(*args)
         self.firebase.backup()
 
     def restore(self, sync_widget, user_id=None, decrypt=True):
@@ -347,9 +348,18 @@ class MainApp(MDApp):
             )
 
     def backup_on_pause(self):
+        def success():
+            toast("Backed up!")
+            self.backup_failure = False
+            
+        def failure(*args):
+            toast("Some Error occured couldn't backup!")
+            self.backup_failure = True
+            
         if self.auto_sync and self.password_changed:
             self.firebase.backup()
-            self.firebase.backup_success = lambda *args: toast("Backed up!")
+            self.firebase.backup_success = lambda *args: success()
+            self.firebase.backup_failure = lambda *args: failure(*args)
             self.password_changed = False
 
     def on_pause(self):

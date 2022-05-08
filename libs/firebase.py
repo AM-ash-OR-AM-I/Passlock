@@ -80,14 +80,12 @@ class Firebase:
         """
         Override this method to handle the result of the successful backup request.
         """
-        write_backup_failure(False)
         Logger.warn(f"Firebase: Backup success not implemented, {result}")
 
     def backup_failure(self, req, result):
         """
         Override this method to handle the result of the failure in backup request.
         """
-        write_backup_failure(True)
         Logger.warn(f"Firebase: Backup failure not implemented, {result}")
 
     def backup(self):
