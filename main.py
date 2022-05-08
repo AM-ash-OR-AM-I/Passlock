@@ -3,7 +3,6 @@ import threading
 from time import time
 from colorsys import rgb_to_hls, hls_to_rgb
 import os.path
-from libs.screens.classes import Dialog
 from libs.screens.root import Root
 from libs.firebase import Firebase
 from libs.utils import *
@@ -22,8 +21,6 @@ from kivy.clock import Clock
 
 from kivymd.toast import toast
 from kivymd.app import MDApp
-from kivymd.material_resources import dp
-from kivymd.uix.button import MDFlatButton, MDFillRoundFlatButton
 
 
 def emulate_android_device(
