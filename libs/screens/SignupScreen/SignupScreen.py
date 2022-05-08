@@ -69,7 +69,6 @@ class SignupScreen(MDScreen):
         self.firebase.signup_success = lambda req, result: signup_success(req, result)
         self.firebase.signup_failure = lambda req, result: signup_failure(req, result)
         self.firebase.signup(email, password)
-        app.root.load_screen("HomeScreen", set_current=False)
 
     def login(self, email, password):
         def login_success(req, result):
