@@ -52,6 +52,7 @@ font_file = "kivymd/fonts/Poppins-Regular.ttf"
 class MainApp(MDApp):
     dark_mode = BooleanProperty(False)
     extra_security = BooleanProperty(False)
+    entered_app = BooleanProperty(False)
     text_color = ColorProperty()
     primary_accent = ColorProperty()
     primary_palette = StringProperty()
@@ -62,7 +63,6 @@ class MainApp(MDApp):
     system_dark_mode = False
     auto_sync = False
     backup_failure = False
-    entered_app = False
 
     encryption_class = None
     update_dialog = None

@@ -17,14 +17,6 @@ from kivymd.uix.button import (
 )
 from kivymd.uix.dialog import MDDialog
 
-# ---- SetVariables ----
-Builder.load_string("""
-#: set icon_size 60
-#: import platform kivy.platform
-#: import Clock kivy.clock.Clock
-#: import colors kivymd.color_definitions.colors
-#: import window kivy.core.window.Window
-""")
 
 # ---- FloatingButton ----
 Builder.load_string("""
