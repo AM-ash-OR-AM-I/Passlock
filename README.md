@@ -10,7 +10,7 @@
     </a>
 </h3>
 Password Manager for android.
-<p align="center">
+<p align="left">
     <a href="https://github.com/AM-ash-OR-AM-I/PasslockDesktop">
         Check Out Passlock for desktop here
     </a>
