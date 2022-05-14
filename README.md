@@ -9,11 +9,7 @@
 </h3>
 
 Password Manager for android.
-<<<<<<< HEAD
 <p align="left">
-=======
-<p>
->>>>>>> ca9dfbb3f228440783cd9b19d40435b1c9f5fa42
     <a href="https://github.com/AM-ash-OR-AM-I/PasslockDesktop">
         Check Out Passlock for desktop.
     </a>
