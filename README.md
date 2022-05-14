@@ -9,7 +9,12 @@
         View presentaton
     </a>
 </h3>
-Password Manager for android (Soon coming out for Windows.)
+Password Manager for android.
+<h4 align="center">
+    <a href="https://github.com/AM-ash-OR-AM-I/PasslockDesktop">
+        Check Out Passlock for desktop here
+    </a>
+</h4>
 
 ## Features
 * Backup and sync passwords across devices.
