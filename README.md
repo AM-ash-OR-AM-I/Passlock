@@ -10,11 +10,11 @@
     </a>
 </h3>
 Password Manager for android.
-<h4 align="center">
+<p align="center">
     <a href="https://github.com/AM-ash-OR-AM-I/PasslockDesktop">
         Check Out Passlock for desktop here
     </a>
-</h4>
+</p>
 
 ## Features
 * Backup and sync passwords across devices.
