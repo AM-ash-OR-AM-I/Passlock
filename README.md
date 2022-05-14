@@ -16,11 +16,11 @@ Password Manager for android.
 </p>
 
 ## Features
-* Backup and sync passwords across devices.
+* Backup and sync passwords across devices 💻📱.
 * Encrypted passwords using AES 128bit for maximum security.
-* Mimics Material v3 Monet engine, to use different color themes. (Self-made)
-* Make strong passwords through built in password generator.
-* Advanced finding algorithm to search for passwords easily.
+* Mimics Material v3 Monet engine with 🌙 Dark Mode, to use different 🎨 color themes. (Self-made)
+* Make strong passwords 🔑 through built in password generator.
+* Advanced 🔍 finding algorithm to search for passwords easily.
 
 ## Releases
 
