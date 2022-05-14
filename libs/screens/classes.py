@@ -131,17 +131,17 @@ class RoundButton(MDFillRoundFlatButton):
     padding = [0, dp(20), 0, dp(20)]
     _radius = dp(25), dp(25)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.theme_cls.bind(primary_hue=self.update_md_bg_color)
+    # def __init__(self, **kwargs):
+    #     super().__init__(**kwargs)
+    #     self.theme_cls.bind(primary_hue=self.update_md_bg_color)
 
 
 class RoundIconButton(MDFillRoundFlatIconButton):
     _radius = dp(20)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.theme_cls.bind(primary_hue=self.update_md_bg_color)
+    # def __init__(self, **kwargs):
+    #     super().__init__(**kwargs)
+    #     self.theme_cls.bind(primary_hue=self.update_md_bg_color)
 
 
 # ---- The below string loads the update dialog box content ----

@@ -7,6 +7,8 @@ Behaviors/Background Color
 
 __all__ = ("BackgroundColorBehavior", "SpecificBackgroundColorBehavior")
 
+from typing import List
+
 from kivy.lang import Builder
 from kivy.properties import (
     BoundedNumericProperty,
@@ -21,6 +23,7 @@ from kivy.properties import (
 from kivy.utils import get_color_from_hex
 
 from kivymd.color_definitions import hue, palette, text_colors
+from kivymd.theming import ThemeManager
 
 from .elevation import CommonElevationBehavior
 
@@ -30,7 +33,7 @@ Builder.load_string(
 
 
 <BackgroundColorBehavior>
-    canvas.before:
+    canvas:
         PushMatrix
         Rotate:
             angle: self.angle
@@ -43,6 +46,19 @@ Builder.load_string(
             pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)
             radius: root.radius
             source: root.background
+        Color:
+            rgba: self.line_color if self.line_color else (0, 0, 0, 0)
+        Line:
+            width: root.line_width
+            rounded_rectangle:
+                [ \
+                self.x,
+                self.y, \
+                self.width, \
+                self.height, \
+                *self.radius, \
+                100, \
+                ]
         PopMatrix
 """,
     filename="BackgroundColorBehavior.kv",
@@ -133,6 +149,35 @@ class BackgroundColorBehavior(CommonElevationBehavior):
     and defaults to :attr:`r`, :attr:`g`, :attr:`b`, :attr:`a`.
     """
 
+    line_color = ColorProperty([0, 0, 0, 0])
+    """
+    If a custom value is specified for the `line_color parameter`, the border
+    of the specified color will be used to border the widget:
+
+    .. code-block:: kv
+
+        MDBoxLayout:
+            size_hint: .5, .2
+            md_bg_color: 0, 1, 1, .5
+            line_color: 0, 0, 1, 1
+            radius: [24, ]
+
+    .. versionadded:: 0.104.2
+
+    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0]`.
+    """
+
+    line_width = NumericProperty(1)
+    """
+    Border of the specified width will be used to border the widget.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`line_width` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
     angle = NumericProperty(0)
     background_origin = ListProperty(None)
 
@@ -147,7 +192,9 @@ class BackgroundColorBehavior(CommonElevationBehavior):
         super().__init__(**kwarg)
         self.bind(pos=self.update_background_origin)
 
-    def update_background_origin(self, *args):
+    def update_background_origin(
+        self, instance_md_widget, pos: List[float]
+    ) -> None:
         if self.background_origin:
             self._background_origin = self.background_origin
         else:
@@ -197,7 +244,9 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
         self.bind(background_palette=self._update_specific_text_color)
         self._update_specific_text_color(None, None)
 
-    def _update_specific_text_color(self, instance, value):
+    def _update_specific_text_color(
+        self, instance_theme_manager: ThemeManager, theme_style: str
+    ) -> None:
         if hasattr(self, "theme_cls"):
             palette = {
                 "Primary": self.theme_cls.primary_palette,

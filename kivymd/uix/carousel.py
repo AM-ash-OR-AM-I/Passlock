@@ -1,6 +1,6 @@
 """
 Components/Carousel
-=====================
+===================
 
 :class:`~kivy.uix.boxlayout.Carousel` class equivalent. Simplifies working
 with some widget properties. For example:
@@ -76,16 +76,14 @@ class MDCarousel(Carousel):
     def on_slide_progress(self, *args):
         """
         Event launched when the Slide animation is progress.
-        rememebr to bind and unbid to this method.
+        remember to bind and unbid to this method.
         """
-        pass
 
     def on_slide_complete(self, *args):
         """
         Event launched when the Slide animation is complete.
-        rememebr to bind and unbid to this method.
+        remember to bind and unbid to this method.
         """
-        pass
 
     def _position_visible_slides(self, *args):
         slides, index = self.slides, self.index
@@ -117,7 +115,7 @@ class MDCarousel(Carousel):
                 _current.pos = (xoff, y)
 
                 if self._scrolling:
-                    self.dispatch("on_slide_progress", (xoff, y))
+                    self.dispatch("on_slide_progress", xoff)
 
             if skip_next:
                 return
@@ -208,5 +206,10 @@ class MDCarousel(Carousel):
                 self.index = self._skip_slide
                 self._skip_slide = None
 
-        anim.bind(on_complete=_cmp)
+        anim.bind(
+            on_complete=_cmp,
+            on_progress=lambda *args: self.dispatch(
+                "on_slide_progress", self._offset
+            ),
+        )
         anim.start(self)

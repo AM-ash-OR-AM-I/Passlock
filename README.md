@@ -2,17 +2,16 @@
 <p align="center">
     <img src="./assets/pass.png" height="150px" width="150px" />
 </p>
-
-
 <h3 align="center">
     <a href="https://www.youtube.com/watch?v=EOkMDc5mZWI">
-        View presentaton
+        See video demo
     </a>
 </h3>
+
 Password Manager for android.
 <p align="left">
     <a href="https://github.com/AM-ash-OR-AM-I/PasslockDesktop">
-        Check Out Passlock for desktop here
+        Check Out Passlock for desktop.
     </a>
 </p>
 
@@ -22,6 +21,14 @@ Password Manager for android.
 * Mimics Material v3 Monet engine, to use different color themes. (Self-made)
 * Make strong passwords through built in password generator.
 * Advanced finding algorithm to search for passwords easily.
+
+## Releases
+
+<a href = "https://github.com/AM-ash-OR-AM-I/PasslockDesktop/releases/download/0.2/Passlock.msi"><h3>
+    Get <img src = "assets/pass.png" height = 20 valign = "bottom"> for Android
+    </h3> 
+</a>
+
 
 ## Screenshots
 

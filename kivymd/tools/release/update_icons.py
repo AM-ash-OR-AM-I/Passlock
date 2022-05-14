@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 Artem Bulgakov
+# Copyright (c) 2019-2021 Artem Bulgakov
 #
 # This file is distributed under the terms of the same license,
 # as the Kivy framework.
@@ -20,7 +20,9 @@ import zipfile
 
 import requests
 
-from kivymd.tools.release.git_commands import git_commit
+os.environ["KIVY_NO_ARGS"] = "1"
+
+from kivymd.tools.release.git_commands import git_commit  # NOQA E402
 
 # Paths to files in kivymd repository
 kivymd_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))

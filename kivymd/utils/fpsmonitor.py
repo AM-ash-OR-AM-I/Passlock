@@ -24,7 +24,7 @@ Builder.load_string(
 
     canvas.before:
         Color:
-            rgba: [0,0,0,0]
+            rgba: app.theme_cls.primary_dark
         Rectangle:
             pos: self.pos
             size: self.size
