@@ -112,7 +112,7 @@ class MainApp(MDApp):
         threading.Thread(target=self.set_user_mail, daemon=True).start()
 
     def build(self):
-        self.theme_cls.material_style = "M3"
+        # self.theme_cls.material_style = "M3"
         self.root = Root()
         Clock.schedule_once(lambda x: exec('self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")', {"self": self}))
         # self.root.load_screen("HomeScreen", set_current=False)

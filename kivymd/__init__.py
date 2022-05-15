@@ -33,7 +33,7 @@ import os
 import kivy
 from kivy.logger import Logger
 
-__version__ = "1.0.0.dev0"
+__version__ = "0.104.2.dev0"
 """KivyMD version."""
 
 release = False
@@ -52,9 +52,6 @@ fonts_path = os.path.join(path, f"fonts{os.sep}")
 
 images_path = os.path.join(path, f"images{os.sep}")
 """Path to images directory."""
-
-uix_path = os.path.join(path, "uix")
-"""Path to uix directory."""
 
 _log_message = (
     "KivyMD:"

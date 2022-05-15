@@ -20,12 +20,12 @@ from kivymd.uix.dialog import MDDialog
 
 # ---- FloatingButton ----
 Builder.load_string("""
-<FloatingButton@MDFloatingActionButton>
-    type:"custom"
-    size:dp(75),dp(75)
+<FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
+    user_font_size:80
     pos_hint:{'center_x':.5}
     md_bg_color:app.primary_accent
-    icon_color:self.theme_cls.primary_color
+    # theme_text_color:'Custom'
+    text_color:self.theme_cls.primary_color
 	_no_ripple_effect: True
     """
 )

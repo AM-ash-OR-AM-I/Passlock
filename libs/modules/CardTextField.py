@@ -21,8 +21,7 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 if platform == "android":
     from libs.modules.AndroidAPI import fix_back_button
 
-Builder.load_string("""
-<Card@MDBoxLayout+FakeRectangularElevationBehavior>                                    
+Builder.load_string("""                                
 <CardTextField>
     height: '60dp'
     size_hint_y:None
@@ -51,7 +50,7 @@ Builder.load_string("""
 		text_color:app.text_color
         size_hint_x:0.8
         font_size:root.label_size
-    Card:
+    MDCard:
         id: card
         height: root.height
         size_hint_y: None
@@ -150,9 +149,9 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
         if len(icon_list) and type(icon_list[0]) != list:
             self.icon_left = MDIconButton(
                 icon=self.icon_left_action[0],
-                theme_icon_color="Custom",
+                theme_text_color="Custom",
                 text_color=self.icon_color,
-                icon_size=self.icon_font_size,
+                user_font_size=self.icon_font_size,
                 pos_hint={"center_y": 0.5},
             )
             if len(icon_list) != 1:
@@ -162,9 +161,9 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
             for icons in icon_list:
                 self.icon_left = MDIconButton(
                     icon=icons[0],
-                    theme_icon_color="Custom",
+                    theme_text_color="Custom",
                     text_color=self.icon_color,
-                    icon_size=self.icon_font_size,
+                    user_font_size=self.icon_font_size,
                     pos_hint={"center_y": 0.5},
                 )
                 if len(icons) != 1:
@@ -177,9 +176,9 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
         if len(icon_list) and type(icon_list[0]) != list:
             self.icon_right = MDIconButton(
                 icon=self.icon_right_action[0],
-                theme_icon_color="Custom",
+                theme_text_color="Custom",
                 text_color=self.icon_color,
-                icon_size=self.icon_font_size,
+                user_font_size=self.icon_font_size,
                 pos_hint={"center_y": 0.5},
             )
             if len(icon_list) != 1:
@@ -189,9 +188,9 @@ class CardTextField(MDRelativeLayout, ThemableBehavior):
             for icons in icon_list:
                 self.icon_right = MDIconButton(
                     icon=icons[0],
-                    theme_icon_color="Custom",
+                    theme_text_color="Custom",
                     text_color=self.icon_color,
-                    icon_size=self.icon_font_size,
+                    user_font_size=self.icon_font_size,
                     pos_hint={"center_y": 0.5},
                 )
                 if len(icons) != 1:

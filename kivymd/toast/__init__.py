@@ -5,7 +5,7 @@ from kivy.utils import platform
 if platform == "android":
     try:
         from .androidtoast import toast
-    except ModuleNotFoundError:
+    except BaseException:
         from .kivytoast import toast
 else:
     from .kivytoast import toast

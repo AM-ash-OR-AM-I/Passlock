@@ -345,7 +345,6 @@ __all__ = (
 from io import BytesIO
 from weakref import WeakMethod, ref
 
-from kivy import Logger
 from kivy.clock import Clock
 from kivy.core.image import Image as CoreImage
 from kivy.lang import Builder
@@ -485,9 +484,6 @@ class CommonElevationBehavior(Widget):
 
 
             Example().run()
-
-    :attr:`elevation` is an :class:`~kivy.properties.BoundedNumericProperty`
-    and defaults to `0`.
     """
 
     # Shadow rendering properties.
@@ -925,9 +921,7 @@ class CommonElevationBehavior(Widget):
         Works similar to an `__after_init__` call inside a widget.
         """
 
-        from kivymd.uix.card import MDCard
-
-        if self.elevation is None and not issubclass(self.__class__, MDCard):
+        if self.elevation is None:
             self.elevation = 10
         if self._fake_elevation is False:
             self._update_shadow(self, self.elevation)
@@ -1114,19 +1108,13 @@ class CommonElevationBehavior(Widget):
             ).texture
             return
 
-    def _get_center(self):
-        center = [self.pos[0] + self.width / 2, self.pos[1] + self.height / 2]
-        return center
-
     def __draw_shadow__(self, origin, end, context=None):
-        Logger.warning(
-            f"KivyMD: "
-            f"If you see this error, this means that either youre using "
-            f"`CommonElevationBehavio`r directly or your 'shader' dont have a "
-            f"`_draw_shadow` instruction, remember to overwrite this function"
-            f"to draw over the image context. Тhe figure you would like. "
-            f"Or your class {self.__class__.__name__} is not inherited from "
-            f"any of the classes {__all__}"
+        raise NotImplementedError(
+            "KivyMD:\n"
+            "If you see this error, this means that either youre using "
+            "`CommonElevationBehavio`r directly or your 'shader' dont have a "
+            "`_draw_shadow` instruction, remember to overwrite this function"
+            "to draw over the image context. the figure you would like."
         )
 
 
@@ -1331,6 +1319,20 @@ class FakeRectangularElevationBehavior(CommonElevationBehavior):
     `FakeCircularElevationBehavior` will load prefabricated textures to
     optimize loading times.
 
+    Also, this class allows you to overwrite real time shadows, in the sence that
+    if you are using a standard widget, like a button, MDCard or Toolbar, you can
+    include this class after the base class to optimize the loading times.
+
+    As an example of this flexibility:
+
+    .. code-block:: python
+
+        class Custom_rectangular_Card(
+            MDCard,
+            FakeRectangularElevationBehavior
+        ):
+            [...]
+
     .. note:: About rounded corners:
         be careful, since this behavior is a mockup and will not draw any
         rounded corners.
@@ -1371,10 +1373,9 @@ class FakeRectangularElevationBehavior(CommonElevationBehavior):
             self.soft_shadow_size = (soft_width, soft_height)
             self.hard_shadow_size = (width, height)
             # Set ``soft_shadow`` parameters.
-            center_x, center_y = self._get_center()
             self.hard_shadow_pos = self.soft_shadow_pos = (
-                center_x - soft_width / 2,
-                center_y - soft_height / 2 - dp(self._elevation * 0.5),
+                self.center_x - soft_width / 2,
+                self.center_y - soft_height / 2 - dp(self._elevation * 0.5),
             )
             # Set transparency
             self._soft_shadow_a = 0.1 * 1.05 ** self._elevation
@@ -1424,6 +1425,20 @@ class FakeCircularElevationBehavior(CommonElevationBehavior):
     `FakeCircularElevationBehavior` will load prefabricated textures to optimize
     loading times.
 
+    Also, this class allows you to overwrite real time shadows, in the sence that
+    if you are using a standard widget, like a button, MDCard or Toolbar, you can
+    include this class afher the base class to optimize the loading times.
+
+    As an example of this flexibility:
+
+    .. code-block:: python
+
+        class Custom_Circular_Card(
+            MDCard,
+            FakeCircularElevationBehavior
+        ):
+            [...]
+
     .. note:: About rounded corners:
         be careful, since this behavior is a mockup and will not draw any rounded
         corners. only perfect ellipses.
@@ -1441,17 +1456,16 @@ class FakeCircularElevationBehavior(CommonElevationBehavior):
             # set shadow size
             width = self.width * 2
             height = self.height * 2
-            center_x, center_y = self._get_center()
 
-            x = center_x - width / 2
+            x = self.center_x - width / 2
             self.soft_shadow_size = (width, height)
             self.hard_shadow_size = (width, height)
             # set ``soft_shadow`` parameters
-            y = center_y - height / 2 - dp(0.5 * self._elevation)
+            y = self.center_y - height / 2 - dp(0.5 * self._elevation)
             self.soft_shadow_pos = (x, y)
 
             # set ``hard_shadow`` parameters
-            y = center_y - height / 2 - dp(0.5 * self._elevation)
+            y = self.center_y - height / 2 - dp(0.5 * self._elevation)
             self.hard_shadow_pos = (x, y)
 
             # shadow transparency

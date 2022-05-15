@@ -1,6 +1,6 @@
 """
-Components/BoxLayout
-====================
+Components/Box Layout
+=====================
 
 :class:`~kivy.uix.boxlayout.BoxLayout` class equivalent. Simplifies working
 with some widget properties. For example:
@@ -82,8 +82,6 @@ Equivalent
     size_hint: None, None
     size: self.minimum_size
 """
-
-__all__ = ("MDBoxLayout",)
 
 from kivy.uix.boxlayout import BoxLayout
 

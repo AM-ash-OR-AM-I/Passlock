@@ -1,6 +1,6 @@
 """
-Components/GridLayout
-=====================
+Components/Grid Layout
+======================
 
 :class:`~kivy.uix.gridlayout.GridLayout` class equivalent. Simplifies working
 with some widget properties. For example:
@@ -65,7 +65,7 @@ Equivalent
 .. code-block:: kv
 
     size_hint_x: None
-    width: self.minimum_width
+    height: self.minimum_width
 
 .. adaptive_size:
 adaptive_size

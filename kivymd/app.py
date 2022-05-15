@@ -4,13 +4,14 @@ Themes/Material App
 
 This module contains :class:`MDApp` class that is inherited from
 :class:`~kivy.app.App`. :class:`MDApp` has some properties needed for ``KivyMD``
-library (like :attr:`~MDApp.theme_cls`). You can turn on the monitor displaying
-the current ``FPS`` value in your application:
+library (like :attr:`~MDApp.theme_cls`).
+
+You can turn on the monitor displaying the current ``FPS`` value in your application:
 
 .. code-block:: python
 
     KV = '''
-    MDScreen:
+    Screen:
 
         MDLabel:
             text: "Hello, World!"
@@ -40,21 +41,16 @@ the current ``FPS`` value in your application:
 
 __all__ = ("MDApp",)
 
-import os
-
 from kivy.app import App
-from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 
 from kivymd.theming import ThemeManager
 
 
 class FpsMonitoring:
-    """Implements a monitor to display the current FPS in the toolbar."""
+    """Adds a monitor to display the current FPS in the toolbar."""
 
-    def fps_monitor_start(self) -> None:
-        """Adds a monitor to the main application window."""
-
+    def fps_monitor_start(self):
         from kivy.core.window import Window
 
         from kivymd.utils.fpsmonitor import FpsMonitor
@@ -65,11 +61,6 @@ class FpsMonitoring:
 
 
 class MDApp(App, FpsMonitoring):
-    """
-    Application class, see :class:`~kivy.app.App` class documentation for more
-    information.
-    """
-
     theme_cls = ObjectProperty()
     """
     Instance of :class:`~ThemeManager` class.
@@ -98,26 +89,3 @@ class MDApp(App, FpsMonitoring):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls = ThemeManager()
-
-    def load_all_kv_files(self, path_to_directory: str) -> None:
-        """
-        Recursively loads KV files from the selected directory.
-
-        .. versionadded:: 1.0.0
-        """
-
-        for path_to_dir, dirs, files in os.walk(path_to_directory):
-            if (
-                "venv" in path_to_dir
-                or ".buildozer" in path_to_dir
-                or "kivymd/tools/patterns/MVC" in path_to_dir
-            ):
-                continue
-            for name_file in files:
-                if (
-                    os.path.splitext(name_file)[1] == ".kv"
-                    and name_file != "style.kv"  # if use PyInstaller
-                    and "__MACOS" not in path_to_dir  # if use Mac OS
-                ):
-                    path_to_kv_file = os.path.join(path_to_dir, name_file)
-                    Builder.load_file(path_to_kv_file)
