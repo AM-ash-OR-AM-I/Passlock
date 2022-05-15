@@ -114,8 +114,8 @@ class MainApp(MDApp):
     def build(self):
         self.theme_cls.material_style = "M3"
         self.root = Root()
-        self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
         self.root.load_screen("HomeScreen", set_current=False)
+        self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
         if not self.signup:
             self.root.LoginScreen.ids.password.focus = True
 
