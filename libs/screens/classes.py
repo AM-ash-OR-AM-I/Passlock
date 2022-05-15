@@ -32,12 +32,10 @@ Builder.load_string("""
 
 
 # ---- BorderCard and PasswordCard (Child Classes of CardTextField) ----
-Builder.load_string("""
-#: set icon_size 30                    
+Builder.load_string("""              
 #: import CardTextField libs.modules.CardTextField.CardTextField
 <BorderCard@CardTextField>
 	inactive_color:app.theme_cls.primary_light[:-1]+[.4]
-	icon_font_size:icon_size
 	thickness:dp(1) if platform == 'android' else dp(1.4)
 	icon_color:app.theme_cls.primary_light
 
