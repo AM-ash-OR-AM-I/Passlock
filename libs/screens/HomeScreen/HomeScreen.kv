@@ -38,7 +38,6 @@
 		adaptive_height:True
 		text:'CREATE'
         size_hint_x:.85
-		font_name:'RobotoMedium'
 		font_size:'18sp'
 		pos_hint:{'center_x':.5}
 		on_release:
@@ -71,15 +70,15 @@
 				label_name:'Password'
 				text:root.initial_random
 				icon_right_action:
-					[['content-copy', lambda: app.show_toast_copied(f"{self.text}")],
-					['reload', lambda: root.generate_password()]]
+                    [['content-copy', lambda *a: app.show_toast_copied("")],
+					['reload', lambda *a: root.generate_password()]]
 
 		
 		MDBoxLayout:
 			orientation:'horizontal'
 			size_hint_y: None
 			height:"40dp"
-			padding:dp(40),0,dp(30),0
+			padding:dp(50),0,dp(40),0
 			MDLabel:
 				text: str(int(slider.value))
 				size_hint_x: None
@@ -106,7 +105,6 @@
 			adaptive_height:True
 			text:'GENERATE'
             size_hint_x:.85
-			font_name:'RobotoMedium'
 			font_size:'18sp'
 			pos_hint:{'center_x':.5}
 			on_release:
@@ -226,7 +224,6 @@
 		tab_indicator_anim:True
 		tab_indicator_height:'3dp'
 		tab_hint_x:True
-		set_elevation:5
 		show_anim:True
 		text_color_active:app.theme_cls.primary_color
 		text_color_normal:[.75,.75,.75,1]

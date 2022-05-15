@@ -16,7 +16,8 @@ Builder.load_string("""
     elevation: root.elevation
     md_bg_color: root.md_bg_color if root.md_bg_color !=[0,0,0,0] else [0,0,0,0] 
     pos_hint:{'top':1}
-    spacing : '5dp'
+    spacing: '10dp'
+    font_style:None
     height: root.theme_cls.standard_increment + root.increase_height
 
     MDBoxLayout:
@@ -32,7 +33,7 @@ Builder.load_string("""
             text: root.title
             theme_text_color:'Custom'
             # font_size: root.text_height  if root.text_height else 0
-            font_style: "H6"
+            font_style: "H6" if not root.font_style else root.font_style
             font_name:'Poppins'
             text_color:app.theme_cls.text_color if root.icon_color is None else root.icon_color
             shorten: True

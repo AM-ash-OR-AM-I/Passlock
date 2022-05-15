@@ -20,7 +20,12 @@ from kivymd.uix.dialog import MDDialog
 
 # ---- FloatingButton ----
 Builder.load_string("""
-<FloatingButton@MDFloatingActionButton+FakeCircularElevationBehavior>
+<FloatingButton@MDFloatingActionButton>
+    type:"custom"
+    size:dp(75),dp(75)
+    pos_hint:{'center_x':.5}
+    md_bg_color:app.primary_accent
+    icon_color:self.theme_cls.primary_color
 	_no_ripple_effect: True
     """
 )
@@ -28,6 +33,7 @@ Builder.load_string("""
 
 # ---- BorderCard and PasswordCard (Child Classes of CardTextField) ----
 Builder.load_string("""
+#: set icon_size 30                    
 #: import CardTextField libs.modules.CardTextField.CardTextField
 <BorderCard@CardTextField>
 	inactive_color:app.theme_cls.primary_light[:-1]+[.4]
@@ -100,7 +106,8 @@ class SyncWidget(MDBoxLayout):
 
 class LoadingScreen(ModalView):
     is_open = False
-    Builder.load_string("""
+    Builder.load_string(
+        """
 <LoadingScreen>:
     auto_dismiss: False
     background_color: 0, 0, 0, 0
@@ -128,8 +135,15 @@ class LoadingScreen(ModalView):
 
 
 class RoundButton(MDFillRoundFlatButton):
-    padding = [0, dp(20), 0, dp(20)]
-    _radius = dp(25), dp(25)
+    Builder.load_string(
+        """
+<RoundButton>
+    md_bg_color:app.primary_accent
+    theme_text_color:'Custom'
+    text_color:app.theme_cls.primary_color
+"""
+    )
+    padding = [0, dp(15), 0, dp(15)]
 
     # def __init__(self, **kwargs):
     #     super().__init__(**kwargs)
@@ -145,7 +159,8 @@ class RoundIconButton(MDFillRoundFlatIconButton):
 
 
 # ---- The below string loads the update dialog box content ----
-Builder.load_string("""
+Builder.load_string(
+    """
 <UpdateContent@MDBoxLayout>
     adaptive_height: True
     padding: 0, dp(15), 0, 0
@@ -163,9 +178,28 @@ Builder.load_string("""
 
 class Dialog(MDDialog):
     radius = [dp(30)] * 4
+    _anim_duration = 0.25
+    overlay_color = [0, 0, 0, 0.3]
 
     def update_bg_color(self, *args):
         self.md_bg_color = self.app.primary_accent
+
+    def _opening_animation(self):
+        self.opacity = 0
+        anim = Animation(opacity=1, duration=self._anim_duration, t="out_quad")
+        anim.start(self)
+
+    def _dismiss_animation(self):
+        anim = Animation(opacity=0, duration=self._anim_duration - 0.05, t="out_quad")
+        anim.start(self)
+
+    def on_pre_open(self):
+        self._opening_animation()
+        return super().on_pre_open()
+
+    def on_dismiss(self):
+        self._dismiss_animation()
+        # return super().on_dismiss()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -180,13 +214,12 @@ class DialogButton(MDFlatButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_text_color = "Custom"
-        self.font_name = "RobotoMedium"
         self.font_size = "16sp"
-        self.text_color = self.theme_cls.primary_color
 
 
 class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
-    Builder.load_string("""
+    Builder.load_string(
+        """
 <ButtonLabel@ButtonBehavior+MDLabel>
 <CheckboxLabel>
 	adaptive_size:True
@@ -202,7 +235,6 @@ class CheckboxLabel(ThemableBehavior, RectangularRippleBehavior, MDBoxLayout):
 		size_hint: None, None
 		size: "36dp", "36dp"
         active: root.active
-		selected_color:app.theme_cls.primary_light
 		unselected_color: [.8,.8,.8,1]
         on_active: 
             root.active = check.active

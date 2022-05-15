@@ -69,17 +69,17 @@
         orientation:'vertical'
         Toolbar:
             title:'Settings'
-            height:'60dp'
-            md_bg_color:app.primary_accent
+            height:'70dp'
+            md_bg_color:app.bg_color
             padding:dp(15),0
-            elevation:5
-            icon_color:app.theme_cls.primary_color
+            icon_color:app.text_color
+            font_style:"H5"
             left_action_items:[['arrow-left',lambda x: app.root.goback()]]
         ScrollView:
             MDBoxLayout:
                 adaptive_height:True
                 pos_hint:{"top":1}
-                padding:0, dp(15)
+                padding:0, dp(5)
                 orientation:'vertical'
                 spacing:'15dp'
                 MDBoxLayout:

@@ -64,13 +64,7 @@
                         root.login_button_pressed(password.text)
 				FloatingButton:
 					id: lock
-					elevation:10
 					icon:'login'
-					user_font_size:80
-					user_font_size:80
-					md_bg_color:app.light_color if not app.dark_mode else app.dark_color
-					theme_text_color:'Custom'
-					text_color:app.theme_cls.primary_color
 					on_press:
 						root.login_button_pressed(password.text)
 					pos_hint:{'center_x':.5}

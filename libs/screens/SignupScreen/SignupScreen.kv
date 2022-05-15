@@ -2,9 +2,9 @@
 #: import platform kivy.platform
 #: import Clock kivy.clock.Clock
 #: import colors kivymd.color_definitions.colors
-#: import window kivy.core.window.Window
-#: set height window.height
-#: set width window.width
+#: import Window kivy.core.window.Window
+#: set height Window.height
+#: set width Window.width
 #: set rad width/2
 #: set lbl_size '18sp'
 
@@ -55,7 +55,6 @@
 				label_name:'Email Address'
 				hint_text:'username@mail.com' if root.show_signup else "Your mail name"
 				pos_hint:{'center_x':.5}
-				icon_left_action:['account']
 			MDBoxLayout:
 				adaptive_height:True
 				orientation:'vertical'
@@ -69,13 +68,7 @@
                         root.button_pressed(email.text, password.text)
 				FloatingButton:
 					id: lock
-					elevation:10
 					icon:'login' if not root.show_signup else "lock"
-					user_font_size:80
-					user_font_size:80
-					md_bg_color:app.light_color if not app.dark_mode else app.dark_color
-					theme_text_color:'Custom'
-					text_color:app.theme_cls.primary_color
 					on_release:
 						root.button_pressed(email.text, password.text)
 					pos_hint:{'center_x':.5}
