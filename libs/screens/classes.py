@@ -141,6 +141,7 @@ class RoundButton(MDFillRoundFlatButton):
     text_color:app.theme_cls.primary_color
 """
     )
+    _radius = dp(28), dp(28)
     padding = [0, dp(15), 0, dp(15)]
 
     # def __init__(self, **kwargs):
