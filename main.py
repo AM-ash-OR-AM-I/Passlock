@@ -22,6 +22,8 @@ from kivy.clock import Clock
 from kivymd.toast import toast
 from kivymd.app import MDApp
 
+# TODO: Add date and time while backing up password to prevent restore all the time.
+
 
 def emulate_android_device(
     pixels_horizontal=1080,
