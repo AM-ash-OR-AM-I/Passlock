@@ -114,8 +114,10 @@ class MainApp(MDApp):
     def build(self):
         self.theme_cls.material_style = "M3"
         self.root = Root()
-        self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")
+        Clock.schedule_once(lambda x: exec('self.root.load_screen("SignupScreen" if self.signup else "LoginScreen")', {"self": self}))
+        # Clock.schedule_once(lambda x: exec('self.root.load_screen("HomeScreen", set_current=False)', {"self": self}))
         self.root.load_screen("HomeScreen", set_current=False)
+        
         if not self.signup:
             self.root.LoginScreen.ids.password.focus = True
 
