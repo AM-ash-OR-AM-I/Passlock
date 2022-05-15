@@ -29,7 +29,7 @@ source.exclude_dirs = bin, __pycache__, OtherStuff, PassLOCK_old, data, screensh
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.2.1
+version = 0.3
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
