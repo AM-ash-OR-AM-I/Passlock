@@ -1,12 +1,16 @@
-# Passlock
 <p align="center">
     <img src="./assets/pass.png" height="150px" width="150px" />
 </p>
+
+<h2 align="center">
+    Passlock for android.
+</h2> 
+
 <h3 align="center">
     <a href="https://www.youtube.com/watch?v=EOkMDc5mZWI">
         See video demo
     </a>
-</h3>
+</h3> 
 
 Password Manager for android.
 <p align="left">
