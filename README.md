@@ -28,7 +28,7 @@ Password Manager for android.
 
 ## Releases
 
-<a href = "https://github.com/AM-ash-OR-AM-I/PasslockDesktop/releases/download/0.2/Passlock.msi"><h3>
+<a href = "https://github.com/AM-ash-OR-AM-I/Passlock/releases/tag/v0.3"><h3>
     Get <img src = "assets/pass.png" height = 20 valign = "bottom"> for Android
     </h3> 
 </a>
