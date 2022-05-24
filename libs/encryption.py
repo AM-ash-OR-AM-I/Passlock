@@ -66,6 +66,7 @@ class Encryption:
     def delete(self, name: str) -> None:
         data = load_passwords()
         del data[name]
+        del app.encrypted_keys[self.decrypt(name)]
         write_passwords(data)
         app.password_changed = True
 
@@ -132,8 +133,8 @@ class Encryption:
                             text=text_wo_space, name=name_wo_space, priority=-0.02
                         )
 
-                    if max_value > 0.1:  # If no letters match don't add.
-                        weighted_pass[(name, password)] = max_value
+                if max_value > 0.1:  # If no letters match don't add.
+                    weighted_pass[(name, password)] = max_value
 
                 return False
 
@@ -222,5 +223,6 @@ class Encryption:
 
                     # Uses approximate search to find the password.
                     fuzzy_search(text, name, password)
-
-        return sort_keys(weighted_pass)
+        
+        result = sort_keys(weighted_pass)
+        return result
