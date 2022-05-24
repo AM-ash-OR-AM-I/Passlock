@@ -23,6 +23,7 @@ from kivymd.toast import toast
 from kivymd.app import MDApp
 
 # TODO: Add date and time while backing up password to prevent restore all the time.
+# TODO: fix delete not working properly
 
 
 def emulate_android_device(
