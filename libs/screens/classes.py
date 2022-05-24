@@ -144,9 +144,9 @@ class RoundButton(MDFillRoundFlatButton):
     _radius = dp(28), dp(28)
     padding = [0, dp(15), 0, dp(15)]
 
-    # def __init__(self, **kwargs):
-    #     super().__init__(**kwargs)
-    #     self.theme_cls.bind(primary_hue=self.update_md_bg_color)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.theme_cls.bind(primary_hue=self.update_md_bg_color)
 
 
 class RoundIconButton(MDFillRoundFlatIconButton):
