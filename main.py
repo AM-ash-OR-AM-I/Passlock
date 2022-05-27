@@ -23,7 +23,8 @@ from kivymd.toast import toast
 from kivymd.app import MDApp
 
 # TODO: Add date and time while backing up password to prevent restore all the time.
-# TODO: fix delete not working properly
+# FIXME: fix delete not working properly
+# FIXME: on switching app in android device scroll view shifts up and nothing is visible..
 
 
 def emulate_android_device(
