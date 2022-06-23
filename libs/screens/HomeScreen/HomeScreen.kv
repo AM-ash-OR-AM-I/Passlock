@@ -75,7 +75,7 @@
 				label_name:'Password'
 				text:root.initial_random
 				icon_right_action:
-                    [['content-copy', lambda *a: app.show_toast_copied("")],
+                    [['content-copy', lambda *a: app.show_toast_copied(self.text)],
 					['reload', lambda *a: root.generate_password()]]
 
 		
