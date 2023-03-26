@@ -27,7 +27,7 @@ Password Manager for android.
 * Advanced 🔍 finding algorithm to search for passwords easily.
 
 ## Releases
-#### <a href="https://github.com/AM-ash-OR-AM-I/Passlock">📱Android</a>
+#### <a href="https://github.com/AM-ash-OR-AM-I/Passlock/releases">📱Android</a>
 #### 🧑🏻‍💻<a href="https://github.com/AM-ash-OR-AM-I/PasslockDesktop/releases">Linux & Windows</a>
 
 ## Screenshots
