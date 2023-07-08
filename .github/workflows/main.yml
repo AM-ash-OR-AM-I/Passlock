@@ -1,40 +1,28 @@
-name: Build Android APK
-on:
-  push:
-    branches:
-      - main
+name: Build APK
+on: [push,pull_request]
 
 jobs:
   build-android:
     name: Build for Android
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      # - name: Build with Buildozer
-      #   uses: ArtemSBulgakov/buildozer-action@v1
-      #   id: buildozer
-      #   with:
-      #     buildozer_version: stable
       - name: Build with Buildozer
-        id: buildozer
         run: |
-          pip3 install --user --upgrade buildozer
+          pip3 install --user --upgrade buildozer Cython virtualenv
+          export PATH=$PATH:~/.local/bin/
+          export APP_ANDROID_ACCEPT_SDK_LICENSE=1
+          export BUILDOZER_WARN_ON_ROOT=0
           sudo apt update
           sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
-          export PATH=$PATH:~/.local/bin/
-          pip3 uninstall cython
-          pip3 install -U cython
-          cd $GITHUB_WORKSPACE
+          cd ${{ github.workspace }}
           buildozer android debug
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Passlock.apk
-          path: ${{ steps.buildozer.outputs.filename }}
+          name: package
+          path: bin/*.apk
       
       - name: Apk Release
         uses: softprops/action-gh-release@v1
@@ -42,4 +30,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: ${{ steps.buildozer.outputs.filename }}
+          files: bin/*.apk
