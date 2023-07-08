@@ -47,9 +47,6 @@ if platform == "android":
         print("Setting StatusBar Color")  # Updates everytime color is changed
         window.clearFlags(WindowManager.FLAG_TRANSLUCENT_STATUS)
         try:
-            """
-            Below code (Comment Line) is kinda useless still I've it incase I need it future.
-            """
             window.addFlags(WindowManager.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             if theme == "black":
                 window.setNavigationBarColor(Color.parseColor("#" + status_color))
