@@ -44,12 +44,13 @@ requirements = python3,kivy==2.0.0,pillow,pycryptodome
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-# presplash.filename = ./assets/pass_presplash.png
+#presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
 icon.filename = assets/pass.png
 
-# (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
+# (list) Supported orientations
+# Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
 orientation = portrait
 
 # (list) List of service to declare
@@ -62,11 +63,8 @@ orientation = portrait
 #
 # author = © Copyright Info
 
-# change the major version of python used by the app
-osx.python_version = 3
-
 # Kivy version to use
-osx.kivy_version = 1.9.1
+osx.kivy_version = 2.2.0
 
 #
 # Android specific
@@ -101,20 +99,17 @@ android.permissions = INTERNET
 # (int) Target Android API, should be as high as possible.
 android.api = 32
 
-# (int) Minimum API your APK will support.
+# (int) Minimum API your APK / AAB will support.
 #android.minapi = 21
 
 # (int) Android SDK version to use
 #android.sdk = 20
 
 # (str) Android NDK version to use
-#android.ndk = 19b
+#android.ndk = 23b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 #android.ndk_api = 21
-
-# (bool) Use --private data storage (True) or --dir public storage (False)
-#android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
 #android.ndk_path =
@@ -152,7 +147,7 @@ android.api = 32
 #android.extra_manifest_application_arguments = ./src/android/extra_manifest_application_arguments.xml
 
 # (str) Full name including package path of the Java class that implements Python Service
-# use that parameter to set custom Java class instead of PythonService
+# use that parameter to set custom Java class which extends PythonService
 #android.service_class_name = org.kivy.android.PythonService
 
 # (str) Android app theme, default is ok for Kivy-based app
@@ -160,6 +155,9 @@ android.api = 32
 
 # (list) Pattern to whitelist for the whole project
 #android.whitelist =
+
+# (bool) If True, your application will be listed as a home app (launcher app)
+# android.home_app = False
 
 # (str) Path to a custom whitelist file
 #android.whitelist_src =
@@ -186,13 +184,25 @@ android.api = 32
 # 2) android.add_assets = source_asset_path:destination_asset_relative_path
 #android.add_assets =
 
+# (list) Put these files or directories in the apk res directory.
+# The option may be used in three ways, the value may contain one or zero ':'
+# Some examples:
+# 1) A file to add to resources, legal resource names contain ['a-z','0-9','_']
+# android.add_resources = my_icons/all-inclusive.png:drawable/all_inclusive.png
+# 2) A directory, here  'legal_icons' must contain resources of one kind
+# android.add_resources = legal_icons:drawable
+# 3) A directory, here 'legal_resources' must contain one or more directories, 
+# each of a resource kind:  drawable, xml, etc...
+# android.add_resources = legal_resources
+#android.add_resources =
+
 # (list) Gradle dependencies to add
 #android.gradle_dependencies =
 
 # (bool) Enable AndroidX support. Enable when 'android.gradle_dependencies'
 # contains an 'androidx' package, or any package from Kotlin source.
 # android.enable_androidx requires android.api >= 28
-# android.enable_androidx = True
+#android.enable_androidx = True
 
 # (list) add java compile options
 # this can for example be necessary when importing certain java libraries using the 'android.gradle_dependencies' option
@@ -224,8 +234,15 @@ android.api = 32
 # (str) XML file to include as an intent filters in <activity> tag
 #android.manifest.intent_filters =
 
+# (list) Copy these files to src/main/res/xml/ (used for example with intent-filters)
+#android.res_xml = PATH_TO_FILE,
+
 # (str) launchMode to set for the main activity
 #android.manifest.launch_mode = standard
+
+# (str) screenOrientation to set for the main activity.
+# Valid values can be found at https://developer.android.com/guide/topics/manifest/activity-element
+#android.manifest.orientation = fullSensor
 
 # (list) Android additional libraries to copy into libs/armeabi
 #android.add_libs_armeabi = libs/android/*.so
@@ -249,7 +266,7 @@ android.api = 32
 #android.uses_library =
 
 # (str) Android logcat filters to use
-android.logcat_filters = *:S python:D
+#android.logcat_filters = *:S python:D
 
 # (bool) Android logcat only display log for activity's pid
 #android.logcat_pid_only = False
@@ -260,7 +277,8 @@ android.logcat_filters = *:S python:D
 # (bool) Copy library instead of making a libpymodules.so
 #android.copy_libs = 1
 
-# (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
+# (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
+# In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
 android.archs = arm64-v8a
 
 # (int) overrides automatic versionCode computation (used in build.gradle)
@@ -279,8 +297,14 @@ android.allow_backup = True
 # Usage example : android.manifest_placeholders = [myCustomUrl:\"org.kivy.customurl\"]
 # android.manifest_placeholders = [:]
 
-# (bool) disables the compilation of py to pyc/pyo files when packaging
-# android.no-compile-pyo = True
+# (bool) Skip byte compile for .py files
+# android.no-byte-compile-python = False
+
+# (str) The format used to package the app for release mode (aab or apk or aar).
+# android.release_artifact = aab
+
+# (str) The format used to package the app for debug mode (apk or aar).
+# android.debug_artifact = apk
 
 #
 # Python for android (p4a) specific
@@ -298,7 +322,7 @@ android.allow_backup = True
 # (str) python-for-android specific commit to use, defaults to HEAD, must be within p4a.branch
 #p4a.commit = HEAD
 
-# (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
+# (str) python-for-android git clone directory
 #p4a.source_dir =
 
 # (str) The directory in which python-for-android should look for your own build recipes (if any)
@@ -324,6 +348,7 @@ android.allow_backup = True
 #p4a.extra_args =
 
 
+
 #
 # iOS specific
 #
@@ -339,7 +364,7 @@ ios.kivy_ios_branch = master
 #ios.ios_deploy_dir = ../ios_deploy
 # Or specify URL and branch
 ios.ios_deploy_url = https://github.com/phonegap/ios-deploy
-ios.ios_deploy_branch = 1.10.0
+ios.ios_deploy_branch = 1.12.2
 
 # (bool) Whether or not to sign the code
 ios.codesign.allowed = false
@@ -381,7 +406,7 @@ warn_on_root = 1
 # (str) Path to build artifact storage, absolute or relative to spec file
 # build_dir = ./.buildozer
 
-# (str) Path to build output (i.e. .apk, .ipa) storage
+# (str) Path to build output (i.e. .apk, .aab, .ipa) storage
 # bin_dir = ./bin
 
 #    -----------------------------------------------------------------------------
