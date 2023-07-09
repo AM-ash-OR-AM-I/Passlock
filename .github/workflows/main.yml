@@ -15,10 +15,9 @@ jobs:
       - name: Create env file
         run: |
           cd ${{ github.workspace }}
-          touch .env
-          echo WEB_API_KEY=${{secrets.WEB_API_KEY}} >> .env
-          echo DATABASE_URL=${{vars.DATABASE_URL}} >> .env
-          cat .env
+          touch api_key.txt
+          echo ${{secrets.WEB_API_KEY}} >> api_key.txt
+          cat api_key.txt
       - name: Build with Buildozer
         run: |
           pip3 install --user --upgrade buildozer Cython virtualenv
@@ -27,7 +26,7 @@ jobs:
           export BUILDOZER_WARN_ON_ROOT=0
           sudo apt update
           sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
-          cd ${{ github.workspace }}
+          ls -l | grep "api_key.txt"
           buildozer android debug
       - name: Upload artifacts
         uses: actions/upload-artifact@v2

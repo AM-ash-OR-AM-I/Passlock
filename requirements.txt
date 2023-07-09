@@ -2,4 +2,3 @@ python3
 kivy
 pillow
 pycryptodome
-python-dotenv

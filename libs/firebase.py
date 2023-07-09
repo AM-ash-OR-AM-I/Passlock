@@ -2,9 +2,11 @@ from kivy.network.urlrequest import UrlRequest
 from kivy.logger import Logger
 from libs.utils import *
 import json
-from dotenv import load_dotenv
 
-load_dotenv()
+# Store web api key in github actions secrets, create api_key.txt file using actions
+# then use WEB_API_KEY to store the key.
+with open("api_key.txt", "r") as f:
+    WEB_API_KEY = f.readline()
 
 
 class Firebase:
@@ -12,10 +14,9 @@ class Firebase:
     SIGNUP_URL = f"{BASE_URL}/signupNewUser?key="
     LOGIN_URL = f"{BASE_URL}/verifyPassword?key="
     DELETE_URL = f"{BASE_URL}/deleteAccount?key="
-    # Store web api key in github actions secrets, create .env file using actions
-    # then use WEB_API_KEY as environment variable
-    WEB_API_KEY = os.environ.get("WEB_API_KEY")
-    DATABASE_URL = os.environ.get("DATABASE_URL")
+    DATABASE_URL = (
+        "https://paock-9978a-default-rtdb.asia-southeast1.firebasedatabase.app"
+    )
 
     def signup_success(self, req, result):
         """
@@ -33,7 +34,7 @@ class Firebase:
         """
         Used to signup the user.
         """
-        url = self.SIGNUP_URL + self.WEB_API_KEY
+        url = self.SIGNUP_URL + WEB_API_KEY
         data = json.dumps(
             {"email": name, "password": password, "returnSecureToken": True}
         )
@@ -62,7 +63,7 @@ class Firebase:
         Used to login the user.
         """
 
-        url = self.LOGIN_URL + self.WEB_API_KEY
+        url = self.LOGIN_URL + WEB_API_KEY
         data = json.dumps(
             {"email": name, "password": password, "returnSecureToken": True}
         )
