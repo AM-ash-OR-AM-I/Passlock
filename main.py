@@ -22,6 +22,14 @@ from kivy.clock import Clock
 from kivymd.toast import toast
 from kivymd.app import MDApp
 
+# Current TODOs
+# FIXME: Fix password generator to generate password with special characters every time.
+# TODO: Remove web api key from the code and add it to the .env file.
+# TODO: Add a way to export all the passwords in a csv file or json file.
+# TODO: Fix auto backup not working in linux.
+# TODO: Merge Passlock Android and Passlock Desktop to 1 repo.
+
+# Old TODOs
 # TODO: Add date and time while backing up password to prevent restore all the time.
 # FIXME: fix delete not working properly
 # FIXME: on switching app in android device scroll view shifts up and nothing is visible..

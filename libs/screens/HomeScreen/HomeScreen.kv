@@ -177,7 +177,7 @@
 			CardTextField:
 				id: searchbar
 				height:'50dp'
-				set_elevation:10
+				set_elevation:0
 				size_hint_x:.85
 				pos_hint:{'center_x':.5}
 				radius: '15dp'
@@ -189,8 +189,8 @@
 				hint_text:'Search passwords'
 				icon_color:app.theme_cls.primary_color
 				label_name:""
-				inactive_color:[.9,.9,.9,.1]
-                dark_bg_hex: "343434"
+				inactive_color:[.7,.7,.7, .3]
+				dark_bg_hex: "343434"
 		ScreenManager:
 			id: tab_manager
 			transition: sm.NoTransition()

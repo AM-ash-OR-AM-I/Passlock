@@ -219,7 +219,7 @@ class Auto(ScrollView, MDTabsBase):
         if special_chars is not None:
             self.use_special_chars = special_chars
         self.ids.password_field.text = auto_password(
-            len=self.password_length,
+            length=self.password_length,
             ascii=self.use_ascii,
             digits=self.use_digits,
             special_chars=self.use_special_chars,

@@ -91,7 +91,6 @@ class SignupScreen(MDScreen):
         app.root.load_screen("HomeScreen", set_current=False)
 
     def button_pressed(self, email, password):
-        # TODO: Save user email and show in settings screen.
         def import_encryption():
             from libs.encryption import Encryption
 
