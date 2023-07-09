@@ -7,16 +7,21 @@ if not os.path.exists("data"):
 
 
 def auto_password(length: int, ascii=True, digits=True, special_chars=True) -> str:
-    universe = string.ascii_letters + string.digits + string.punctuation
+    universe = ""
+    password = ""
     if ascii:
-        password = random.choice(string.ascii_lowercase)
-        password += random.choice(string.ascii_uppercase)
+        password += random.choice(string.ascii_letters)
+        universe += string.ascii_letters
     if digits:
+        universe += string.digits
         password += random.choice(string.digits)
     if special_chars:
+        universe += string.punctuation
         password += random.choice(string.punctuation)
 
     rest = length - len(password)
+    if universe == "":  # if all options are false
+        return "Error: No options selected"
     for _ in range(rest):
         password += random.choice(universe)
 

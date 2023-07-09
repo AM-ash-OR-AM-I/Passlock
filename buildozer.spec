@@ -29,15 +29,15 @@ source.exclude_dirs = bin, __pycache__, OtherStuff, PassLOCK_old, data, screensh
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.3
+# version = 0.3
 
 # (str) Application versioning (method 2)
-# version.regex = __version__ = ['"](.*)['"]
-# version.filename = %(source.dir)s/main.py
+version.regex = __version__ = ['"](.*)['"]
+version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,pillow,pycryptodome
+requirements = python3,kivy,pillow,pycryptodome,python-dotenv
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -266,7 +266,7 @@ android.api = 32
 #android.uses_library =
 
 # (str) Android logcat filters to use
-#android.logcat_filters = *:S python:D
+android.logcat_filters = *:S python:D
 
 # (bool) Android logcat only display log for activity's pid
 #android.logcat_pid_only = False

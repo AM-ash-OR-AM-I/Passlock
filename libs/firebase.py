@@ -2,22 +2,20 @@ from kivy.network.urlrequest import UrlRequest
 from kivy.logger import Logger
 from libs.utils import *
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class Firebase:
-    SIGNUP_URL = (
-        "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key="
-    )
-    LOGIN_URL = (
-        "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key="
-    )
-    DELETE_URL = (
-        "https://www.googleapis.com/identitytoolkit/v3/relyingparty/deleteAccount?key="
-    )
-
-    WEB_API_KEY = "AIzaSyB0-Xy5Ar7JL_Rlg1PeO4CLKkaVbjM71TQ"  # Use your API key, for your own project.
-
-    DATABASE_URL = "https://paock-9978a-default-rtdb.asia-southeast1.firebasedatabase.app"  # Use your database URL, for your own project.
+    BASE_URL = "https://www.googleapis.com/identitytoolkit/v3/relyingparty"
+    SIGNUP_URL = f"{BASE_URL}/signupNewUser?key="
+    LOGIN_URL = f"{BASE_URL}/verifyPassword?key="
+    DELETE_URL = f"{BASE_URL}/deleteAccount?key="
+    # Store web api key in github actions secrets, create .env file using actions
+    # then use WEB_API_KEY as environment variable
+    WEB_API_KEY = os.environ.get("WEB_API_KEY")
+    DATABASE_URL = os.environ.get("DATABASE_URL")
 
     def signup_success(self, req, result):
         """

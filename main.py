@@ -1,3 +1,5 @@
+__version__ = "0.4.1"
+
 import math
 import threading
 from time import time
@@ -49,12 +51,11 @@ def emulate_android_device(
         )
 
     scale_factor = monitor_dpi / android_dpi
-    Window.size = (scale_factor * pixels_horizontal, scale_factor * pixels_vertical)
+    # Setting windows size messes up design in the app
+    # Window.size = (scale_factor * pixels_horizontal, scale_factor * pixels_vertical)
 
 
-if platform != "android":
-    emulate_android_device()
-else:
+if platform == "android":
     from libs.modules.AndroidAPI import statusbar, android_dark_mode
 
 
@@ -383,4 +384,6 @@ class MainApp(MDApp):
 
 
 if __name__ == "__main__":
+    if platform != "android":
+        emulate_android_device()
     MainApp().run()

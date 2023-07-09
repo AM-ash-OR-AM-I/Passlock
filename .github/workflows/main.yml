@@ -11,6 +11,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      # Setting environment variables for app.
+      - name: Create env file
+        run: |
+          touch .env
+          echo WEB_API_KEY=${{secrets.WEB_API_KEY}} >> .env
+          echo DATABASE_URL=${{vars.DATABASE_URL}} >> .env
+          cat .env
       - name: Build with Buildozer
         run: |
           pip3 install --user --upgrade buildozer Cython virtualenv
