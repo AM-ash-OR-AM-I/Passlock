@@ -25,8 +25,6 @@ from kivymd.toast import toast
 from kivymd.app import MDApp
 
 # Current TODOs
-# FIXME: Fix password generator to generate password with special characters every time.
-# TODO: Remove web api key from the code and add it to the .env file.
 # TODO: Add a way to export all the passwords in a csv file or json file.
 # TODO: Fix auto backup not working in linux.
 # TODO: Merge Passlock Android and Passlock Desktop to 1 repo.
