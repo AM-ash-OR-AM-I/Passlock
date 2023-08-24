@@ -11,8 +11,9 @@ kivymd_orginal
 screenshot_original
 __pycache__
 .vscode
-Data
+data
 test.txt
+libs/firebase_config.py
 backup_design.kv
 myapp.profile
 .env

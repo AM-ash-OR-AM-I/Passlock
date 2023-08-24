@@ -1,5 +1,7 @@
 __version__ = "0.4.1"
 
+# Set environment variables for firebase
+import libs.firebase_config as firebase_config
 import math
 import threading
 from time import time
@@ -24,9 +26,10 @@ from kivy.clock import Clock
 from kivymd.toast import toast
 from kivymd.app import MDApp
 
+
 # Current TODOs
 # TODO: Add a way to export all the passwords in a csv file or json file.
-# TODO: Fix auto backup not working in linux.
+
 # TODO: Merge Passlock Android and Passlock Desktop to 1 repo.
 
 # Old TODOs
@@ -50,7 +53,8 @@ def emulate_android_device(
 
     scale_factor = monitor_dpi / android_dpi
     # Setting windows size messes up design in the app
-    # Window.size = (scale_factor * pixels_horizontal, scale_factor * pixels_vertical)
+    Window.size = (scale_factor * pixels_horizontal,
+                   scale_factor * pixels_vertical)
 
 
 if platform == "android":
@@ -141,9 +145,11 @@ class MainApp(MDApp):
         )
         self.light_color = self.generate_color()
         self.bg_color_light = self.generate_color(lightness=0.98)
-        self.bg_color_light_hex = self.generate_color(lightness=0.98, return_hex=True)
+        self.bg_color_light_hex = self.generate_color(
+            lightness=0.98, return_hex=True)
         self.bg_color_dark = self.generate_color(darkness=0.1)
-        self.bg_color_dark_hex = self.generate_color(darkness=0.1, return_hex=True)
+        self.bg_color_dark_hex = self.generate_color(
+            darkness=0.1, return_hex=True)
         self.bg_color = self.bg_color_dark if self.dark_mode else self.bg_color_light
         self.dark_color = self.generate_color(darkness=0.18)  # 262626
         self.login_circle_light = self.generate_color(lightness=0.85)
@@ -194,8 +200,10 @@ class MainApp(MDApp):
         sync_widget.icon = "cloud-download"
         sync_widget.text = "Restoring.."
         sync_widget.start()
-        self.firebase.restore_success = lambda req, result: restore_success(req, result)
-        self.firebase.restore_failure = lambda req, result: restore_failure(req, result)
+        self.firebase.restore_success = lambda req, result: restore_success(
+            req, result)
+        self.firebase.restore_failure = lambda req, result: restore_failure(
+            req, result)
         if user_id:
             self.firebase.restore(user_id)
         else:
@@ -218,7 +226,6 @@ class MainApp(MDApp):
         Clipboard.copy(item)
 
     def animate_signup(self, instance):
-
         """Animation to be shown when user enters the signup screen"""
         if instance:
             Animation(pos_hint={"top": 0.95}, opacity=1, d=0.5, t="out_back").start(
@@ -302,7 +309,8 @@ class MainApp(MDApp):
         self.text_color = (
             self.generate_color(lightness=0.25)  # get_color_from_hex("611c05")
             if not self.dark_mode
-            else self.generate_color(lightness=0.91)  # get_color_from_hex("fde9e2")
+            # get_color_from_hex("fde9e2")
+            else self.generate_color(lightness=0.91)
         )
         self.bg_color = self.bg_color_dark if self.dark_mode else self.bg_color_light
         self.primary_accent = self.dark_color if self.dark_mode else self.light_color
