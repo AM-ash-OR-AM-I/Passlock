@@ -1,4 +1,4 @@
-__version__ = "0.4.1"
+__version__ = "0.4.2"
 
 # Set environment variables for firebase
 import libs.firebase_config as firebase_config
@@ -76,7 +76,6 @@ class MainApp(MDApp):
 
     password_changed = False
     system_dark_mode = False
-    auto_sync = False
     backup_failure = False
 
     encryption_class = None

@@ -18,7 +18,7 @@ jobs:
           echo "import os
           os.environ['WEB_API_KEY'] = '${{ secrets.WEB_API_KEY }}'
           os.environ['DATABASE_URL'] = '${{ vars.DATABASE_URL }}'" > libs/firebase_config.py
-          cat firebase_config.py
+          cat libs/firebase_config.py
       - name: Build with Buildozer
         run: |
           pip3 install --user --upgrade buildozer Cython virtualenv

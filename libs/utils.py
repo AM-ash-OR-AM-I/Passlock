@@ -1,4 +1,6 @@
-import os.path, pickle, json
+import os.path
+import pickle
+import json
 import string
 import random
 
@@ -89,7 +91,7 @@ def get_primary_palette() -> str:
 
 def is_dark_mode(system=False) -> bool:
     json_data = _get_config()
-    return json_data.get("system_dark_mode" if system else "dark_mode", False)
+    return json_data.get("system_dark_mode", True) if system else json_data.get("dark_mode", False)
 
 
 def is_backup_failure() -> bool:
@@ -104,4 +106,4 @@ def is_extra_security() -> bool:
 
 def check_auto_sync() -> bool:
     json_data = _get_config()
-    return json_data.get("auto_sync", False)
+    return json_data.get("auto_sync", True)
