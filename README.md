@@ -4,13 +4,13 @@
 
 <h1 align="center">
     Passlock for android
-</h1> 
+</h1>
 
 <h3 align="center">
     <a href="https://www.youtube.com/watch?v=EOkMDc5mZWI">
         See video demo
     </a>
-</h3> 
+</h3>
 
 Password Manager for android.
 <p align="left">
@@ -20,6 +20,7 @@ Password Manager for android.
 </p>
 
 ## Features
+
 * Backup and sync passwords across devices 💻📱.
 * Encrypted passwords using AES 128bit for maximum security.
 * Mimics Material v3 Monet engine with 🌙 Dark Mode, to use different 🎨 color themes. (Self-made)
@@ -27,18 +28,13 @@ Password Manager for android.
 * Advanced 🔍 finding algorithm to search for passwords easily.
 
 ## Releases
-#### <a href="https://github.com/AM-ash-OR-AM-I/Passlock/releases">📱Android</a>
-#### 🧑🏻‍💻<a href="https://github.com/AM-ash-OR-AM-I/PasslockDesktop/releases">Linux & Windows</a>
+
+### [📱 Android](https://github.com/AM-ash-OR-AM-I/Passlock/releases)
+
+### [🧑‍💻 Linux & Windows](https://github.com/AM-ash-OR-AM-I/PasslockDesktop/releases)
 
 ## Screenshots
 
-<p align="center">
-    <img src="./screenshots/1.png" width = "250px"/>
-    <img src="./screenshots/2.png" width = "250px"/>
-    <img src="./screenshots/3.png" width = "250px"/>
-</p>
-<p align="center">
-    <img src="./screenshots/4.png" width = "250px"/>
-    <img src="./screenshots/5.png" width = "250px"/>
-    <img src="./screenshots/6.png" width = "250px"/>
-</p>
+![1](./screenshots/1.png) | ![2](./screenshots/2.png) | ![3](./screenshots/3.png) |
+------------------------- | ------------------------- | ------------------------- |
+![4](./screenshots/4.png) | ![2](./screenshots/5.png) | ![3](./screenshots/6.png) |
