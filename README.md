@@ -7,19 +7,17 @@
 </h1>
 
 <h3 align="center">
-    <a href="https://www.youtube.com/watch?v=EOkMDc5mZWI">
+    <a href="">
         See video demo
     </a>
 </h3>
 
-Password Manager for android.
-<p align="left">
-    <a href="https://github.com/AM-ash-OR-AM-I/PasslockDesktop">
-        Check Out Passlock for desktop.
-    </a>
-</p>
 
-## Features
+A Password Manager for android.
+
+Also Check Out Passlock for desktop 💻 [here.](https://github.com/AM-ash-OR-AM-I/PasslockDesktop)
+
+## Features ✨
 
 * Backup and sync passwords across devices 💻📱.
 * Encrypted passwords using AES 128bit for maximum security.
@@ -27,13 +25,19 @@ Password Manager for android.
 * Make strong passwords 🔑 through built in password generator.
 * Advanced 🔍 finding algorithm to search for passwords easily.
 
-## Releases
+## Releases 📥️
 
-### [📱 Android](https://github.com/AM-ash-OR-AM-I/Passlock/releases)
+#### Check latest apk links for [📱 Android here.](https://github.com/AM-ash-OR-AM-I/Passlock/releases)
 
-### [🧑‍💻 Linux & Windows](https://github.com/AM-ash-OR-AM-I/PasslockDesktop/releases)
+## Build 📦️
 
-## Screenshots
+* Get `WEB_API_KEY` from firebase project and add it to github secrets.
+* Add `DATABASE_URL` to repository variables.
+* Now you are all set build app 🎉, make some changes push it then tag a release 🚀
+  * e.g. `git tag v0.0.1 && git push --tags`
+  * Workflow will be triggered and will automatically create a release for apk.
+
+## Screenshots 📱
 
 ![1](./screenshots/1.png) | ![2](./screenshots/2.png) | ![3](./screenshots/3.png) |
 ------------------------- | ------------------------- | ------------------------- |
